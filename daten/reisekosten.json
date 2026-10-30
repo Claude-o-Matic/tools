@@ -1,0 +1,1723 @@
+{
+ "format": "rk-daten",
+ "version": 1,
+ "stand": "2026-10-30",
+ "hinweis": "Datenpaket fuer die Reisekostenverwaltung ZfsL Solingen. Nur Daten, kein Programmcode. Beim Aendern IMMER \"version\" hochzaehlen - sonst uebernimmt das Programm nichts.",
+ "programm": {
+  "version": "2.5",
+  "datum": "2026-10-30",
+  "hinweis": "Aktuelle Programmversion. Nur hochsetzen, wenn eine neue reisekosten.html im Repo liegt - sonst meldet das Programm eine Version, die es nirgends gibt."
+ },
+ "ferien": {
+  "gueltigVon": "2024-07-08",
+  "gueltigBis": "2030-04-27",
+  "quelle": "BASS 12-65 Nr. 1 - Ordnung der Ferien fuer die Schuljahre 2024/2025 bis 2029/2030",
+  "liste": [
+   {
+    "v": "2024-07-08",
+    "b": "2024-08-20",
+    "n": "Sommerferien"
+   },
+   {
+    "v": "2024-10-14",
+    "b": "2024-10-26",
+    "n": "Herbstferien"
+   },
+   {
+    "v": "2024-12-23",
+    "b": "2025-01-06",
+    "n": "Weihnachtsferien"
+   },
+   {
+    "v": "2025-04-14",
+    "b": "2025-04-26",
+    "n": "Osterferien"
+   },
+   {
+    "v": "2025-06-10",
+    "b": "2025-06-10",
+    "n": "Pfingstferien"
+   },
+   {
+    "v": "2025-07-14",
+    "b": "2025-08-26",
+    "n": "Sommerferien"
+   },
+   {
+    "v": "2025-10-13",
+    "b": "2025-10-25",
+    "n": "Herbstferien"
+   },
+   {
+    "v": "2025-12-22",
+    "b": "2026-01-06",
+    "n": "Weihnachtsferien"
+   },
+   {
+    "v": "2026-03-30",
+    "b": "2026-04-11",
+    "n": "Osterferien"
+   },
+   {
+    "v": "2026-05-26",
+    "b": "2026-05-26",
+    "n": "Pfingstferien"
+   },
+   {
+    "v": "2026-07-20",
+    "b": "2026-09-01",
+    "n": "Sommerferien"
+   },
+   {
+    "v": "2026-10-17",
+    "b": "2026-10-31",
+    "n": "Herbstferien"
+   },
+   {
+    "v": "2026-12-23",
+    "b": "2027-01-06",
+    "n": "Weihnachtsferien"
+   },
+   {
+    "v": "2027-03-22",
+    "b": "2027-04-03",
+    "n": "Osterferien"
+   },
+   {
+    "v": "2027-05-18",
+    "b": "2027-05-18",
+    "n": "Pfingstferien"
+   },
+   {
+    "v": "2027-07-19",
+    "b": "2027-08-31",
+    "n": "Sommerferien"
+   },
+   {
+    "v": "2027-10-23",
+    "b": "2027-11-06",
+    "n": "Herbstferien"
+   },
+   {
+    "v": "2027-12-24",
+    "b": "2028-01-08",
+    "n": "Weihnachtsferien"
+   },
+   {
+    "v": "2028-04-10",
+    "b": "2028-04-22",
+    "n": "Osterferien"
+   },
+   {
+    "v": "2028-07-10",
+    "b": "2028-08-22",
+    "n": "Sommerferien"
+   },
+   {
+    "v": "2028-10-23",
+    "b": "2028-11-04",
+    "n": "Herbstferien"
+   },
+   {
+    "v": "2028-12-21",
+    "b": "2029-01-05",
+    "n": "Weihnachtsferien"
+   },
+   {
+    "v": "2029-03-26",
+    "b": "2029-04-07",
+    "n": "Osterferien"
+   },
+   {
+    "v": "2029-05-22",
+    "b": "2029-05-22",
+    "n": "Pfingstferien"
+   },
+   {
+    "v": "2029-07-02",
+    "b": "2029-08-14",
+    "n": "Sommerferien"
+   },
+   {
+    "v": "2029-10-15",
+    "b": "2029-10-27",
+    "n": "Herbstferien"
+   },
+   {
+    "v": "2029-12-20",
+    "b": "2030-01-04",
+    "n": "Weihnachtsferien"
+   },
+   {
+    "v": "2030-04-15",
+    "b": "2030-04-27",
+    "n": "Osterferien"
+   }
+  ]
+ },
+ "feiertage": {
+  "gueltigBis": "2045-12-26",
+  "quelle": "gesetzliche Feiertage Nordrhein-Westfalen",
+  "liste": {
+   "2020-01-01": "Neujahr",
+   "2020-04-10": "Karfreitag",
+   "2020-04-13": "Ostermontag",
+   "2020-05-01": "Tag der Arbeit",
+   "2020-05-21": "Christi Himmelfahrt",
+   "2020-06-01": "Pfingstmontag",
+   "2020-06-11": "Fronleichnam",
+   "2020-10-03": "Tag der deutschen Einheit",
+   "2020-11-01": "Allerheiligen",
+   "2020-12-25": "1. Weihnachtstag",
+   "2020-12-26": "2. Weihnachtstag",
+   "2021-01-01": "Neujahr",
+   "2021-04-02": "Karfreitag",
+   "2021-04-05": "Ostermontag",
+   "2021-05-01": "Tag der Arbeit",
+   "2021-05-13": "Christi Himmelfahrt",
+   "2021-05-24": "Pfingstmontag",
+   "2021-06-03": "Fronleichnam",
+   "2021-10-03": "Tag der deutschen Einheit",
+   "2021-11-01": "Allerheiligen",
+   "2021-12-25": "1. Weihnachtstag",
+   "2021-12-26": "2. Weihnachtstag",
+   "2022-01-01": "Neujahr",
+   "2022-04-15": "Karfreitag",
+   "2022-04-18": "Ostermontag",
+   "2022-05-01": "Tag der Arbeit",
+   "2022-05-26": "Christi Himmelfahrt",
+   "2022-06-06": "Pfingstmontag",
+   "2022-06-16": "Fronleichnam",
+   "2022-10-03": "Tag der deutschen Einheit",
+   "2022-11-01": "Allerheiligen",
+   "2022-12-25": "1. Weihnachtstag",
+   "2022-12-26": "2. Weihnachtstag",
+   "2023-01-01": "Neujahr",
+   "2023-04-07": "Karfreitag",
+   "2023-04-10": "Ostermontag",
+   "2023-05-01": "Tag der Arbeit",
+   "2023-05-18": "Christi Himmelfahrt",
+   "2023-05-29": "Pfingstmontag",
+   "2023-06-08": "Fronleichnam",
+   "2023-10-03": "Tag der deutschen Einheit",
+   "2023-11-01": "Allerheiligen",
+   "2023-12-25": "1. Weihnachtstag",
+   "2023-12-26": "2. Weihnachtstag",
+   "2024-01-01": "Neujahr",
+   "2024-03-29": "Karfreitag",
+   "2024-04-01": "Ostermontag",
+   "2024-05-01": "Tag der Arbeit",
+   "2024-05-09": "Christi Himmelfahrt",
+   "2024-05-20": "Pfingstmontag",
+   "2024-05-30": "Fronleichnam",
+   "2024-10-03": "Tag der deutschen Einheit",
+   "2024-11-01": "Allerheiligen",
+   "2024-12-25": "1. Weihnachtstag",
+   "2024-12-26": "2. Weihnachtstag",
+   "2025-01-01": "Neujahr",
+   "2025-04-18": "Karfreitag",
+   "2025-04-21": "Ostermontag",
+   "2025-05-01": "Tag der Arbeit",
+   "2025-05-29": "Christi Himmelfahrt",
+   "2025-06-09": "Pfingstmontag",
+   "2025-06-19": "Fronleichnam",
+   "2025-10-03": "Tag der deutschen Einheit",
+   "2025-11-01": "Allerheiligen",
+   "2025-12-25": "1. Weihnachtstag",
+   "2025-12-26": "2. Weihnachtstag",
+   "2026-01-01": "Neujahr",
+   "2026-04-03": "Karfreitag",
+   "2026-04-06": "Ostermontag",
+   "2026-05-01": "Tag der Arbeit",
+   "2026-05-14": "Christi Himmelfahrt",
+   "2026-05-25": "Pfingstmontag",
+   "2026-06-04": "Fronleichnam",
+   "2026-10-03": "Tag der deutschen Einheit",
+   "2026-11-01": "Allerheiligen",
+   "2026-12-25": "1. Weihnachtstag",
+   "2026-12-26": "2. Weihnachtstag",
+   "2027-01-01": "Neujahr",
+   "2027-03-26": "Karfreitag",
+   "2027-03-29": "Ostermontag",
+   "2027-05-01": "Tag der Arbeit",
+   "2027-05-06": "Christi Himmelfahrt",
+   "2027-05-17": "Pfingstmontag",
+   "2027-05-27": "Fronleichnam",
+   "2027-10-03": "Tag der deutschen Einheit",
+   "2027-11-01": "Allerheiligen",
+   "2027-12-25": "1. Weihnachtstag",
+   "2027-12-26": "2. Weihnachtstag",
+   "2028-01-01": "Neujahr",
+   "2028-04-14": "Karfreitag",
+   "2028-04-17": "Ostermontag",
+   "2028-05-01": "Tag der Arbeit",
+   "2028-05-25": "Christi Himmelfahrt",
+   "2028-06-05": "Pfingstmontag",
+   "2028-06-15": "Fronleichnam",
+   "2028-10-03": "Tag der deutschen Einheit",
+   "2028-11-01": "Allerheiligen",
+   "2028-12-25": "1. Weihnachtstag",
+   "2028-12-26": "2. Weihnachtstag",
+   "2029-01-01": "Neujahr",
+   "2029-03-30": "Karfreitag",
+   "2029-04-02": "Ostermontag",
+   "2029-05-01": "Tag der Arbeit",
+   "2029-05-10": "Christi Himmelfahrt",
+   "2029-05-21": "Pfingstmontag",
+   "2029-05-31": "Fronleichnam",
+   "2029-10-03": "Tag der deutschen Einheit",
+   "2029-11-01": "Allerheiligen",
+   "2029-12-25": "1. Weihnachtstag",
+   "2029-12-26": "2. Weihnachtstag",
+   "2030-01-01": "Neujahr",
+   "2030-04-19": "Karfreitag",
+   "2030-04-22": "Ostermontag",
+   "2030-05-01": "Tag der Arbeit",
+   "2030-05-30": "Christi Himmelfahrt",
+   "2030-06-10": "Pfingstmontag",
+   "2030-06-20": "Fronleichnam",
+   "2030-10-03": "Tag der deutschen Einheit",
+   "2030-11-01": "Allerheiligen",
+   "2030-12-25": "1. Weihnachtstag",
+   "2030-12-26": "2. Weihnachtstag",
+   "2031-01-01": "Neujahr",
+   "2031-04-11": "Karfreitag",
+   "2031-04-14": "Ostermontag",
+   "2031-05-01": "Tag der Arbeit",
+   "2031-05-22": "Christi Himmelfahrt",
+   "2031-06-02": "Pfingstmontag",
+   "2031-06-12": "Fronleichnam",
+   "2031-10-03": "Tag der deutschen Einheit",
+   "2031-11-01": "Allerheiligen",
+   "2031-12-25": "1. Weihnachtstag",
+   "2031-12-26": "2. Weihnachtstag",
+   "2032-01-01": "Neujahr",
+   "2032-03-26": "Karfreitag",
+   "2032-03-29": "Ostermontag",
+   "2032-05-01": "Tag der Arbeit",
+   "2032-05-06": "Christi Himmelfahrt",
+   "2032-05-17": "Pfingstmontag",
+   "2032-05-27": "Fronleichnam",
+   "2032-10-03": "Tag der deutschen Einheit",
+   "2032-11-01": "Allerheiligen",
+   "2032-12-25": "1. Weihnachtstag",
+   "2032-12-26": "2. Weihnachtstag",
+   "2033-01-01": "Neujahr",
+   "2033-04-15": "Karfreitag",
+   "2033-04-18": "Ostermontag",
+   "2033-05-01": "Tag der Arbeit",
+   "2033-05-26": "Christi Himmelfahrt",
+   "2033-06-06": "Pfingstmontag",
+   "2033-06-16": "Fronleichnam",
+   "2033-10-03": "Tag der deutschen Einheit",
+   "2033-11-01": "Allerheiligen",
+   "2033-12-25": "1. Weihnachtstag",
+   "2033-12-26": "2. Weihnachtstag",
+   "2034-01-01": "Neujahr",
+   "2034-04-07": "Karfreitag",
+   "2034-04-10": "Ostermontag",
+   "2034-05-01": "Tag der Arbeit",
+   "2034-05-18": "Christi Himmelfahrt",
+   "2034-05-29": "Pfingstmontag",
+   "2034-06-08": "Fronleichnam",
+   "2034-10-03": "Tag der deutschen Einheit",
+   "2034-11-01": "Allerheiligen",
+   "2034-12-25": "1. Weihnachtstag",
+   "2034-12-26": "2. Weihnachtstag",
+   "2035-01-01": "Neujahr",
+   "2035-03-23": "Karfreitag",
+   "2035-03-26": "Ostermontag",
+   "2035-05-01": "Tag der Arbeit",
+   "2035-05-03": "Christi Himmelfahrt",
+   "2035-05-14": "Pfingstmontag",
+   "2035-05-24": "Fronleichnam",
+   "2035-10-03": "Tag der deutschen Einheit",
+   "2035-11-01": "Allerheiligen",
+   "2035-12-25": "1. Weihnachtstag",
+   "2035-12-26": "2. Weihnachtstag",
+   "2036-01-01": "Neujahr",
+   "2036-04-11": "Karfreitag",
+   "2036-04-14": "Ostermontag",
+   "2036-05-01": "Tag der Arbeit",
+   "2036-05-22": "Christi Himmelfahrt",
+   "2036-06-02": "Pfingstmontag",
+   "2036-06-12": "Fronleichnam",
+   "2036-10-03": "Tag der deutschen Einheit",
+   "2036-11-01": "Allerheiligen",
+   "2036-12-25": "1. Weihnachtstag",
+   "2036-12-26": "2. Weihnachtstag",
+   "2037-01-01": "Neujahr",
+   "2037-04-03": "Karfreitag",
+   "2037-04-06": "Ostermontag",
+   "2037-05-01": "Tag der Arbeit",
+   "2037-05-14": "Christi Himmelfahrt",
+   "2037-05-25": "Pfingstmontag",
+   "2037-06-04": "Fronleichnam",
+   "2037-10-03": "Tag der deutschen Einheit",
+   "2037-11-01": "Allerheiligen",
+   "2037-12-25": "1. Weihnachtstag",
+   "2037-12-26": "2. Weihnachtstag",
+   "2038-01-01": "Neujahr",
+   "2038-04-23": "Karfreitag",
+   "2038-04-26": "Ostermontag",
+   "2038-05-01": "Tag der Arbeit",
+   "2038-06-03": "Christi Himmelfahrt",
+   "2038-06-14": "Pfingstmontag",
+   "2038-06-24": "Fronleichnam",
+   "2038-10-03": "Tag der deutschen Einheit",
+   "2038-11-01": "Allerheiligen",
+   "2038-12-25": "1. Weihnachtstag",
+   "2038-12-26": "2. Weihnachtstag",
+   "2039-01-01": "Neujahr",
+   "2039-04-08": "Karfreitag",
+   "2039-04-11": "Ostermontag",
+   "2039-05-01": "Tag der Arbeit",
+   "2039-05-19": "Christi Himmelfahrt",
+   "2039-05-30": "Pfingstmontag",
+   "2039-06-09": "Fronleichnam",
+   "2039-10-03": "Tag der deutschen Einheit",
+   "2039-11-01": "Allerheiligen",
+   "2039-12-25": "1. Weihnachtstag",
+   "2039-12-26": "2. Weihnachtstag",
+   "2040-01-01": "Neujahr",
+   "2040-03-30": "Karfreitag",
+   "2040-04-02": "Ostermontag",
+   "2040-05-01": "Tag der Arbeit",
+   "2040-05-10": "Christi Himmelfahrt",
+   "2040-05-21": "Pfingstmontag",
+   "2040-05-31": "Fronleichnam",
+   "2040-10-03": "Tag der deutschen Einheit",
+   "2040-11-01": "Allerheiligen",
+   "2040-12-25": "1. Weihnachtstag",
+   "2040-12-26": "2. Weihnachtstag",
+   "2041-01-01": "Neujahr",
+   "2041-04-19": "Karfreitag",
+   "2041-04-22": "Ostermontag",
+   "2041-05-01": "Tag der Arbeit",
+   "2041-05-30": "Christi Himmelfahrt",
+   "2041-06-10": "Pfingstmontag",
+   "2041-06-20": "Fronleichnam",
+   "2041-10-03": "Tag der deutschen Einheit",
+   "2041-11-01": "Allerheiligen",
+   "2041-12-25": "1. Weihnachtstag",
+   "2041-12-26": "2. Weihnachtstag",
+   "2042-01-01": "Neujahr",
+   "2042-04-04": "Karfreitag",
+   "2042-04-07": "Ostermontag",
+   "2042-05-01": "Tag der Arbeit",
+   "2042-05-15": "Christi Himmelfahrt",
+   "2042-05-26": "Pfingstmontag",
+   "2042-06-05": "Fronleichnam",
+   "2042-10-03": "Tag der deutschen Einheit",
+   "2042-11-01": "Allerheiligen",
+   "2042-12-25": "1. Weihnachtstag",
+   "2042-12-26": "2. Weihnachtstag",
+   "2043-01-01": "Neujahr",
+   "2043-03-27": "Karfreitag",
+   "2043-03-30": "Ostermontag",
+   "2043-05-01": "Tag der Arbeit",
+   "2043-05-07": "Christi Himmelfahrt",
+   "2043-05-18": "Pfingstmontag",
+   "2043-05-28": "Fronleichnam",
+   "2043-10-03": "Tag der deutschen Einheit",
+   "2043-11-01": "Allerheiligen",
+   "2043-12-25": "1. Weihnachtstag",
+   "2043-12-26": "2. Weihnachtstag",
+   "2044-01-01": "Neujahr",
+   "2044-04-15": "Karfreitag",
+   "2044-04-18": "Ostermontag",
+   "2044-05-01": "Tag der Arbeit",
+   "2044-05-26": "Christi Himmelfahrt",
+   "2044-06-06": "Pfingstmontag",
+   "2044-06-16": "Fronleichnam",
+   "2044-10-03": "Tag der deutschen Einheit",
+   "2044-11-01": "Allerheiligen",
+   "2044-12-25": "1. Weihnachtstag",
+   "2044-12-26": "2. Weihnachtstag",
+   "2045-01-01": "Neujahr",
+   "2045-04-07": "Karfreitag",
+   "2045-04-10": "Ostermontag",
+   "2045-05-01": "Tag der Arbeit",
+   "2045-05-18": "Christi Himmelfahrt",
+   "2045-05-29": "Pfingstmontag",
+   "2045-06-08": "Fronleichnam",
+   "2045-10-03": "Tag der deutschen Einheit",
+   "2045-11-01": "Allerheiligen",
+   "2045-12-25": "1. Weihnachtstag",
+   "2045-12-26": "2. Weihnachtstag"
+  }
+ },
+ "schulen": {
+  "stand": "2026-10-30",
+  "quelle": "Ausbildungsschulen im Einzugsbereich des ZfsL Solingen",
+  "liste": [
+   {
+    "id": "zfsl_solingen",
+    "name": "ZfsL Solingen",
+    "type": "zfsl",
+    "city": "Solingen",
+    "address": "Eintrachtstraße 31, 42655 Solingen"
+   },
+   {
+    "id": "gym_august_dicke",
+    "name": "Gymnasium August-Dicke-Schule",
+    "type": "gymnasium",
+    "city": "Solingen",
+    "address": "Wuppertaler Str. 1, 42653 Solingen"
+   },
+   {
+    "id": "gym_schwertstrasse",
+    "name": "Gymnasium Schwertstraße",
+    "type": "gymnasium",
+    "city": "Solingen",
+    "address": "Schwertstraße 19, 42651 Solingen"
+   },
+   {
+    "id": "gym_vogelsang_sol",
+    "name": "Gymnasium Vogelsang",
+    "type": "gymnasium",
+    "city": "Solingen",
+    "address": "Vogelsang 33, 42653 Solingen"
+   },
+   {
+    "id": "gym_humboldt",
+    "name": "Humboldtgymnasium",
+    "type": "gymnasium",
+    "city": "Solingen",
+    "address": "Humboldtstraße 5, 42719 Solingen"
+   },
+   {
+    "id": "ges_coppel",
+    "name": "Alexander-Coppel-Gesamtschule",
+    "type": "gesamtschule",
+    "city": "Solingen",
+    "address": "Wupperstraße 126, 42651 Solingen"
+   },
+   {
+    "id": "ges_fal",
+    "name": "Friedrich-Albert-Lange-Schule",
+    "type": "gesamtschule",
+    "city": "Solingen",
+    "address": "Altenhofer Str. 10, 42719 Solingen"
+   },
+   {
+    "id": "ges_hoehscheid",
+    "name": "Gesamtschule Höhscheid",
+    "type": "gesamtschule",
+    "city": "Solingen",
+    "address": "Kanalstraße 20, 42657 Solingen"
+   },
+   {
+    "id": "ges_geschwister_scholl_sek1",
+    "name": "Geschwister-Scholl-Schule (Sek I, Kl. 5–7)",
+    "type": "gesamtschule",
+    "city": "Solingen",
+    "address": "Uhlandstraße 28, 42699 Solingen"
+   },
+   {
+    "id": "ges_geschwister_scholl_sek2",
+    "name": "Geschwister-Scholl-Schule (Sek II, Kl. 8–13)",
+    "type": "gesamtschule",
+    "city": "Solingen",
+    "address": "Querstraße 42, 42699 Solingen"
+   },
+   {
+    "id": "ges_vogelsang_sol",
+    "name": "Gesamtschule Vogelsang",
+    "type": "gesamtschule",
+    "city": "Solingen",
+    "address": "Guntherstraße 27, 42653 Solingen"
+   },
+   {
+    "id": "gym_emma_herwegh",
+    "name": "Emma-Herwegh-Gymnasium",
+    "type": "gymnasium",
+    "city": "Remscheid",
+    "address": "Elberfelder Str. 48, 42853 Remscheid"
+   },
+   {
+    "id": "gym_gertrud_baumer",
+    "name": "Gertrud-Bäumer-Gymnasium",
+    "type": "gymnasium",
+    "city": "Remscheid",
+    "address": "Hindenburgstraße 42, 42853 Remscheid"
+   },
+   {
+    "id": "gym_leibniz",
+    "name": "Leibniz-Gymnasium",
+    "type": "gymnasium",
+    "city": "Remscheid",
+    "address": "Lockfinker Str. 23, 42899 Remscheid"
+   },
+   {
+    "id": "gym_roentgen",
+    "name": "Röntgen-Gymnasium",
+    "type": "gymnasium",
+    "city": "Remscheid",
+    "address": "Röntgenstraße 12, 42897 Remscheid"
+   },
+   {
+    "id": "ges_albert_einstein",
+    "name": "Albert-Einstein-Schule",
+    "type": "gesamtschule",
+    "city": "Remscheid",
+    "address": "Brüderstraße 6, 42853 Remscheid"
+   },
+   {
+    "id": "ges_sophie_scholl",
+    "name": "Sophie-Scholl-Gesamtschule",
+    "type": "gesamtschule",
+    "city": "Remscheid",
+    "address": "Hohenhagener Str. 25, 42855 Remscheid"
+   },
+   {
+    "id": "gym_haan",
+    "name": "Städtisches Gymnasium Haan",
+    "type": "gymnasium",
+    "city": "Haan",
+    "address": "Adlerstraße 3, 42781 Haan"
+   },
+   {
+    "id": "ges_haan",
+    "name": "Städtische Gesamtschule Haan",
+    "type": "gesamtschule",
+    "city": "Haan",
+    "address": "Walder Straße 15, 42781 Haan"
+   },
+   {
+    "id": "gym_wuelfrath",
+    "name": "Städtisches Gymnasium Wülfrath",
+    "type": "gymnasium",
+    "city": "Wülfrath",
+    "address": "Kastanienallee 63, 42489 Wülfrath"
+   },
+   {
+    "id": "gym_carl_duisberg",
+    "name": "Carl-Duisberg-Gymnasium",
+    "type": "gymnasium",
+    "city": "Wuppertal",
+    "address": "Max-Planck-Str. 10, 42277 Wuppertal"
+   },
+   {
+    "id": "gym_carl_fuhlrott",
+    "name": "Carl-Fuhlrott-Gymnasium",
+    "type": "gymnasium",
+    "city": "Wuppertal",
+    "address": "Jung-Stilling-Weg 45, 42349 Wuppertal"
+   },
+   {
+    "id": "gym_johannes_rau",
+    "name": "Ganztagsgymnasium Johannes Rau",
+    "type": "gymnasium",
+    "city": "Wuppertal",
+    "address": "Dietrich-Bonhoeffer-Weg 1, 42285 Wuppertal"
+   },
+   {
+    "id": "gym_am_kothen",
+    "name": "Gymnasium Am Kothen",
+    "type": "gymnasium",
+    "city": "Wuppertal",
+    "address": "Schluchtstraße 34, 42285 Wuppertal"
+   },
+   {
+    "id": "gym_st_anna",
+    "name": "St.-Anna-Schule",
+    "type": "gymnasium",
+    "city": "Wuppertal",
+    "address": "Dorotheenstraße 11, 42105 Wuppertal"
+   },
+   {
+    "id": "gym_bayreuther_str",
+    "name": "Städtisches Gymnasium Bayreuther Straße",
+    "type": "gymnasium",
+    "city": "Wuppertal",
+    "address": "Bayreuther Str. 35, 42115 Wuppertal"
+   },
+   {
+    "id": "gym_sedanstrasse",
+    "name": "Städtisches Gymnasium Sedanstraße",
+    "type": "gymnasium",
+    "city": "Wuppertal",
+    "address": "Sedanstraße 4, 42275 Wuppertal"
+   },
+   {
+    "id": "gym_vohwinkel",
+    "name": "Städtisches Gymnasium Vohwinkel",
+    "type": "gymnasium",
+    "city": "Wuppertal",
+    "address": "Nocken 6, 42329 Wuppertal"
+   },
+   {
+    "id": "gym_wilhelm_doerpfeld",
+    "name": "Wilhelm-Dörpfeld-Gymnasium",
+    "type": "gymnasium",
+    "city": "Wuppertal",
+    "address": "Johannisberg 20, 42103 Wuppertal"
+   },
+   {
+    "id": "ges_erich_fried",
+    "name": "Erich-Fried-Gesamtschule Ronsdorf",
+    "type": "gesamtschule",
+    "city": "Wuppertal",
+    "address": "An der Blutfinke 70, 42369 Wuppertal"
+   },
+   {
+    "id": "ges_barmen",
+    "name": "Gesamtschule Barmen",
+    "type": "gesamtschule",
+    "city": "Wuppertal",
+    "address": "Unterdörnen 1, 42283 Wuppertal"
+   },
+   {
+    "id": "ges_else_lasker",
+    "name": "Gesamtschule Else Lasker-Schüler",
+    "type": "gesamtschule",
+    "city": "Wuppertal",
+    "address": "Else-Lasker-Schüler-Str. 30, 42107 Wuppertal"
+   },
+   {
+    "id": "ges_langerfeld",
+    "name": "Gesamtschule Langerfeld",
+    "type": "gesamtschule",
+    "city": "Wuppertal",
+    "address": "Heinrich-Böll-Str. 240/250, 42277 Wuppertal"
+   },
+   {
+    "id": "ges_uellendahl",
+    "name": "Gesamtschule Uellendahl-Katernberg",
+    "type": "gesamtschule",
+    "city": "Wuppertal",
+    "address": "Kruppstraße 145, 42113 Wuppertal"
+   },
+   {
+    "id": "ges_pina_bausch",
+    "name": "Pina-Bausch-Gesamtschule",
+    "type": "gesamtschule",
+    "city": "Wuppertal",
+    "address": "Florian-Geyer-Str. 9, 42329 Wuppertal"
+   },
+   {
+    "id": "hau_wuppertal_bundesallee",
+    "name": "St.-Laurentius-Schule kath. Hauptschule-West",
+    "address": "Bundesallee 30, 42103 Wuppertal",
+    "type": "hauptschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "hau_wuppertal_carnaper_str",
+    "name": "Bernhard-Letterhaus-Schule Städt. Kath. Hauptschule",
+    "address": "Carnaper Str. 13, 42283 Wuppertal",
+    "type": "hauptschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "hau_wuppertal_dieckerhoffstr",
+    "name": "Helene-Weber-Schule Städt. Gemeinschaftshauptschule",
+    "address": "Dieckerhoffstr. 6, 42389 Wuppertal",
+    "type": "hauptschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "hau_wuppertal_huegelstr",
+    "name": "Städt. Gem. Hauptschule Oberbarmen",
+    "address": "Hügelstr. 8, 42277 Wuppertal",
+    "type": "hauptschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "hau_wuppertal_emilienstr",
+    "name": "Städt. Gem. Hauptschule Barmen-Südwest",
+    "address": "Emilienstr. 36, 42287 Wuppertal",
+    "type": "hauptschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "hau_remscheid_hackenberger_str",
+    "name": "Städt. Gem. Hauptschule Hackenberg Schulzentrum Hackenberger Straße",
+    "address": "Hackenberger Str. 105 a, 42897 Remscheid",
+    "type": "hauptschule",
+    "city": "Remscheid"
+   },
+   {
+    "id": "rea_remscheid_grunerstr",
+    "name": "Alexander-von-Humboldt-Schule Städt. Realschule für Jungen und Mädchen",
+    "address": "Grunerstr. 12, 42857 Remscheid",
+    "type": "realschule",
+    "city": "Remscheid"
+   },
+   {
+    "id": "rea_remscheid_hackenberger_str",
+    "name": "Albert-Schweitzer-Schule Städt. Realschule Remscheid-Lennep",
+    "address": "Hackenberger Str. 105, 42897 Remscheid",
+    "type": "realschule",
+    "city": "Remscheid"
+   },
+   {
+    "id": "rea_solingen_kornstr",
+    "name": "Albert-Schweitzer-Schule Städt. Realschule",
+    "address": "Kornstr. 6, 42719 Solingen",
+    "type": "realschule",
+    "city": "Solingen"
+   },
+   {
+    "id": "rea_solingen_felder_str",
+    "name": "Theodor-Heuss-Schule Städt. Realschule",
+    "address": "Felder Str. 35-37, 42651 Solingen",
+    "type": "realschule",
+    "city": "Solingen"
+   },
+   {
+    "id": "rea_solingen_vogelsang",
+    "name": "Städt. Realschule Vogelsang",
+    "address": "Vogelsang 33, 42653 Solingen",
+    "type": "realschule",
+    "city": "Solingen"
+   },
+   {
+    "id": "rea_wuppertal_hohenstein",
+    "name": "Städt. Realschule Hohenstein",
+    "address": "Hohenstein 123, 42283 Wuppertal",
+    "type": "realschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "rea_wuppertal_neue_friedrichstr",
+    "name": "Städt. Realschule Neue Friedrichstraße",
+    "address": "Neue Friedrichstr. 19, 42105 Wuppertal",
+    "type": "realschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "rea_wuppertal_leimbacher_str",
+    "name": "Städt. Realschule Leimbacher Straße",
+    "address": "Leimbacher Str. 4, 42281 Wuppertal",
+    "type": "realschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "rea_wuppertal_helmholtzstr",
+    "name": "Hermann-von-Helmholtz-Realschule Realschule der Stadt Wuppertal",
+    "address": "Helmholtzstr. 40, 42105 Wuppertal",
+    "type": "realschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "rea_wuppertal_yorckstr",
+    "name": "Realschule Vohwinkel der Stadt Wuppertal",
+    "address": "Yorckstr. 28, 42329 Wuppertal",
+    "type": "realschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "rea_wuppertal_jung_stilling_weg",
+    "name": "Friedrich-Bayer-Realschule Städt. Realschule",
+    "address": "Jung-Stilling-Weg 45, 42349 Wuppertal",
+    "type": "realschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "rea_wuppertal_max_planck_str",
+    "name": "Max-Planck-Realschule",
+    "address": "Max-Planck-Str. 10, 42277 Wuppertal",
+    "type": "realschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "rea_wuppertal_boltenheide",
+    "name": "Private Realschule Boltenheide Staatl. genehm. Ersatzschule der Sek.I",
+    "address": "Boltenheide 4, 42329 Wuppertal",
+    "type": "realschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "rea_wuppertal_hoehenstr",
+    "name": "Erzbischöfliche Realschule Dönberg Priv. staatlich genehmigte Ersatzschule",
+    "address": "Höhenstr. 56, 42111 Wuppertal",
+    "type": "realschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "sek_solingen_guntherstr",
+    "name": "Städtische Sekundarschule Central",
+    "address": "Guntherstr. 27, 42653 Solingen",
+    "type": "sekundarschule",
+    "city": "Solingen"
+   },
+   {
+    "id": "sek_wuelfrath_bergstr",
+    "name": "Schule am Berg Städtische Sekundarschule",
+    "address": "Bergstr. 20, 42489 Wülfrath",
+    "type": "sekundarschule",
+    "city": "Wülfrath"
+   },
+   {
+    "id": "sek_remscheid_ewaldstr",
+    "name": "Nelson-Mandela-Schule Städt. Sekundarschule Remscheid",
+    "address": "Ewaldstr. 8, 42859 Remscheid",
+    "type": "sekundarschule",
+    "city": "Remscheid"
+   },
+   {
+    "id": "foe_solingen_wahnenkamp",
+    "name": "Förderschule am Wahnenkamp",
+    "address": "Wahnenkamp 1, 42697 Solingen",
+    "type": "foerderschule",
+    "city": "Solingen"
+   },
+   {
+    "id": "foe_remscheid_gewerbeschulstr",
+    "name": "Städt. FÖ-Schule mit den FSP LE in der Primar- und Sek. I sowie im kooperativen",
+    "address": "Gewerbeschulstr. 1, 42853 Remscheid",
+    "type": "foerderschule",
+    "city": "Remscheid"
+   },
+   {
+    "id": "foe_remscheid_hackenberger_str",
+    "name": "Hilda-Heinemann-Schule",
+    "address": "Hackenberger Str. 117-121, 42897 Remscheid",
+    "type": "foerderschule",
+    "city": "Remscheid"
+   },
+   {
+    "id": "foe_solingen_fritz_reuter_str",
+    "name": "Erika-Rothstein-Schule",
+    "address": "Fritz-Reuter-Str. 40, 42657 Solingen",
+    "type": "foerderschule",
+    "city": "Solingen"
+   },
+   {
+    "id": "foe_solingen_liebigstr",
+    "name": "Wilhelm-Hartschen-Schule",
+    "address": "Liebigstr. 21a, 42719 Solingen",
+    "type": "foerderschule",
+    "city": "Solingen"
+   },
+   {
+    "id": "foe_wuppertal_melanchthonstr",
+    "name": "LVR-Förderschule Wuppertal Förderschwerpunkt Körperliche und moto-",
+    "address": "Melanchthonstr. 11, 42281 Wuppertal",
+    "type": "foerderschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "foe_wuppertal_schusterstr",
+    "name": "Peter-Härtling-Schule",
+    "address": "Schusterstr. 24, 42105 Wuppertal",
+    "type": "foerderschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "foe_wuelfrath_erfurthweg",
+    "name": "Ev. Förderschule der Bergischen Diakonie Aprath, Förderschwerpunkt",
+    "address": "Erfurthweg 5, 42489 Wülfrath",
+    "type": "foerderschule",
+    "city": "Wülfrath"
+   },
+   {
+    "id": "foe_solingen_halfeshof",
+    "name": "LVR-Förderschule Halfeshof Förderschwerpunkt Emotionale und soziale",
+    "address": "Halfeshof 50, 42651 Solingen",
+    "type": "foerderschule",
+    "city": "Solingen"
+   },
+   {
+    "id": "foe_wuppertal_kreuzstr",
+    "name": "Johannes-Rau-Schule",
+    "address": "Kreuzstr. 85, 42277 Wuppertal",
+    "type": "foerderschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "foe_wuppertal_melanchthonstr_2",
+    "name": "Schule am Nordpark Städtische Förderschule",
+    "address": "Melanchthonstr. 25, 42281 Wuppertal",
+    "type": "foerderschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "foe_wuppertal_tescher_str",
+    "name": "Schule an der Tesche Städtische Förderschule",
+    "address": "Tescher Str. 10, 42327 Wuppertal",
+    "type": "foerderschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "foe_solingen_fuerkerfeldstr",
+    "name": "Carl-Ruß-Schule",
+    "address": "Fürkerfeldstr. 23, 42697 Solingen",
+    "type": "foerderschule",
+    "city": "Solingen"
+   },
+   {
+    "id": "foe_remscheid_gewerbeschulstr_2",
+    "name": "Heinrich-Neumann-Schule",
+    "address": "Gewerbeschulstr. 1, 42853 Remscheid",
+    "type": "foerderschule",
+    "city": "Remscheid"
+   },
+   {
+    "id": "foe_wuppertal_brucher_str",
+    "name": "Ulle-Hees-Schule",
+    "address": "Brucher Str. 10, 42329 Wuppertal",
+    "type": "foerderschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "foe_wuppertal_lentzestr",
+    "name": "Helene-Stöcker-Schule",
+    "address": "Lentzestr. 14, 42277 Wuppertal",
+    "type": "foerderschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_wuppertal_rathenaustr",
+    "name": "GS – Rathenaustr.",
+    "address": "Rathenaustr. 22, 42277 Wuppertal",
+    "type": "grundschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_wuppertal_rudolf_steiner_str",
+    "name": "GS – Gewerbeschulstraße der Stadt Wuppertal",
+    "address": "Rudolf-Steiner-Str. 10, 42285 Wuppertal",
+    "type": "grundschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_solingen_schuetzenstr",
+    "name": "Städtische Grundschule Augustastraße",
+    "address": "Schützenstr. 206, 42659 Solingen",
+    "type": "grundschule",
+    "city": "Solingen"
+   },
+   {
+    "id": "gru_remscheid_burger_str",
+    "name": "GS – Mannesmann",
+    "address": "Burger Str. 115, 42859 Remscheid",
+    "type": "grundschule",
+    "city": "Remscheid"
+   },
+   {
+    "id": "gru_remscheid_oststr",
+    "name": "GS – Oststr.",
+    "address": "Oststr. 6, 42859 Remscheid",
+    "type": "grundschule",
+    "city": "Remscheid"
+   },
+   {
+    "id": "gru_remscheid_moltkestr",
+    "name": "GS – Hasten",
+    "address": "Moltkestr. 22, 42855 Remscheid",
+    "type": "grundschule",
+    "city": "Remscheid"
+   },
+   {
+    "id": "gru_remscheid_kremenholler_str",
+    "name": "GS – Kremenholler Str.",
+    "address": "Kremenholler Str. 66, 42857 Remscheid",
+    "type": "grundschule",
+    "city": "Remscheid"
+   },
+   {
+    "id": "gru_remscheid_palmstr",
+    "name": "Daniel-Schürmann-Schule",
+    "address": "Palmstr. 6, 42853 Remscheid",
+    "type": "grundschule",
+    "city": "Remscheid"
+   },
+   {
+    "id": "gru_remscheid_hindenburgstr",
+    "name": "GS – Hindenburgstr.",
+    "address": "Hindenburgstr. 94, 42853 Remscheid",
+    "type": "grundschule",
+    "city": "Remscheid"
+   },
+   {
+    "id": "gru_remscheid_hardtstr",
+    "name": "Freiherr-vom-Stein-Schule",
+    "address": "Hardtstr. 2, 42897 Remscheid",
+    "type": "grundschule",
+    "city": "Remscheid"
+   },
+   {
+    "id": "gru_remscheid_haegener_str",
+    "name": "GS – Steinberg",
+    "address": "Hägener Str. 2, 42855 Remscheid",
+    "type": "grundschule",
+    "city": "Remscheid"
+   },
+   {
+    "id": "gru_remscheid_wolfstr",
+    "name": "GS – Siepen",
+    "address": "Wolfstr. 13, 42855 Remscheid",
+    "type": "grundschule",
+    "city": "Remscheid"
+   },
+   {
+    "id": "gru_remscheid_sedanstr",
+    "name": "Walther-Hartmann-Schule",
+    "address": "Sedanstr. 98, 42855 Remscheid",
+    "type": "grundschule",
+    "city": "Remscheid"
+   },
+   {
+    "id": "gru_remscheid_lockfinker_str",
+    "name": "GS – Eisernstein",
+    "address": "Lockfinker Str. 23, 42899 Remscheid",
+    "type": "grundschule",
+    "city": "Remscheid"
+   },
+   {
+    "id": "gru_remscheid_schneppendahler_weg",
+    "name": "GS – Hasenberg",
+    "address": "Schneppendahler Weg 41-43, 42897 Remscheid",
+    "type": "grundschule",
+    "city": "Remscheid"
+   },
+   {
+    "id": "gru_remscheid_schimmelbuschweg",
+    "name": "GS – Reinshagen",
+    "address": "Schimmelbuschweg 3-5, 42857 Remscheid",
+    "type": "grundschule",
+    "city": "Remscheid"
+   },
+   {
+    "id": "gru_remscheid_pestalozzistr",
+    "name": "GS – Pestalozzistr.",
+    "address": "Pestalozzistr. 17, 42899 Remscheid",
+    "type": "grundschule",
+    "city": "Remscheid"
+   },
+   {
+    "id": "gru_remscheid_leverkuser_str",
+    "name": "GS – Franziskus",
+    "address": "Leverkuser Str. 19, 42897 Remscheid",
+    "type": "grundschule",
+    "city": "Remscheid"
+   },
+   {
+    "id": "gru_remscheid_menninghauser_str",
+    "name": "GS – Menninghausen",
+    "address": "Menninghauser Str. 8, 42859 Remscheid",
+    "type": "grundschule",
+    "city": "Remscheid"
+   },
+   {
+    "id": "gru_solingen_heidstr",
+    "name": "GS – Heidstr.",
+    "address": "Heidstr. 11, 42719 Solingen",
+    "type": "grundschule",
+    "city": "Solingen"
+   },
+   {
+    "id": "gru_solingen_bausmuehlenstr",
+    "name": "GS – Westersburg",
+    "address": "Bausmühlenstr. 14, 42719 Solingen",
+    "type": "grundschule",
+    "city": "Solingen"
+   },
+   {
+    "id": "gru_solingen_gottlieb_heinrich_str",
+    "name": "GS – Gottlieb-Heinrich-Str.",
+    "address": "Gottlieb-Heinrich-Str. 33, 42719 Solingen",
+    "type": "grundschule",
+    "city": "Solingen"
+   },
+   {
+    "id": "gru_solingen_katternberger_str",
+    "name": "GS – Stübchen",
+    "address": "Katternberger Str. 204, 42655 Solingen",
+    "type": "grundschule",
+    "city": "Solingen"
+   },
+   {
+    "id": "gru_solingen_sternstr",
+    "name": "GS – Weyer",
+    "address": "Sternstr. 25, 42719 Solingen",
+    "type": "grundschule",
+    "city": "Solingen"
+   },
+   {
+    "id": "gru_solingen_schulstr",
+    "name": "GS – Gerberstraße",
+    "address": "Schulstr. 2, 42653 Solingen",
+    "type": "grundschule",
+    "city": "Solingen"
+   },
+   {
+    "id": "gru_solingen_erholungstr",
+    "name": "GS – Erholungstraße",
+    "address": "Erholungstr. 14, 42699 Solingen",
+    "type": "grundschule",
+    "city": "Solingen"
+   },
+   {
+    "id": "gru_solingen_rennpatt",
+    "name": "GS – Bogenstraße",
+    "address": "Rennpatt 35, 42697 Solingen",
+    "type": "grundschule",
+    "city": "Solingen"
+   },
+   {
+    "id": "gru_solingen_elbestr",
+    "name": "GS – Südstraße",
+    "address": "Elbestr. 7, 42697 Solingen",
+    "type": "grundschule",
+    "city": "Solingen"
+   },
+   {
+    "id": "gru_solingen_bismarckstr",
+    "name": "GS – Böckerhof",
+    "address": "Bismarckstr. 131, 42659 Solingen",
+    "type": "grundschule",
+    "city": "Solingen"
+   },
+   {
+    "id": "gru_solingen_aufderhoeher_str",
+    "name": "GS – Aufderhöhe",
+    "address": "Aufderhöher Str. 99, 42699 Solingen",
+    "type": "grundschule",
+    "city": "Solingen"
+   },
+   {
+    "id": "gru_solingen_yorckstr",
+    "name": "GS – Yorckstraße",
+    "address": "Yorckstr. 12, 42653 Solingen",
+    "type": "grundschule",
+    "city": "Solingen"
+   },
+   {
+    "id": "gru_solingen_wiener_str",
+    "name": "GS – Wiener Straße",
+    "address": "Wiener Str. 15, 42657 Solingen",
+    "type": "grundschule",
+    "city": "Solingen"
+   },
+   {
+    "id": "gru_solingen_boersenstr",
+    "name": "GS – Börsenstr.",
+    "address": "Börsenstr. 158, 42657 Solingen",
+    "type": "grundschule",
+    "city": "Solingen"
+   },
+   {
+    "id": "gru_solingen_schuetzenstr_2",
+    "name": "GS – Schützenstr.",
+    "address": "Schützenstr. 205, 42659 Solingen",
+    "type": "grundschule",
+    "city": "Solingen"
+   },
+   {
+    "id": "gru_solingen_scheidter_str",
+    "name": "GS – Scheidter Straße",
+    "address": "Scheidter Str. 32, 42653 Solingen",
+    "type": "grundschule",
+    "city": "Solingen"
+   },
+   {
+    "id": "gru_solingen_meigener_str",
+    "name": "GS – Meigen",
+    "address": "Meigener Str. 130, 42651 Solingen",
+    "type": "grundschule",
+    "city": "Solingen"
+   },
+   {
+    "id": "gru_solingen_wittkuller_str",
+    "name": "GS – Kreuzweg",
+    "address": "Wittkuller Str. 23, 42719 Solingen",
+    "type": "grundschule",
+    "city": "Solingen"
+   },
+   {
+    "id": "gru_solingen_klauberger_str",
+    "name": "GS – Klauberg",
+    "address": "Klauberger Str. 35, 42651 Solingen",
+    "type": "grundschule",
+    "city": "Solingen"
+   },
+   {
+    "id": "gru_solingen_katternberger_str_2",
+    "name": "GS – Katternberger Straße",
+    "address": "Katternberger Str. 39, 42655 Solingen",
+    "type": "grundschule",
+    "city": "Solingen"
+   },
+   {
+    "id": "gru_wuppertal_windthorststr",
+    "name": "GS – Windthorststr.",
+    "address": "Windthorststr. 7, 42389 Wuppertal",
+    "type": "grundschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_wuppertal_wichlinghauser_str",
+    "name": "GS – Wichlinghauser Str.",
+    "address": "Wichlinghauser Str. 29, 42277 Wuppertal",
+    "type": "grundschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_wuppertal_reichsgrafenstr",
+    "name": "Angelo-Roncalli-Schule",
+    "address": "Reichsgrafenstr. 26, 42119 Wuppertal",
+    "type": "grundschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_wuppertal_leipziger_str",
+    "name": "Sankt-Michael-Schule",
+    "address": "Leipziger Str. 1, 42109 Wuppertal",
+    "type": "grundschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_wuppertal_am_engelnberg",
+    "name": "GS – Am Engelnberg",
+    "address": "Am Engelnberg 16, 42107 Wuppertal",
+    "type": "grundschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_wuppertal_hombuechel",
+    "name": "GS – Hombüchel",
+    "address": "Hombüchel 80, 42105 Wuppertal",
+    "type": "grundschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_wuppertal_schluessel",
+    "name": "Cornelius-Schule",
+    "address": "Schlüssel 2, 42329 Wuppertal",
+    "type": "grundschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_wuppertal_zur_schafbruecke",
+    "name": "Sankt-Antonius-Schule",
+    "address": "Zur Schafbrücke 30, 42283 Wuppertal",
+    "type": "grundschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_wuppertal_alarichstr",
+    "name": "GS – Alarichstr.",
+    "address": "Alarichstr. 44, 42281 Wuppertal",
+    "type": "grundschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_wuppertal_dieckerhoffstr",
+    "name": "GS – Dieckerhoffstr.",
+    "address": "Dieckerhoffstr. 20, 42389 Wuppertal",
+    "type": "grundschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_wuppertal_nathrather_str",
+    "name": "GS – Nathrather Str.",
+    "address": "Nathrather Str. 156, 42327 Wuppertal",
+    "type": "grundschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_wuppertal_sillerstr",
+    "name": "GS – Sillerstr.",
+    "address": "Sillerstr. 13-15, 42327 Wuppertal",
+    "type": "grundschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_wuppertal_opphofer_str",
+    "name": "GS – Opphofer Str.",
+    "address": "Opphofer Str. 47, 42107 Wuppertal",
+    "type": "grundschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_wuppertal_nuetzenberger_str",
+    "name": "Sophienschule",
+    "address": "Nützenberger Str. 288, 42115 Wuppertal",
+    "type": "grundschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_wuppertal_liegnitzer_str",
+    "name": "GS – Liegnitzer Str.",
+    "address": "Liegnitzer Str. 62-64, 42277 Wuppertal",
+    "type": "grundschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_wuppertal_ferdinand_lassalle_str",
+    "name": "GS – Ferdinand-Lassalle-Str.",
+    "address": "Ferdinand-Lassalle-Str. 28-30, 42369 Wuppertal",
+    "type": "grundschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_wuppertal_gebhardtstr",
+    "name": "GS – Gebhardtstr.",
+    "address": "Gebhardtstr. 16, 42329 Wuppertal",
+    "type": "grundschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_wuppertal_friedhofstr",
+    "name": "GS – Friedhofstr.",
+    "address": "Friedhofstr. 11, 42277 Wuppertal",
+    "type": "grundschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_wuppertal_engelbert_wuester_weg",
+    "name": "GS – Engelbert-Wüster-Weg",
+    "address": "Engelbert-Wüster-Weg 29, 42369 Wuppertal",
+    "type": "grundschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_wuppertal_eichenstr",
+    "name": "GS – Eichenstr.",
+    "address": "Eichenstr. 5, 42283 Wuppertal",
+    "type": "grundschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_wuppertal_echoer_str",
+    "name": "GS – Echoer Str.",
+    "address": "Echoer Str. 46, 42369 Wuppertal",
+    "type": "grundschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_wuppertal_hammesberger_weg",
+    "name": "GS – Hammesberger Weg",
+    "address": "Hammesberger Weg 26, 42289 Wuppertal",
+    "type": "grundschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_wuppertal_nocken",
+    "name": "GS – Nocken",
+    "address": "Nocken 6, 42329 Wuppertal",
+    "type": "grundschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_wuppertal_wittener_str",
+    "name": "GS – Wittener Str.",
+    "address": "Wittener Str. 144, 42279 Wuppertal",
+    "type": "grundschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_wuppertal_thorner_str",
+    "name": "GS – Thorner Str.",
+    "address": "Thorner Str. 15, 42283 Wuppertal",
+    "type": "grundschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_wuppertal_schuetzenstr",
+    "name": "GS – Schützenstraße",
+    "address": "Schützenstr. 101, 42281 Wuppertal",
+    "type": "grundschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_wuppertal_mercklinghausstr",
+    "name": "GS – Mercklinghausstr.",
+    "address": "Mercklinghausstr. 11, 42389 Wuppertal",
+    "type": "grundschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_wuppertal_berg_mark_str",
+    "name": "GS – Berg-Mark-Str.",
+    "address": "Berg-Mark-Str. 5, 42289 Wuppertal",
+    "type": "grundschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_wuppertal_am_mirker_bach",
+    "name": "GS – Am Mirker Bach",
+    "address": "Am Mirker Bach 1, 42107 Wuppertal",
+    "type": "grundschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_wuppertal_rudolfstr",
+    "name": "GS – Rudolfstraße",
+    "address": "Rudolfstr. 120, 42285 Wuppertal",
+    "type": "grundschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_wuppertal_rottsieper_hoehe",
+    "name": "GS – Rottsieper Höhe",
+    "address": "Rottsieper Höhe 14-16, 42349 Wuppertal",
+    "type": "grundschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_wuppertal_reichsgrafenstr_2",
+    "name": "GS – Reichsgrafenstr.",
+    "address": "Reichsgrafenstr. 34-38, 42119 Wuppertal",
+    "type": "grundschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_wuppertal_nuetzenberger_str_2",
+    "name": "GS – Am Nützenberg Offene Ganztagsschule",
+    "address": "Nützenberger Str. 242, 42115 Wuppertal",
+    "type": "grundschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_wuppertal_marper_schulweg",
+    "name": "GS – Marper Schulweg",
+    "address": "Marper Schulweg 6, 42287 Wuppertal",
+    "type": "grundschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_wuppertal_markomannenstr",
+    "name": "GS – Markomannenstr.",
+    "address": "Markomannenstr. 39, 42105 Wuppertal",
+    "type": "grundschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_wuppertal_marienstr",
+    "name": "GS – Marienstr.",
+    "address": "Marienstr. 64, 42105 Wuppertal",
+    "type": "grundschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_wuppertal_kruppstr",
+    "name": "GS – Kruppstr.",
+    "address": "Kruppstr. 139, 42113 Wuppertal",
+    "type": "grundschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_wuppertal_koenigshoeher_weg",
+    "name": "GS – Königshöher Weg",
+    "address": "Königshöher Weg 7, 42117 Wuppertal",
+    "type": "grundschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_wuppertal_am_timpen",
+    "name": "Fritz-Harkort-Schule",
+    "address": "Am Timpen 47, 42389 Wuppertal",
+    "type": "grundschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_wuppertal_meyerstr",
+    "name": "GS – Meyerstr.",
+    "address": "Meyerstr. 30-34, 42289 Wuppertal",
+    "type": "grundschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_wuppertal_hesselnberg",
+    "name": "GS – Hesselnberg",
+    "address": "Hesselnberg 42, 42285 Wuppertal",
+    "type": "grundschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_wuppertal_germanenstr",
+    "name": "GS – Germanenstr.",
+    "address": "Germanenstr. 36-38, 42277 Wuppertal",
+    "type": "grundschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_wuppertal_peterstr",
+    "name": "GS – Peterstr.",
+    "address": "Peterstr. 26-28, 42287 Wuppertal",
+    "type": "grundschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_wuppertal_cronenfelder_str",
+    "name": "Hermann-Herberts-Schule",
+    "address": "Cronenfelder Str. 26, 42349 Wuppertal",
+    "type": "grundschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_wuppertal_haselrain",
+    "name": "GS – Haselrain",
+    "address": "Haselrain 38, 42279 Wuppertal",
+    "type": "grundschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_wuppertal_donarstr",
+    "name": "GS – Donarstr.",
+    "address": "Donarstr. 2, 42117 Wuppertal",
+    "type": "grundschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_wuppertal_distelbeck",
+    "name": "GS – Distelbeck",
+    "address": "Distelbeck 9, 42119 Wuppertal",
+    "type": "grundschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_wuppertal_kurt_schumacher_str",
+    "name": "GS – Uellendahl",
+    "address": "Kurt-Schumacher-Str. 130, 42111 Wuppertal",
+    "type": "grundschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_wuppertal_am_hofe",
+    "name": "GS – Hütterbusch",
+    "address": "Am Hofe 1, 42349 Wuppertal",
+    "type": "grundschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_wuppertal_hainstr",
+    "name": "GS – Hainstr.",
+    "address": "Hainstr. 192, 42109 Wuppertal",
+    "type": "grundschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_haan_thienhausener_str",
+    "name": "Don-Bosco-Schule",
+    "address": "Thienhausener Str. 24, 42781 Haan",
+    "type": "grundschule",
+    "city": "Haan"
+   },
+   {
+    "id": "gru_haan_dieker_str",
+    "name": "GS – Mittelhaan",
+    "address": "Dieker Str. 69, 42781 Haan",
+    "type": "grundschule",
+    "city": "Haan"
+   },
+   {
+    "id": "gru_haan_steinkulle",
+    "name": "GS – Unterhaan",
+    "address": "Steinkulle 24, 42781 Haan",
+    "type": "grundschule",
+    "city": "Haan"
+   },
+   {
+    "id": "gru_wuppertal_am_doenberg",
+    "name": "GS – Am Dönberg",
+    "address": "Am Dönberg 46, 42111 Wuppertal",
+    "type": "grundschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_wuppertal_radenberg",
+    "name": "GS – Radenberg",
+    "address": "Radenberg 12, 42327 Wuppertal",
+    "type": "grundschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_wuelfrath_parkstr",
+    "name": "GS – Parkstraße",
+    "address": "Parkstr. 14, 42489 Wülfrath",
+    "type": "grundschule",
+    "city": "Wülfrath"
+   },
+   {
+    "id": "gru_wuelfrath_tiegenhoefer_str",
+    "name": "GS – Ellenbeek",
+    "address": "Tiegenhöfer Str. 16, 42489 Wülfrath",
+    "type": "grundschule",
+    "city": "Wülfrath"
+   },
+   {
+    "id": "gru_wuelfrath_lindenstr",
+    "name": "GS – Lindenstraße",
+    "address": "Lindenstr. 26, 42489 Wülfrath",
+    "type": "grundschule",
+    "city": "Wülfrath"
+   },
+   {
+    "id": "gru_haan_praelat_marschall_str",
+    "name": "GS – Gruiten",
+    "address": "Prälat-Marschall-Str. 65, 42781 Haan",
+    "type": "grundschule",
+    "city": "Haan"
+   },
+   {
+    "id": "gru_haan_robert_koch_str",
+    "name": "GS – Bollenberg",
+    "address": "Robert-Koch-Str. 27, 42781 Haan",
+    "type": "grundschule",
+    "city": "Haan"
+   },
+   {
+    "id": "gru_remscheid_albert_einstein_str",
+    "name": "GS – Hackenberg",
+    "address": "Albert-Einstein-Str. 31, 42897 Remscheid",
+    "type": "grundschule",
+    "city": "Remscheid"
+   },
+   {
+    "id": "gru_solingen_uhlandstr",
+    "name": "GS – Uhlandstraße",
+    "address": "Uhlandstr. 52, 42699 Solingen",
+    "type": "grundschule",
+    "city": "Solingen"
+   },
+   {
+    "id": "gru_wuppertal_haarhausen",
+    "name": "GS – Haarhausen",
+    "address": "Haarhausen 22, 42279 Wuppertal",
+    "type": "grundschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_wuppertal_kuellenhahner_str",
+    "name": "Grundschule Küllenhahn",
+    "address": "Küllenhahner Str. 145, 42349 Wuppertal",
+    "type": "grundschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_wuppertal_birkenhoehe",
+    "name": "GS – Birkenhöhe",
+    "address": "Birkenhöhe 60-62, 42113 Wuppertal",
+    "type": "grundschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_solingen_kreuzweger_str",
+    "name": "Andrews Advent-Grundschule",
+    "address": "Kreuzweger Str. 3, 42655 Solingen",
+    "type": "grundschule",
+    "city": "Solingen"
+   },
+   {
+    "id": "gru_wuppertal_zu_den_erbhoefen",
+    "name": "Freie Schule Bergisch-Land",
+    "address": "Zu den Erbhöfen 39 A, 42287 Wuppertal",
+    "type": "grundschule",
+    "city": "Wuppertal"
+   },
+   {
+    "id": "gru_wuelfrath_duesseler_str",
+    "name": "Freie Aktive Grundschule Wülfrath",
+    "address": "Düsseler Str. 23, 42489 Wülfrath",
+    "type": "grundschule",
+    "city": "Wülfrath"
+   }
+  ]
+ }
+}
