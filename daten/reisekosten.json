@@ -1,17 +1,17 @@
 {
  "format": "rk-daten",
- "version": 1,
- "stand": "2026-10-30",
- "hinweis": "Datenpaket fuer die Reisekostenverwaltung ZfsL Solingen. Nur Daten, kein Programmcode. Beim Aendern IMMER \"version\" hochzaehlen - sonst uebernimmt das Programm nichts.",
+ "version": 15,
+ "stand": "2026-11-01",
+ "hinweis": "Nur Daten, kein Programmcode. Beim Aendern IMMER \"version\" hochzaehlen.",
  "programm": {
-  "version": "2.5",
-  "datum": "2026-10-30",
-  "hinweis": "Aktuelle Programmversion. Nur hochsetzen, wenn eine neue reisekosten.html im Repo liegt - sonst meldet das Programm eine Version, die es nirgends gibt."
+  "version": "4.2",
+  "datum": "2026-11-01",
+  "hinweis": "Muss zur hochgeladenen reisekosten.html passen (dort var APP_VERSION)."
  },
  "ferien": {
   "gueltigVon": "2024-07-08",
   "gueltigBis": "2030-04-27",
-  "quelle": "BASS 12-65 Nr. 1 - Ordnung der Ferien fuer die Schuljahre 2024/2025 bis 2029/2030",
+  "quelle": "BASS 12-65 Nr. 1",
   "liste": [
    {
     "v": "2024-07-08",
@@ -157,7 +157,7 @@
  },
  "feiertage": {
   "gueltigBis": "2045-12-26",
-  "quelle": "gesetzliche Feiertage Nordrhein-Westfalen",
+  "quelle": "Feiertage NRW",
   "liste": {
    "2020-01-01": "Neujahr",
    "2020-04-10": "Karfreitag",
@@ -449,7 +449,7 @@
  },
  "schulen": {
   "stand": "2026-10-30",
-  "quelle": "Ausbildungsschulen im Einzugsbereich des ZfsL Solingen",
+  "quelle": "Ausbildungsschulen ZfsL Solingen",
   "liste": [
    {
     "id": "zfsl_solingen",
