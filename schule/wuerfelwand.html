@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Würfelwand</title>
+<style>
+  :root {
+    --bg: #f6f5f1; --ink: #1b1b1b; --muted: #6b6b6b;
+    --blau: #4f86c6; --blau-d: #2f5f97;
+    --orange: #e8730c; --orange-d: #a8500a;
+    --gruen: #2e9d4f; --rot: #d33b2f;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  body { display: flex; flex-direction: column; }
+  header { position: relative; z-index: 5; background: var(--bg); display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; padding: 14px 20px; }
+  h1 { font-size: 22px; margin: 0 12px 0 0; }
+  .wahl { display: flex; align-items: center; gap: 8px; font-size: 20px; font-weight: 600; }
+  .wahl .chip { width: 16px; height: 16px; border-radius: 3px; display: inline-block; }
+  .stepper { display: flex; align-items: center; border: 2px solid var(--ink); border-radius: 10px; overflow: hidden; background: #fff; }
+  .stepper button { width: 44px; height: 44px; border: 0; background: #fff; font-size: 24px; cursor: pointer; color: var(--ink); }
+  .stepper button:active { background: #e8e8e8; }
+  .stepper input { width: 56px; height: 44px; border: 0; border-left: 2px solid var(--ink); border-right: 2px solid var(--ink);
+    text-align: center; font-size: 22px; font-weight: 700; -moz-appearance: textfield; background: #fff; color: var(--ink); }
+  .stepper input::-webkit-outer-spin-button, .stepper input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  .btn { height: 48px; padding: 0 16px; border-radius: 10px; border: 2px solid var(--ink); font-size: 20px; font-weight: 700; cursor: pointer; }
+  .btn.los { background: var(--ink); color: #fff; }
+  .btn.neu { background: #fff; color: var(--ink); }
+  .btn:disabled { opacity: .4; cursor: default; }
+  #buehne { position: relative; flex: 1; margin: 0 20px 20px; min-height: 300px; }
+  .wuerfel { position: absolute; border-radius: 2px; will-change: transform; }
+  .wuerfel.b { background: linear-gradient(145deg, #7fb0e6, var(--blau) 55%, var(--blau-d)); box-shadow: inset 0 0 0 1px var(--blau-d); }
+  .wuerfel.o { background: linear-gradient(145deg, #f7a65b, var(--orange) 55%, var(--orange-d)); box-shadow: inset 0 0 0 1px var(--orange-d); }
+  .fehlt { position: absolute; border: 2px dashed var(--rot); border-radius: 2px; opacity: 0; transition: opacity .5s; }
+  .rahmen { position: absolute; border: 2px dashed #b9b6ad; border-radius: 3px; }
+  .zeichen { position: absolute; font-weight: 800; color: var(--ink); text-align: center; line-height: 1; transform: translate(-50%, -50%); }
+  .label { position: absolute; transform: translateX(-50%); font-weight: 700; white-space: nowrap; text-align: center; transition: opacity .4s; }
+  .label small { display: block; font-weight: 500; color: var(--muted); margin-top: 4px; }
+  .ergebnis { position: absolute; font-weight: 900; line-height: 1; transform: translate(-50%, -50%) scale(0); transition: transform .45s cubic-bezier(.3,1.6,.5,1); }
+  .ergebnis.zeigen { transform: translate(-50%, -50%) scale(1); }
+  .ok { color: var(--gruen); } .nok { color: var(--rot); }
+</style>
+</head>
+<body>
+<header>
+  <h1>Würfelwand</h1>
+  <div class="wahl"><span class="chip" style="background:var(--blau)"></span>a =
+    <div class="stepper"><button data-f="a" data-d="-1">−</button><input id="a" type="number" min="1" max="100" value="3"><button data-f="a" data-d="1">+</button></div>
+  </div>
+  <div class="wahl"><span class="chip" style="background:var(--orange)"></span>b =
+    <div class="stepper"><button data-f="b" data-d="-1">−</button><input id="b" type="number" min="1" max="100" value="4"><button data-f="b" data-d="1">+</button></div>
+  </div>
+  <button class="btn los" id="los">Quadrate aufbauen</button>
+  <button class="btn los" id="sort">Umsortieren</button>
+  <button class="btn neu" id="neu">Zurück</button>
+</header>
+<div id="buehne"></div>
+
+<script>
+const buehne = document.getElementById('buehne');
+const inA = document.getElementById('a'), inB = document.getElementById('b');
+const btnLos = document.getElementById('los'), btnNeu = document.getElementById('neu'), btnSort = document.getElementById('sort');
+let laeuft = false, timer = [];
+
+function wert(inp) { let v = parseInt(inp.value, 10); if (isNaN(v)) v = 1; v = Math.max(1, Math.min(100, v)); inp.value = v; return v; }
+document.querySelectorAll('.stepper button').forEach(bt => bt.addEventListener('click', () => {
+  if (laeuft) return;
+  const inp = document.getElementById(bt.dataset.f);
+  inp.value = wert(inp) + parseInt(bt.dataset.d, 10); wert(inp); aufbauen();
+}));
+[inA, inB].forEach(i => i.addEventListener('change', () => { if (!laeuft) aufbauen(); }));
+btnNeu.addEventListener('click', () => { laeuft = false; aufbauen(); });
+btnLos.addEventListener('click', starten);
+btnSort.addEventListener('click', umsortieren);
+window.addEventListener('resize', () => { if (!laeuft) aufbauen(); });
+
+let L = null; // aktuelles Layout
+
+function layout() {
+  const a = wert(inA), b = wert(inB);
+  const N = a * a + b * b;
+  const T = Math.ceil(Math.sqrt(N) - 1e-9);
+  const W = buehne.clientWidth, H = buehne.clientHeight;
+  const maxH = Math.max(a, b, T);
+  let s = 48, gapPx = 0, symPx = 0;
+  for (let k = 0; k < 3; k++) {
+    gapPx = Math.max(56, 2.4 * s); symPx = Math.max(130, 4 * s);
+    s = Math.min(48, (W - 2 * gapPx - symPx) / (a + b + T), (H - 100) / maxH);
+  }
+  s = Math.max(1, s);
+  gapPx = Math.max(56, 2.4 * s); symPx = Math.max(130, 4 * s);
+  const totalW = (a + b + T) * s + 2 * gapPx + symPx;
+  const x0 = Math.max(0, (W - totalW) / 2);
+  const hoehe = maxH * s;
+  const boden = Math.max(hoehe + 8, (H - (hoehe + 90)) / 2 + hoehe);
+  const xA = x0, xB = xA + a * s + gapPx, xT = xB + b * s + gapPx;
+  return { a, b, N, T, s, xA, xB, xT, boden, gapPx, W, H };
+}
+
+// Zelle (spalte x, reihe von unten y) -> Pixel
+const px = (x0, s, x, y, boden) => ({ left: x0 + x * s, top: boden - (y + 1) * s });
+
+// Reihenfolge im Zielquadrat: wächst als Haken von unten links
+function hakenFolge(T) {
+  const f = [];
+  for (let m = 0; m < T; m++) {
+    for (let y = 0; y < m; y++) f.push([m, y]);
+    for (let x = m; x >= 0; x--) f.push([x, m]);
+  }
+  return f;
+}
+
+function el(cls, css, html) {
+  const d = document.createElement('div'); d.className = cls;
+  Object.assign(d.style, css); if (html !== undefined) d.innerHTML = html;
+  buehne.appendChild(d); return d;
+}
+
+let canvas = null, ctx = null, cubes = [], raf = null;
+
+function aufbauen() {
+  timer.forEach(clearTimeout); timer = [];
+  if (raf) cancelAnimationFrame(raf); raf = null;
+  buehne.innerHTML = '';
+  L = layout();
+  const { a, b, s, xA, xB, xT, boden, gapPx, W, H } = L;
+  const fs = Math.max(30, Math.min(56, s * 1.6));
+  el('rahmen', { left: xA + 'px', top: (boden - a * s) + 'px', width: a * s + 'px', height: a * s + 'px' });
+  el('rahmen', { left: xB + 'px', top: (boden - b * s) + 'px', width: b * s + 'px', height: b * s + 'px' });
+  el('zeichen', { left: (xA + a * s + gapPx / 2) + 'px', top: (boden - Math.min(a, b) * s / 2) + 'px', fontSize: fs + 'px' }, '+');
+  el('zeichen', { left: (xB + b * s + gapPx / 2) + 'px', top: (boden - Math.min(a, b) * s / 2) + 'px', fontSize: fs + 'px' }, '=');
+  const lf = Math.max(19, Math.min(26, s * 0.8)) + 'px';
+  L.labA = el('label', { left: (xA + a * s / 2) + 'px', top: (boden + 10) + 'px', fontSize: lf, opacity: 1 }, `${a}² = ${a * a}`);
+  L.labB = el('label', { left: (xB + b * s / 2) + 'px', top: (boden + 10) + 'px', fontSize: lf, opacity: 1 }, `${b}² = ${b * b}`);
+  L.lf = lf; L.fs = fs;
+  // Zeichenfläche für die Würfel
+  const dpr = window.devicePixelRatio || 1;
+  canvas = document.createElement('canvas');
+  canvas.width = W * dpr; canvas.height = H * dpr;
+  Object.assign(canvas.style, { position: 'absolute', left: 0, top: 0, width: W + 'px', height: H + 'px', pointerEvents: 'none' });
+  buehne.appendChild(canvas);
+  ctx = canvas.getContext('2d'); ctx.scale(dpr, dpr);
+  cubes = [];
+  btnLos.disabled = false; btnSort.disabled = true; laeuft = false;
+}
+
+const FARBE = { b: ['#4f86c6', '#2f5f97', '#7fb0e6'], o: ['#e8730c', '#a8500a', '#f7a65b'] };
+const ease = t => t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+const easeOut = t => 1 - Math.pow(1 - t, 3);
+
+function zeichnen(now) {
+  const { s } = L;
+  const pad = s < 6 ? 0 : Math.max(1, Math.round(s * 0.06));
+  const g = s - 2 * pad;
+  ctx.clearRect(0, 0, L.W, L.H);
+  let fertig = true;
+  for (const c of cubes) {
+    let x, y, alpha = 1;
+    if (c.phase === 'pop') {
+      const p = Math.min(1, Math.max(0, (now - c.t0) / 260));
+      if (p < 1) fertig = false;
+      if (p <= 0) continue;
+      alpha = p; x = c.sx; y = c.sy - (1 - easeOut(p)) * s * 1.5;
+    } else {
+      const q = Math.min(1, Math.max(0, (now - c.t0) / 750));
+      if (q < 1) fertig = false;
+      const e = ease(q);
+      x = c.sx + (c.tx - c.sx) * e;
+      y = c.sy + (c.ty - c.sy) * e - c.hub * 4 * e * (1 - e);
+    }
+    const f = FARBE[c.f];
+    ctx.globalAlpha = alpha;
+    ctx.fillStyle = f[0]; ctx.fillRect(x + pad, y + pad, g, g);
+    if (g >= 8) {
+      ctx.fillStyle = f[2]; ctx.fillRect(x + pad, y + pad, g, Math.max(1, g * 0.18));
+      ctx.strokeStyle = f[1]; ctx.lineWidth = 1; ctx.strokeRect(x + pad + .5, y + pad + .5, g - 1, g - 1);
+    }
+  }
+  ctx.globalAlpha = 1;
+  return fertig;
+}
+
+function laufen(fertigCb) {
+  const tick = now => {
+    if (zeichnen(now)) { raf = null; fertigCb(); } else raf = requestAnimationFrame(tick);
+  };
+  raf = requestAnimationFrame(tick);
+}
+
+function starten() {
+  if (laeuft) return;
+  aufbauen();
+  laeuft = true; btnLos.disabled = true; btnSort.disabled = true;
+  const { a, b, N, s, xA, xB, boden } = L;
+  const popSchritt = Math.min(25, 1200 / N);
+  const start = performance.now();
+  let i = 0;
+  const add = (f, x0, n) => {
+    for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) {
+      const p = px(x0, s, x, y, boden);
+      cubes.push({ f, sx: p.left, sy: p.top, phase: 'pop', t0: start + (i++) * popSchritt });
+    }
+  };
+  add('b', xA, a); add('o', xB, b);
+  laufen(() => { laeuft = false; btnLos.disabled = false; btnSort.disabled = false; L.bereit = true; });
+}
+
+function umsortieren() {
+  if (laeuft || !L.bereit) return;
+  L.bereit = false;
+  laeuft = true; btnLos.disabled = true; btnSort.disabled = true;
+  const { N, T, s, xT, boden } = L;
+  const folge = hakenFolge(T);
+  const flugSchritt = Math.min(110, 3800 / N);
+  const start = performance.now();
+  L.labA.style.opacity = .5; L.labB.style.opacity = .5;
+  cubes.forEach((c, i) => {
+    const z = px(xT, s, folge[i][0], folge[i][1], boden);
+    c.phase = 'fly'; c.tx = z.left; c.ty = z.top; c.t0 = start + i * flugSchritt;
+    c.hub = Math.min(s * 3 + Math.abs(z.left - c.sx) * 0.12, Math.max(0, (c.sy + z.top) / 2 - 4));
+  });
+  laufen(() => timer.push(setTimeout(ergebnis, 250)));
+}
+
+function ergebnis() {
+  const { N, T, s, xT, boden } = L;
+  const folge = hakenFolge(T);
+  const pad = s < 6 ? 0 : Math.max(1, Math.round(s * 0.06));
+  const quadrat = T * T === N;
+  const mitte = xT + T * s / 2;
+  const symGr = Math.max(60, Math.min(120, s * 3));
+  if (quadrat) {
+    el('label ok', { left: mitte + 'px', top: (boden + 10) + 'px', fontSize: L.lf }, `${N} = ${T}²`);
+  } else {
+    const k = T - 1;
+    // fehlende Plätze rot markieren
+    ctx.save();
+    ctx.strokeStyle = '#d33b2f'; ctx.fillStyle = 'rgba(211,59,47,.55)';
+    ctx.lineWidth = s >= 8 ? 2 : 1; if (s >= 8) ctx.setLineDash([4, 3]);
+    folge.slice(N, T * T).forEach(([x, y]) => {
+      const p = px(xT, s, x, y, boden);
+      if (s >= 8) ctx.strokeRect(p.left + pad + 1, p.top + pad + 1, s - 2 * pad - 2, s - 2 * pad - 2);
+      else ctx.fillRect(p.left, p.top, s, s);
+    });
+    if (s < 8) { ctx.strokeRect(xT, boden - T * s, T * s, T * s); }
+    ctx.restore();
+    el('label nok', { left: mitte + 'px', top: (boden + 10) + 'px', fontSize: L.lf },
+      `${N} ist keine Quadratzahl<small>${k}² = ${k * k} · ${T}² = ${T * T} – es fehlen ${T * T - N}</small>`);
+  }
+  const sym = el('ergebnis ' + (quadrat ? 'ok' : 'nok'),
+    { left: (xT + T * s + 20 + symGr * 0.5) + 'px', top: (boden - T * s / 2) + 'px', fontSize: symGr + 'px' },
+    quadrat ? '✓' : '✗');
+  requestAnimationFrame(() => requestAnimationFrame(() => sym.classList.add('zeigen')));
+  laeuft = false; btnLos.disabled = false; btnSort.disabled = true;
+}
+
+aufbauen();
+</script>
+</body>
+</html>
