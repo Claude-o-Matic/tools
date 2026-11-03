@@ -14,6 +14,8 @@ const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const hash = s => [...s].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7);
 let tools = null;
+// Feste Kacheln, die direkt in der Bereichsseite im #grid stehen (z. B. Links auf Tools außerhalb des Ordners)
+const PIN = [...$("grid").children];
 
 async function load() {
   const key = "tools-" + area, now = Date.now();
@@ -41,14 +43,15 @@ async function load() {
 function render() {
   const q = $("q").value.trim().toLowerCase();
   const list = (tools || []).filter(t => !q || (t.title + " " + t.desc).toLowerCase().includes(q));
-  $("grid").innerHTML = list.map(t => {
+  const pins = PIN.filter(a => !q || (a.textContent + " " + a.title).toLowerCase().includes(q));
+  $("grid").innerHTML = pins.map(a => a.outerHTML).join("") + list.map(t => {
     const h = (A.hue + (hash(t.title) % 70) - 35 + 360) % 360;
     const sym = t.icon || t.title.trim().charAt(0).toUpperCase();
     return `<a class="app" href="${esc(t.href)}" title="${esc(t.desc || t.title)}">
       <span class="ico" style="--h:${h}">${esc(sym)}</span>
       <span class="lbl">${esc(t.title)}</span></a>`;
   }).join("");
-  $("msg").textContent = !tools ? "" : list.length ? "" : q ? "Nichts gefunden." : "Hier liegt noch nichts.";
+  $("msg").textContent = !tools ? "" : list.length + pins.length ? "" : q ? "Nichts gefunden." : "Hier liegt noch nichts.";
 }
 
 if (!A) {
