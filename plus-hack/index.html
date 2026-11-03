@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Plus-Hack – Geschickt addieren</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=VT323&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#03100a; --panel:#08190f; --line:#174a2e; --ph:#6dffa6; --ph-dim:#3f9e68; --ph-faint:#245c3d;
+  --amber:#ffc24a; --cyan:#5ce1ff; --red:#ff6b6b; --text:#dcffe9; --ink:#02130a;
+  --mono:"JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --display:"VT323", "JetBrains Mono", ui-monospace, monospace;
+  color-scheme: dark;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px);background:var(--bg)}
+body{margin:0;min-height:100%;background:radial-gradient(ellipse at 50% 0%,#0b2a19 0%,var(--bg) 60%);color:var(--text);font-family:var(--mono);font-size:16px;line-height:1.45;-webkit-tap-highlight-color:transparent}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,.18) 0 1px,transparent 1px 3px);z-index:50}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+.screen{display:none;max-width:780px;margin:0 auto;padding:18px 16px 40px}
+.screen.on{display:block}
+[hidden]{display:none!important}
+
+/* Titel */
+.hero{padding:22px 0 8px}
+.logo{font-family:var(--display);font-size:clamp(64px,16vw,112px);line-height:.85;color:var(--ph);margin:0;text-shadow:0 0 18px rgba(109,255,166,.45)}
+.logo .cur{display:inline-block;width:.45em;height:.8em;background:var(--ph);vertical-align:-.05em;margin-left:.08em;animation:blink 1.1s steps(1) infinite}
+.sub{color:var(--ph-dim);margin:10px 0 0}
+@keyframes blink{50%{opacity:0}}
+
+h2{font-size:20px;margin:26px 0 12px;color:var(--ph);font-weight:700}
+.muted{color:var(--ph-dim)}
+.warn{border:1px solid var(--amber);color:var(--amber);padding:10px 12px;border-radius:6px;margin:12px 0;font-size:14px}
+
+/* Buttons */
+.btn{background:transparent;border:2px solid var(--ph-dim);color:var(--ph);padding:11px 16px;border-radius:6px;min-height:48px;font-weight:700}
+.btn:hover{border-color:var(--ph)}
+.btn.primary{background:var(--ph);border-color:var(--ph);color:var(--ink)}
+.btn.small{min-height:40px;padding:7px 12px;font-size:14px}
+.btn.ghost{border-color:transparent;color:var(--ph-dim)}
+.btn.tipbtn{border-color:var(--amber);color:var(--amber)}
+.btn.tipbtn.blink{animation:tipblink 1.2s ease-in-out infinite}
+@keyframes tipblink{50%{box-shadow:0 0 0 6px rgba(255,194,74,.25);background:rgba(255,194,74,.12)}}
+
+/* Profile */
+.animals{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}
+.animal{display:flex;flex-direction:column;align-items:flex-start;gap:2px;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px;text-align:left}
+.animal:hover{border-color:var(--ph-dim)}
+.animal .emo{font-size:32px;line-height:1.1}
+.animal .an{font-weight:700;color:var(--text)}
+.animal .as{font-size:13px;color:var(--ph-dim)}
+.rowbtns{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+
+/* Menü */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.who{font-size:20px;font-weight:700}
+.who .emo{font-size:28px;vertical-align:-4px}
+.pts{color:var(--amber);font-weight:700}
+.levels{display:grid;gap:10px;margin-top:16px}
+.lvl{display:grid;grid-template-columns:auto 1fr;gap:2px 16px;align-items:center;background:var(--panel);border:1px solid var(--line);border-left:6px solid var(--ph);border-radius:8px;padding:14px 16px;text-align:left}
+.lvl .ln{font-family:var(--display);font-size:42px;line-height:1;color:var(--ph);grid-row:span 2}
+.lvl .ld{color:var(--text)}
+.lvl .lk{color:var(--ph-dim);font-size:14px}
+.lvl.locked{border-left-color:var(--ph-faint);opacity:.6}
+.lvl.locked .ln{color:var(--ph-faint)}
+.lvl.bonus{border-left-color:var(--cyan)}
+.lvl.bonus .ln{color:var(--cyan)}
+.dots{display:inline-flex;gap:4px;vertical-align:middle}
+.dot{width:12px;height:12px;border:1px solid var(--ph-dim);border-radius:2px}
+.dot.ok{background:var(--ph);border-color:var(--ph)}
+.dot.no{background:transparent;border-color:var(--red)}
+
+/* Spiel */
+.steps{display:flex;gap:6px;margin:14px 0 10px}
+.step{flex:1;padding:8px 6px;border:1px solid var(--line);border-radius:6px;color:var(--ph-faint);font-size:14px;text-align:center;font-weight:700}
+.step.on{background:var(--ph);border-color:var(--ph);color:var(--ink)}
+.step.done{color:var(--ph-dim);border-color:var(--ph-faint)}
+.hint{min-height:3em;color:var(--text);margin:0 0 10px}
+.hint b{color:var(--ph)}
+.board{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px 4px;min-height:150px;padding:22px 8px;border:1px dashed var(--line);border-radius:10px;background:rgba(8,25,15,.75)}
+.item{background:none;border:none;padding:4px;border-radius:12px;display:inline-flex;align-items:center;color:inherit}
+span.item{cursor:default}
+.num{display:inline-flex;align-items:center;justify-content:center;min-width:64px;height:64px;padding:0 10px;font-size:28px;font-weight:800;border:2px solid var(--ph-dim);border-radius:8px;color:var(--text);background:#05150b;font-variant-numeric:tabular-nums}
+.item.sel .num,.item.sel .chip{border-color:var(--amber);color:var(--amber);box-shadow:0 0 14px rgba(255,194,74,.45)}
+.item.sel>.grp{background:rgba(255,194,74,.1);box-shadow:inset 0 0 0 2px var(--amber)}
+.num.tip{border-color:var(--amber);animation:tippulse 1s ease-in-out infinite}
+@keyframes tippulse{50%{box-shadow:0 0 18px rgba(255,194,74,.7)}}
+.num.swapped{animation:pop .35s ease-out}
+@keyframes pop{0%{transform:scale(.8)}60%{transform:scale(1.1)}100%{transform:scale(1)}}
+.grp{display:inline-flex;align-items:center;gap:2px;padding:2px 4px;border-radius:12px}
+.grp.cur{background:rgba(255,194,74,.1);box-shadow:inset 0 0 0 2px var(--amber)}
+.par{font-size:50px;line-height:1;color:var(--cyan);font-weight:400;margin:0 1px}
+.op{font-size:26px;color:var(--ph-dim);padding:0 3px}
+.chip{display:inline-flex;align-items:center;justify-content:center;min-width:64px;height:64px;padding:0 10px;font-size:28px;font-weight:800;border:2px dashed var(--cyan);border-radius:8px;color:var(--cyan);background:#05150b}
+.chip.green{border:2px solid var(--ph);color:var(--ph);background:rgba(109,255,166,.14);box-shadow:0 0 16px rgba(109,255,166,.5)}
+.msg{min-height:1.6em;margin:10px 0;text-align:center;font-weight:700}
+.msg.bad{color:var(--red)}
+.msg.good{color:var(--ph)}
+.msg.info{color:var(--amber)}
+.ctl{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:6px}
+.expr{font-size:30px;text-align:center;margin:8px 0;font-weight:800;font-variant-numeric:tabular-nums}
+.expr .ans{display:inline-block;min-width:3.5ch;border-bottom:3px solid var(--amber);color:var(--amber);text-align:left}
+.expr.shake{animation:shake .4s}
+@keyframes shake{20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+.pad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:340px;margin:12px auto 0}
+.key{height:58px;font-size:24px;font-weight:800;background:var(--panel);border:1px solid var(--line);border-radius:8px;color:var(--text)}
+.key:active{background:var(--ph-faint)}
+.key.ok{background:var(--ph);color:var(--ink);border-color:var(--ph)}
+.feedback{border:1px solid var(--line);border-radius:10px;padding:16px;background:var(--panel);margin-top:14px}
+.feedback h3{margin:0 0 6px;font-size:22px}
+.feedback .opt{font-size:22px;font-weight:800;color:var(--cyan);margin:6px 0 4px;word-break:break-word}
+.feedback .gain{color:var(--amber);font-weight:800;font-size:20px;margin-top:8px}
+.foot{margin-top:22px;color:var(--ph-dim);font-size:14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+
+/* Memory */
+.mem{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;max-width:440px;margin:16px auto 0}
+.mcard{height:84px;border-radius:8px;border:2px solid var(--line);background:var(--panel);font-size:28px;font-weight:800;color:var(--ph-faint);transition:transform .2s}
+.mcard.up{border-color:var(--amber);color:var(--amber);transform:scale(1.04)}
+.mcard.done{border-color:var(--ph);color:var(--ph);background:rgba(109,255,166,.12)}
+.mcard.trap{border-color:var(--red);color:var(--red);opacity:.7}
+.memstat{display:flex;justify-content:space-between;margin-top:12px;color:var(--ph-dim)}
+
+/* Modal */
+.veil{position:fixed;inset:0;background:rgba(0,8,4,.82);display:flex;align-items:center;justify-content:center;padding:20px;z-index:40}
+.modal{max-width:460px;width:100%;background:var(--panel);border:2px solid var(--ph);border-radius:10px;padding:20px;box-shadow:0 0 30px rgba(109,255,166,.25)}
+.modal h3{margin:0 0 10px;color:var(--ph);font-size:22px}
+.modal .mb{margin-bottom:16px}
+.modal .code{font-size:30px;font-weight:800;color:var(--amber);letter-spacing:.06em;text-align:center;padding:12px;border:1px dashed var(--amber);border-radius:8px;margin:10px 0}
+.modal input{width:100%;font:inherit;font-size:22px;padding:10px;background:var(--bg);color:var(--text);border:2px solid var(--ph-dim);border-radius:6px;text-transform:uppercase}
+.modal .btns{display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-end}
+.modal ol{padding-left:22px;margin:8px 0}
+.modal li{margin-bottom:6px}
+
+@media (max-width:480px){
+  .num,.chip{min-width:50px;height:54px;font-size:22px;padding:0 6px}
+  .par{font-size:38px}
+  .op{font-size:20px;padding:0 1px}
+  .expr{font-size:24px}
+  .mcard{height:72px;font-size:24px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}
+/* Tour */
+.finger{position:absolute;left:-200px;top:-200px;z-index:45;font-size:46px;line-height:1;pointer-events:none;transition:left .6s ease,top .6s ease,transform .15s ease,opacity .3s;filter:drop-shadow(0 2px 6px rgba(0,0,0,.9))}
+.finger.press{transform:scale(.78)}
+.finger.off{opacity:0}
+.tourcap{font-family:var(--display);font-size:60px;line-height:1;color:var(--amber);text-align:center;min-height:64px;margin:20px 0 10px}
+.num.moving{transition:transform .5s ease}
+.item.tsel>.num,.item.tsel>.grp>.num{border-color:var(--amber);color:var(--amber);box-shadow:0 0 14px rgba(255,194,74,.45)}
+.item.tsel>.grp{background:rgba(255,194,74,.1);box-shadow:inset 0 0 0 2px var(--amber)}
+.item.sel .num.tsel,.num.tsel{border-color:var(--amber);color:var(--amber);box-shadow:0 0 14px rgba(255,194,74,.45)}
+.qbtn{min-width:44px;font-size:18px}
+.hint{min-height:1.5em}
+/* Demo + Codefeld */
+.demobar{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;display:flex;align-items:center;justify-content:space-between;gap:10px;max-width:780px;margin:0 auto;padding:8px 16px;background:#2a1c00;border-bottom:2px solid var(--amber)}
+.demotag{font-family:var(--display);font-size:34px;line-height:1;color:var(--amber);letter-spacing:.08em}
+.demobar .btn{border-color:var(--amber);color:var(--amber)}
+.codein{display:flex;gap:8px}
+.codein input{flex:1;min-width:0}
+.btn.eye{min-width:56px;font-size:22px;padding:6px}
+.btn.eye.on{background:var(--ph);color:var(--ink)}
+/* Rechenweg zeilenweise */
+.board.calc{display:block;text-align:left;font-size:clamp(19px,5.4vw,30px);font-weight:800;padding:18px 14px;overflow-x:auto}
+.line{white-space:nowrap;padding:5px 0;font-variant-numeric:tabular-nums;color:var(--text)}
+.line .pre{display:inline-block;width:1.6ch;color:var(--ph-dim)}
+.line .p{color:var(--cyan);font-weight:400}
+.line .g{color:var(--ph);text-shadow:0 0 10px rgba(109,255,166,.6)}
+.line.cur{color:var(--text)}
+.gap{display:inline-block;min-width:2.8ch;padding:0 2px;border-bottom:3px solid var(--ph-faint);text-align:center;color:var(--amber)}
+.gap.active{border-color:var(--amber);background:rgba(255,194,74,.12)}
+.gap.shake{animation:shake .4s}
+.board.calc.optb{min-height:0;margin:8px 0;padding:10px 12px}
+</style>
+</head>
+<body>
+
+<div id="demoBar" class="demobar" hidden>
+  <span class="demotag">DEMO</span>
+  <button class="btn small" id="btnDemoEnd">Demo beenden</button>
+</div>
+
+<!-- Start -->
+<section id="scrStart" class="screen">
+  <div class="hero">
+    <h1 class="logo">Plus-Hack<span class="cur"></span></h1>
+    <p class="sub">Tauschen, verbinden, rechnen.</p>
+  </div>
+  <div class="storeWarn warn" hidden>Dieser Browser kann nichts speichern. Schreib dir deinen Code auf.</div>
+  <div class="rowbtns">
+    <button class="btn primary" id="btnNew">Neues Spiel</button>
+    <button class="btn" id="btnCodeIn1">Ich habe einen Code</button>
+  </div>
+</section>
+
+<!-- Menü -->
+<section id="scrMenu" class="screen">
+  <div class="topbar">
+    <div class="who">Plus-Hack</div>
+    <div class="pts" id="menuPts"></div>
+    <button class="btn small qbtn" id="btnTour1" aria-label="Vorführung ansehen">?</button>
+  </div>
+  <div class="storeWarn warn" hidden>Dieser Browser kann nichts speichern. Schreib dir deinen Code auf.</div>
+  <div id="levels" class="levels"></div>
+  <div class="rowbtns">
+    <button class="btn" id="btnCodeOut">Mein Code</button>
+    <button class="btn" id="btnCodeIn2">Code eingeben</button>
+    <button class="btn ghost" id="btnReset">Neu anfangen</button>
+  </div>
+</section>
+
+<!-- Spiel -->
+<section id="scrGame" class="screen">
+  <div class="topbar">
+    <button class="btn small" data-act="menu">Menü</button>
+    <div class="who" id="gWho"></div>
+    <div class="pts" id="gPts"></div>
+    <button class="btn small qbtn" data-act="tour" aria-label="Vorführung ansehen">?</button>
+  </div>
+  <div class="steps" id="gSteps"></div>
+  <p class="hint" id="gHint"></p>
+  <div class="board" id="gBoard"></div>
+  <div class="msg" id="gMsg" aria-live="polite"></div>
+  <div id="gCtl"></div>
+  <div class="foot" id="gFoot"></div>
+</section>
+
+<!-- Tour -->
+<section id="scrTour" class="screen">
+  <div class="topbar">
+    <div class="who" id="tourWho">So geht’s</div>
+    <button class="btn small" id="tourSkip">Überspringen</button>
+  </div>
+  <div class="tourcap" id="tourCap">&nbsp;</div>
+  <div class="board" id="tourBoard"></div>
+  <div class="ctl" id="tourEnd" hidden>
+    <button class="btn" id="tourAgain">Nochmal</button>
+    <button class="btn primary" id="tourGo">Los geht’s</button>
+  </div>
+</section>
+
+<!-- Memory -->
+<section id="scrMemory" class="screen">
+  <div class="topbar">
+    <button class="btn small" id="memBack">Menü</button>
+    <div class="who">Memory</div>
+    <div class="pts" id="memMoves"></div>
+  </div>
+  <p class="hint">Zwei Karten, zusammen <b>100</b>.</p>
+  <div class="mem" id="memGrid"></div>
+  <div class="memstat"><span id="memPairs"></span><span id="memBest"></span></div>
+</section>
+
+<div id="finger" class="finger" aria-hidden="true">👆</div>
+<div id="veil" class="veil" hidden><div class="modal" role="dialog" aria-modal="true" id="modal"></div></div>
+
+<script>
+(function(){
+'use strict';
+
+/* ===== Einstellungen (hier anpassbar) ===== */
+const CONFIG = {
+  masteryWindow: 6,    // betrachtete letzte Aufgaben
+  masteryNeed: 5,      // davon geschickt gelöst -> nächste Stufe
+  struggleWindow: 3,   // letzte Aufgaben für "läuft schlecht"
+  struggleFails: 2,    // so viele Fehlversuche darin -> leichter
+  recoverStreak: 3,    // so viele Erfolge in Folge -> wieder normal
+  ptsCorrect: 10,      // Ergebnis ohne Fehler
+  ptsCorrected: 5,     // Ergebnis nach Korrektur
+  bonusSmart: 10,      // Bonus für geschickte Klammern
+  bonusSmartTip: 5,    // Bonus, wenn Tipp benutzt
+  memoryUnlock: 200,   // Punkte für das Bonus-Level
+  maxTries: 3          // Versuche pro Rechenschritt
+};
+
+const LEVELS = [
+  {name:'Noob',   r:10,  desc:'3 Zahlen, Zehnerfreunde', goal:'10, 20, 30 …'},
+  {name:'Pro',    r:100, desc:'4 Zahlen, Hunderterfreunde', goal:'100, 200, 300 …'},
+  {name:'Hacker', r:100, desc:'5–6 Zahlen, mit Fallen', goal:'100, 200, 300 …'}
+];
+
+/* ===== Speicher: ein Spielstand pro Gerät ===== */
+const KEY = 'plushack_v2';
+let store = {s:null, tourSeen:false};
+let storageOK = true;
+function newProfile(){
+  return {maxLevel:0, points:0, hist:[[],[],[]], easy:[false,false,false], easyStreak:[0,0,0],
+          memBest:null, memSeen:false, hackerDone:false, memFree:false};
+}
+function fixProfile(p){
+  const n = Object.assign(newProfile(), p || {});
+  ['hist','easy','easyStreak'].forEach(k => { if(!Array.isArray(n[k]) || n[k].length !== 3) n[k] = newProfile()[k]; });
+  return n;
+}
+function load(){
+  try{
+    const s = localStorage.getItem(KEY);
+    if(s){ const d = JSON.parse(s); if(d) store = Object.assign({s:null, tourSeen:false}, d); }
+  }catch(e){ storageOK = false; }
+  if(store.s) store.s = fixProfile(store.s);
+}
+let demoMode = false, demoPrev = null;
+function save(){
+  if(demoMode) return;
+  try{ localStorage.setItem(KEY, JSON.stringify(store)); }catch(e){ storageOK = false; }
+}
+const P = () => store.s;
+
+/* ===== Fortschrittscode: 7 Ziffern ===== */
+const TEST_CODE = '1375';   // Lehrer-Testcode: alles frei
+const C_MUL = 7919, C_ADD = 4711, C_MOD = 100000;
+const C_INV = (() => { for(let i = 1; i < C_MOD; i++) if((C_MUL * i) % C_MOD === 1) return i; return 1; })();
+const chk = x => (Math.imul(x + 101, 2654435761) >>> 0) % 100;
+function makeCode(){
+  const p = P();
+  const n = Math.min(p.points, 9999) * 3 + p.maxLevel;
+  const x = (n * C_MUL + C_ADD) % C_MOD;
+  const s = String(x).padStart(5, '0') + String(chk(x)).padStart(2, '0');
+  return s.slice(0, 4) + ' ' + s.slice(4);
+}
+function parseCode(str){
+  const d = String(str).replace(/\D/g, '');
+  if(d === TEST_CODE) return {test:true};
+  if(d.length !== 7) return null;
+  const x = +d.slice(0, 5), c = +d.slice(5);
+  if(chk(x) !== c) return null;
+  const n = (((x - C_ADD) % C_MOD + C_MOD) % C_MOD) * C_INV % C_MOD;
+  if(n > 29999) return null;
+  return {maxLevel:n % 3, points:Math.floor(n / 3)};
+}
+
+/* ===== Aufgaben erzeugen ===== */
+const rnd = (a,b) => a + Math.floor(Math.random() * (b - a + 1));
+const pick = a => a[Math.floor(Math.random() * a.length)];
+function shuffle(a){ for(let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [a[i],a[j]] = [a[j],a[i]]; } return a; }
+
+function makePair(T, r, min){
+  for(let k = 0; k < 120; k++){
+    let a = (r === 100 && T > 100 && Math.random() < 0.3) ? 25 * rnd(1, Math.floor((T - 25) / 25)) : rnd(min, T - min);
+    const b = T - a;
+    if(a < min || b < min) continue;
+    if(a % r === 0 || b % r === 0) continue;
+    if((a % 10 === 0 || b % 10 === 0) && Math.random() < 0.75) continue;
+    return [a, b];
+  }
+  return null;
+}
+function makeTriple(T){
+  for(let k = 0; k < 200; k++){
+    const x = rnd(11, T - 30), y = rnd(11, T - x - 11), z = T - x - y;
+    if(z < 11) continue;
+    if([x,y,z].some(v => v % 10 === 0)) continue;
+    return [x, y, z];
+  }
+  return null;
+}
+function filler(min, max, r){
+  for(let k = 0; k < 100; k++){
+    const v = rnd(min, max);
+    if(v % 10 !== 0 && v % r !== 0) return v;
+  }
+  return null;
+}
+function trapFor(pair){
+  const [a, b] = pair;
+  for(let k = 0; k < 50; k++){
+    const t = b + pick([-1,1,-2,2,9,-9,10,-10,11,-11]);
+    if(t >= 11 && t % 10 !== 0 && t !== a) return t;
+  }
+  return null;
+}
+
+function optimal(nums, r){
+  const n = nums.length, memo = new Map();
+  function best(mask){
+    if(mask === 0) return {c:0, s:0, g:[]};
+    if(memo.has(mask)) return memo.get(mask);
+    let i = 0; while(!(mask & (1 << i))) i++;
+    const rest = mask & ~(1 << i);
+    let res = best(rest);
+    for(let sub = rest; sub > 0; sub = (sub - 1) & rest){
+      const m = sub | (1 << i);
+      let s = 0, cnt = 0, nonRound = false;
+      for(let k = 0; k < n; k++) if(m & (1 << k)){ s += nums[k]; cnt++; if(nums[k] % r) nonRound = true; }
+      if(cnt >= 2 && s % r === 0 && nonRound){
+        const c = best(mask & ~m);
+        const cand = {c:c.c + 1, s:c.s + cnt, g:[m, ...c.g]};
+        if(cand.c > res.c || (cand.c === res.c && cand.s < res.s)) res = cand;
+      }
+    }
+    memo.set(mask, res);
+    return res;
+  }
+  const b = best((1 << n) - 1);
+  return {c:b.c, groups:b.g.map(m => nums.filter((_, k) => m & (1 << k)))};
+}
+
+function arrangementOK(items, r){
+  for(let i = 0; i + 1 < items.length; i++){
+    if(items[i].g >= 0 && items[i].g === items[i+1].g) return false;
+    const s2 = items[i].v + items[i+1].v;
+    if(s2 % r === 0) return false;
+    if(i + 2 < items.length){
+      const s3 = s2 + items[i+2].v;
+      if(s3 % r === 0) return false;
+    }
+  }
+  return true;
+}
+
+function genTask(L, easy){
+  const r = LEVELS[L].r;
+  for(let tries = 0; tries < 2000; tries++){
+    const groups = [], extra = [];
+    if(L === 0){
+      groups.push(makePair(easy ? 10 * rnd(2,5) : 10 * rnd(3,10), 10, 11));
+      extra.push(filler(11, easy ? 39 : 99, 10));
+    } else if(L === 1){
+      groups.push(makePair(100, 100, 11));
+      if(easy) extra.push(filler(11, 99, 100));
+      else groups.push(makePair(100 * rnd(2,5), 100, 21));
+    } else {
+      if(easy){
+        groups.push(makePair(100, 100, 11));
+        groups.push(makePair(100 * rnd(2,4), 100, 21));
+        extra.push(filler(11, 199, 100));
+      } else if(Math.random() < 0.5){
+        const p1 = makePair(100, 100, 11), p2 = makePair(100 * rnd(2,4), 100, 21);
+        groups.push(p1, p2);
+        if(p1 && p2) extra.push(trapFor(pick([p1, p2])));
+      } else {
+        groups.push(makeTriple(100 * rnd(1,2)));
+        const p = makePair(100 * rnd(1,3), 100, 21);
+        groups.push(p);
+        if(p) extra.push(trapFor(p));
+      }
+    }
+    if(groups.some(g => !g) || extra.some(e => e == null)) continue;
+    const items = [];
+    groups.forEach((g, gi) => g.forEach(v => items.push({v, g:gi})));
+    extra.forEach(v => items.push({v, g:-1}));
+    const nums = items.map(it => it.v);
+    if(new Set(nums).size !== nums.length) continue;
+    if(nums.reduce((s, v) => s + v, 0) > 1000) continue;
+    const opt = optimal(nums, r);
+    if(opt.c !== groups.length) continue;
+    let ok = false;
+    for(let k = 0; k < 300 && !ok; k++){ shuffle(items); ok = arrangementOK(items, r); }
+    if(!ok) continue;
+    return {L, r, nums:items.map(it => it.v), opt};
+  }
+  return null;
+}
+
+/* ===== Hilfsfunktionen UI ===== */
+const $ = s => document.querySelector(s);
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s => s.classList.toggle('on', s.id === id));
+  document.querySelectorAll('.storeWarn').forEach(w => w.hidden = storageOK);
+  window.scrollTo(0, 0);
+}
+function dotsHTML(h){
+  const last = h.slice(-CONFIG.masteryWindow);
+  let s = '<span class="dots" aria-hidden="true">';
+  for(let i = 0; i < CONFIG.masteryWindow; i++){
+    const v = last[i];
+    s += `<span class="dot ${v === true ? 'ok' : v === false ? 'no' : ''}"></span>`;
+  }
+  return s + '</span>';
+}
+
+function showModal(title, body, buttons){
+  const m = $('#modal');
+  m.innerHTML = `<h3>${title}</h3><div class="mb">${body}</div><div class="btns">${
+    buttons.map((b, i) => `<button class="btn ${b.primary ? 'primary' : ''}" data-mi="${i}">${b.label}</button>`).join('')}</div>`;
+  $('#veil').hidden = false;
+  m.querySelectorAll('[data-mi]').forEach(el => el.addEventListener('click', () => {
+    const b = buttons[+el.dataset.mi];
+    if(b.keep){ b.fn && b.fn(); return; }
+    $('#veil').hidden = true;
+    b.fn && b.fn();
+  }));
+  const f = m.querySelector('input') || m.querySelector('.btn.primary') || m.querySelector('.btn');
+  f && f.focus();
+}
+
+/* ===== Code ===== */
+function codeOutModal(){
+  showModal('Dein Code', `<div class="code">${makeCode()}</div><p class="muted">Aufschreiben! Damit spielst du woanders weiter.</p>`,
+    [{label:'Fertig', primary:true}]);
+}
+function codeInModal(){
+  showModal('Code eingeben',
+    `<div class="codein"><input id="codeField" type="password" inputmode="numeric" autocomplete="off" placeholder="●●●● ●●●"><button class="btn eye" id="eyeBtn" aria-label="Eingabe zeigen" aria-pressed="false">👁</button></div><p id="codeErr" class="msg bad"></p>`,
+    [{label:'Abbrechen'},
+     {label:'Laden', primary:true, keep:true, fn:() => {
+        const res = parseCode($('#codeField').value);
+        if(!res){ $('#codeErr').textContent = 'Code falsch. Prüfe die Ziffern.'; return; }
+        $('#veil').hidden = true;
+        if(res.test){ startDemo(); return; }
+        if(demoMode) endDemo(true);
+        const p = newProfile();
+        p.points = res.points; p.maxLevel = res.maxLevel; p.memSeen = res.points >= CONFIG.memoryUnlock;
+        store.s = p; store.tourSeen = true; save();
+        openMenu();
+     }}]);
+  $('#eyeBtn').addEventListener('click', () => {
+    const f = $('#codeField'), show = f.type === 'password';
+    f.type = show ? 'text' : 'password';
+    $('#eyeBtn').setAttribute('aria-pressed', String(show));
+    $('#eyeBtn').classList.toggle('on', show);
+    f.focus();
+  });
+}
+
+/* ===== Demo-Modus (Code 1375): alles frei, nichts wird gespeichert ===== */
+function startDemo(){
+  if(!demoMode) demoPrev = JSON.parse(JSON.stringify(store));
+  demoMode = true;
+  const p = newProfile();
+  p.maxLevel = 2; p.memFree = true; p.memSeen = true;
+  store.s = p;
+  document.body.classList.add('demo');
+  $('#demoBar').hidden = false;
+  openMenu();
+}
+function endDemo(silent){
+  tourRun++;
+  finger.style.left = '-200px'; finger.style.top = '-200px';
+  demoMode = false;
+  store = demoPrev || {s:null, tourSeen:false};
+  demoPrev = null;
+  $('#demoBar').hidden = true;
+  document.body.classList.remove('demo');
+  G = null;
+  if(silent) return;
+  if(store.s) openMenu(); else showScreen('scrStart');
+}
+
+/* ===== Menü ===== */
+function openMenu(){ renderMenu(); showScreen('scrMenu'); }
+function renderMenu(){
+  const p = P();
+  $('#menuPts').textContent = p.points + ' Punkte';
+  let html = LEVELS.map((L, i) => {
+    const open = i <= p.maxLevel;
+    let extra;
+    if(!open) extra = `<span class="lk">🔒 ${CONFIG.masteryNeed} von ${CONFIG.masteryWindow} geschickt in ${LEVELS[i-1].name}</span>`;
+    else if(i === 2 && p.hackerDone) extra = `<span class="lk">✓ ${dotsHTML(p.hist[i])}</span>`;
+    else extra = `<span class="lk">${dotsHTML(p.hist[i])}</span>`;
+    return `<button class="lvl ${open ? '' : 'locked'}" data-l="${i}"><span class="ln">${L.name}</span><span class="ld">${L.desc}</span>${extra}</button>`;
+  }).join('');
+  const memOpen = p.points >= CONFIG.memoryUnlock || p.memFree;
+  html += `<button class="lvl bonus ${memOpen ? '' : 'locked'}" data-mem="1"><span class="ln">Bonus</span><span class="ld">Memory</span><span class="lk">${
+    memOpen ? (p.memBest ? 'Rekord: ' + p.memBest + ' Züge' : 'Frei!') : '🔒 noch ' + (CONFIG.memoryUnlock - p.points) + ' Punkte'}</span></button>`;
+  $('#levels').innerHTML = html;
+}
+
+/* ===== Spiel ===== */
+let G = null;
+const val = n => n.t === 'n' ? n.v : n.val;
+function leaves(n, out){ if(n.t === 'n') out.push(n); else { leaves(n.a, out); leaves(n.b, out); } return out; }
+function postorder(n, out){ if(n.t === 'g'){ postorder(n.a, out); postorder(n.b, out); out.push(n); } return out; }
+
+function startLevel(L){ G = {L}; newTask(); showScreen('scrGame'); }
+
+function newTask(){
+  const p = P();
+  const task = genTask(G.L, p.easy[G.L]);
+  let id = 1;
+  Object.assign(G, {
+    task, nextId:0, row:task.nums.map(v => ({id:id++, t:'n', v})), phase:'swap', sel:null,
+    tipUsed:false, tipIdx:-1, errors:0, revealed:false, tries:0, greens:0, input:'',
+    lines:[], gaps:[], gi:0, msg:'', msgKind:'', swapped:[], result:null, pending:[], lock:false
+  });
+  G.nextId = id;
+  renderGame();
+}
+
+function tipAvailable(){ return G.L === 0 || P().easy[G.L]; }
+function tipValues(){ return G.tipIdx >= 0 ? G.task.opt.groups[G.tipIdx] : []; }
+
+function hintText(){
+  if(G.phase === 'swap') return `Ziel: <b>${LEVELS[G.L].goal}</b>`;
+  if(G.phase === 'join') return `Freunde in <b>( )</b>`;
+  if(G.phase === 'calc') return `<b>( )</b> zuerst`;
+  return '';
+}
+
+function nodeHTML(n, ctx){
+  if(n.t === 'n'){
+    const cls = ['num'];
+    if(ctx.tip.includes(n.v)) cls.push('tip');
+    if(G && G.swapped.includes(n.id)) cls.push('swapped');
+    return `<span class="${cls.join(' ')}">${n.v}</span>`;
+  }
+  if(n.val != null) return `<span class="chip ${n.green ? 'green' : ''}">${n.val}</span>`;
+  return `<span class="grp ${ctx.curGroup === n ? 'cur' : ''}"><span class="par">(</span>${nodeHTML(n.a, ctx)}<span class="op">+</span>${nodeHTML(n.b, ctx)}<span class="par">)</span></span>`;
+}
+
+/* --- Rechenweg Zeile für Zeile --- */
+const ready = n => n.t === 'n' || n.val != null;
+function collectInner(n, out){
+  if(n.t !== 'g' || n.val != null) return out;
+  if(ready(n.a) && ready(n.b)) out.push(n);
+  else { collectInner(n.a, out); collectInner(n.b, out); }
+  return out;
+}
+function exprHTML(n, gapFn){
+  const gi = gapFn ? gapFn(n) : null;
+  if(gi != null) return gi;
+  if(n.t === 'n') return String(n.v);
+  if(n.val != null) return n.green ? `<span class="g">${n.val}</span>` : String(n.val);
+  return `<span class="p">(</span>${exprHTML(n.a, gapFn)} + ${exprHTML(n.b, gapFn)}<span class="p">)</span>`;
+}
+const rowHTML = gapFn => G.row.map(n => exprHTML(n, gapFn)).join(' + ');
+function startLine(){
+  const inner = []; G.row.forEach(n => collectInner(n, inner));
+  if(inner.length) G.gaps = inner.map(g => ({group:g, expect:val(g.a) + val(g.b)}));
+  else if(G.row.length > 1) G.gaps = [{group:null, expect:G.row.map(val).reduce((s, v) => s + v, 0)}];
+  else { finish(); return false; }
+  G.gi = 0;
+  return true;
+}
+function gapSpan(i){
+  const gp = G.gaps[i];
+  if(i < G.gi){
+    const v = gp.group ? gp.group.val : gp.expect;
+    return (gp.group && gp.group.green) ? `<span class="g">${v}</span>` : String(v);
+  }
+  if(i === G.gi) return `<span class="gap active" id="gGap">${G.input || '&nbsp;'}</span>`;
+  return `<span class="gap">&nbsp;</span>`;
+}
+function curLineHTML(){
+  if(G.gaps.length === 1 && !G.gaps[0].group) return gapSpan(0);
+  return rowHTML(n => { const i = G.gaps.findIndex(gp => gp.group === n); return i >= 0 ? gapSpan(i) : null; });
+}
+const lineDiv = (pre, html, cur) => `<div class="line ${cur ? 'cur' : ''}"><span class="pre">${pre}</span>${html}</div>`;
+function pushDoneLine(){
+  if(G.gaps.length === 1 && !G.gaps[0].group) G.lines.push(String(G.gaps[0].expect));
+  else G.lines.push(rowHTML(null));
+}
+
+function renderGame(){
+  const p = P(), lv = LEVELS[G.L];
+  $('#gWho').textContent = lv.name + (p.easy[G.L] ? ' (leichter)' : '');
+  $('#gPts').textContent = p.points + ' P';
+
+  const order = ['swap','join','calc'], names = ['1 Tauschen','2 Verbinden','3 Rechnen'];
+  const pi = G.phase === 'done' ? 3 : order.indexOf(G.phase);
+  $('#gSteps').innerHTML = names.map((nm, i) => `<div class="step ${i === pi ? 'on' : i < pi ? 'done' : ''}">${nm}</div>`).join('');
+  $('#gHint').innerHTML = hintText();
+
+  const ctx = {tip:(G.phase === 'swap' || G.phase === 'join') ? tipValues() : [], curGroup:null};
+  const interactive = G.phase === 'swap' || G.phase === 'join';
+  const board = $('#gBoard');
+  board.classList.toggle('calc', !interactive);
+  if(!interactive){
+    let h = G.lines.map((l, i) => lineDiv(i ? '=' : '', l, false)).join('');
+    if(G.phase === 'calc') h += lineDiv('=', curLineHTML(), true);
+    board.innerHTML = h;
+  } else board.innerHTML = G.row.map((n, i) => {
+    const inner = nodeHTML(n, ctx);
+    const tag = interactive ? 'button' : 'span';
+    return `${i ? '<span class="op">+</span>' : ''}<${tag} class="item ${G.sel === i ? 'sel' : ''}" ${interactive ? `data-idx="${i}"` : ''}>${inner}</${tag}>`;
+  }).join('');
+
+  const msg = $('#gMsg');
+  msg.textContent = G.msg; msg.className = 'msg ' + (G.msgKind || '');
+
+  const ctl = $('#gCtl');
+  const tipBtn = tipAvailable() ? `<button class="btn tipbtn ${p.easy[G.L] ? 'blink' : ''}" data-act="tip">Tipp</button>` : '';
+  if(G.phase === 'swap'){
+    ctl.innerHTML = `<div class="ctl">${tipBtn}<button class="btn primary" data-act="toJoin">Fertig getauscht</button></div>`;
+  } else if(G.phase === 'join'){
+    const selGrp = G.sel !== null && G.row[G.sel].t === 'g';
+    ctl.innerHTML = `<div class="ctl">${tipBtn}${selGrp ? '<button class="btn" data-act="unjoin">Klammer lösen</button>' : ''}<button class="btn" data-act="toSwap">Zurück</button><button class="btn primary" data-act="toCalc">Fertig verbunden</button></div>`;
+  } else if(G.phase === 'calc'){
+    ctl.innerHTML = `<div class="pad">${[1,2,3,4,5,6,7,8,9].map(d => `<button class="key" data-key="${d}">${d}</button>`).join('')}
+      <button class="key" data-key="back" aria-label="Löschen">⌫</button><button class="key" data-key="0">0</button><button class="key ok" data-key="ok">OK</button></div>`;
+  } else if(G.phase === 'done'){
+    ctl.innerHTML = feedbackHTML();
+  }
+
+  if(!interactive){ fitLines(board); fitLines(document.querySelector('.optb')); }
+  const h = p.hist[G.L];
+  $('#gFoot').innerHTML = G.L < 2
+    ? `${LEVELS[G.L+1].name}: ${dotsHTML(h)}`
+    : `Serie: ${dotsHTML(h)}`;
+}
+
+function optExpr(){
+  const groups = G.task.opt.groups, used = new Set(groups.flat());
+  const rest = G.task.nums.filter(v => !used.has(v));
+  const l1 = groups.map(g => '<span class="p">(</span>' + g.join(' + ') + '<span class="p">)</span>').concat(rest.map(String)).join(' + ');
+  const l2 = groups.map(g => '<span class="g">' + g.reduce((s, v) => s + v, 0) + '</span>').concat(rest.map(String)).join(' + ');
+  const tot = G.task.nums.reduce((s, v) => s + v, 0);
+  return lineDiv('', l1) + lineDiv('=', l2) + lineDiv('=', String(tot));
+}
+function fitLines(el){
+  if(!el) return;
+  el.style.fontSize = '';
+  let fs = parseFloat(getComputedStyle(el).fontSize);
+  while(el.scrollWidth > el.clientWidth + 1 && fs > 13){ fs -= 1; el.style.fontSize = fs + 'px'; }
+}
+
+function feedbackHTML(){
+  const R = G.result;
+  const head = R.revealed ? 'Nicht ganz.' : R.errors ? 'Richtig – mit Korrektur.' : 'Richtig!';
+  const body = R.smart ? `<p class="msg good" style="text-align:left">Geschickt! ✓</p>`
+                       : `<p>Geschickter:</p><div class="board calc optb">${optExpr()}</div>`;
+  return `<div class="feedback"><h3>${head}</h3>${body}<div class="gain">+${R.gain} Punkte</div>
+    <div class="ctl" style="justify-content:flex-start;margin-top:12px"><button class="btn primary" data-act="next">Weiter</button></div></div>`;
+}
+
+function setMsg(t, k){ G.msg = t; G.msgKind = k || ''; }
+
+function onItem(i){
+  if(G.phase === 'swap'){
+    setMsg('');
+    if(G.sel === null) G.sel = i;
+    else if(G.sel === i) G.sel = null;
+    else {
+      const a = G.row[G.sel], b = G.row[i];
+      G.row[G.sel] = b; G.row[i] = a;
+      G.swapped = [a.id, b.id];
+      G.sel = null;
+      setTimeout(() => { G.swapped = []; }, 400);
+    }
+  } else if(G.phase === 'join'){
+    setMsg('');
+    if(G.sel === null) G.sel = i;
+    else if(G.sel === i) G.sel = null;
+    else if(Math.abs(G.sel - i) === 1){
+      const l = Math.min(G.sel, i);
+      const g = {id:G.nextId++, t:'g', a:G.row[l], b:G.row[l+1], val:null, green:false};
+      G.row.splice(l, 2, g);
+      G.sel = null;
+    } else {
+      G.sel = i;
+      setMsg('Nur Nachbarn!', 'info');
+    }
+  }
+  renderGame();
+}
+
+function act(a){
+  if(a === 'menu'){ openMenu(); return; }
+  if(a === 'tour'){ startTour(() => { showScreen('scrGame'); renderGame(); }, G.L); return; }
+  if(a === 'tip'){
+    G.tipUsed = true;
+    G.tipIdx = (G.tipIdx + 1) % G.task.opt.groups.length;
+    setMsg('');
+  }
+  if(a === 'toJoin'){ G.phase = 'join'; G.sel = null; setMsg(''); }
+  if(a === 'toSwap'){
+    const flat = []; G.row.forEach(n => leaves(n, flat));
+    G.row = flat; G.phase = 'swap'; G.sel = null; setMsg('');
+  }
+  if(a === 'unjoin' && G.sel !== null && G.row[G.sel].t === 'g'){
+    const g = G.row[G.sel]; G.row.splice(G.sel, 1, g.a, g.b); G.sel = null;
+  }
+  if(a === 'toCalc'){
+    G.phase = 'calc'; G.sel = null; G.tipIdx = -1;
+    G.lines = [rowHTML(null)];
+    setMsg('');
+    if(!startLine()) return;
+  }
+  if(a === 'next'){ runPending(); return; }
+  renderGame();
+}
+
+function key(k){
+  if(G.phase !== 'calc' || G.lock) return;
+  if(k === 'back') G.input = G.input.slice(0, -1);
+  else if(k === 'ok') return check();
+  else if(G.input.length < 4) G.input += k;
+  const a = $('#gGap');
+  if(a) a.innerHTML = G.input || '&nbsp;';
+}
+
+function applyGap(){
+  const gp = G.gaps[G.gi];
+  if(gp.group){
+    const g = gp.group, r = G.task.r;
+    g.val = gp.expect;
+    g.green = g.val % r === 0 && (val(g.a) % r !== 0 || val(g.b) % r !== 0);
+    if(g.green) G.greens++;
+  }
+  G.gi++;
+  if(G.gi >= G.gaps.length){
+    pushDoneLine();
+    if(!gp.group){ finish(); return; }
+    if(!startLine()) return;
+  }
+  renderGame();
+}
+
+function check(){
+  if(G.input === '') return;
+  const gp = G.gaps[G.gi], v = +G.input;
+  if(v === gp.expect){
+    G.input = ''; G.tries = 0;
+    setMsg(gp.group && gp.expect % G.task.r === 0 ? 'Glatt!' : '✓', 'good');
+    applyGap();
+    return;
+  }
+  G.errors++; G.tries++; G.input = '';
+  if(G.tries >= CONFIG.maxTries){
+    G.revealed = true; G.tries = 0; G.lock = true;
+    setMsg(`Richtig: ${gp.expect}`, 'bad');
+    renderGame();
+    setTimeout(() => { G.lock = false; applyGap(); }, 1600);
+    return;
+  }
+  setMsg('Nochmal!', 'bad');
+  renderGame();
+  const ex = $('#gGap'); if(ex){ ex.classList.remove('shake'); void ex.offsetWidth; ex.classList.add('shake'); }
+}
+
+function finish(){
+  const p = P(), L = G.L;
+  const smart = G.greens >= G.task.opt.c;
+  const clean = G.errors === 0 && !G.revealed;
+  const base = G.revealed ? 0 : (G.errors ? CONFIG.ptsCorrected : CONFIG.ptsCorrect);
+  const bonus = smart ? (G.tipUsed ? CONFIG.bonusSmartTip : CONFIG.bonusSmart) : 0;
+  const success = smart && clean && !G.tipUsed;
+  const before = p.points;
+  p.points += base + bonus;
+  G.result = {smart, greens:G.greens, errors:G.errors, revealed:G.revealed, tipUsed:G.tipUsed, gain:base + bonus};
+  G.pending = [];
+
+  if(p.easy[L]){
+    p.easyStreak[L] = success ? p.easyStreak[L] + 1 : 0;
+    if(p.easyStreak[L] >= CONFIG.recoverStreak){
+      p.easy[L] = false; p.easyStreak[L] = 0;
+      G.pending.push({title:'Stark! 💪', body:'Jetzt wieder normal.', buttons:[{label:'Weiter', primary:true}]});
+    }
+  } else {
+    p.hist[L].push(success);
+    if(p.hist[L].length > 20) p.hist[L] = p.hist[L].slice(-20);
+    const lastS = p.hist[L].slice(-CONFIG.struggleWindow);
+    const lastM = p.hist[L].slice(-CONFIG.masteryWindow);
+    if(lastS.length >= CONFIG.struggleWindow && lastS.filter(x => !x).length >= CONFIG.struggleFails){
+      p.easy[L] = true; p.easyStreak[L] = 0; p.hist[L] = [];
+      G.pending.push({title:'Etwas leichter', body:'Der Tipp-Knopf hilft dir.', buttons:[{label:'Okay', primary:true}]});
+    } else if(lastM.filter(x => x).length >= CONFIG.masteryNeed){
+      p.hist[L] = [];
+      if(L < 2){
+        const nx = LEVELS[L+1].name, isNew = p.maxLevel < L + 1;
+        p.maxLevel = Math.max(p.maxLevel, L + 1);
+        save();
+        G.pending.push({title:(isNew ? nx + ' frei!' : 'Bereit für ' + nx + '!') + ' 🔓',
+          body:`<div class="code">${makeCode()}</div><p class="muted">Dein Code – aufschreiben!</p>`,
+          buttons:[{label:'Hierbleiben'}, {label:'Zu ' + nx, primary:true, next:'switch'}]});
+      } else {
+        p.hackerDone = true;
+        G.pending.push({title:'Hacker gemeistert! 🏆', body:'', buttons:[{label:'Weiter', primary:true}]});
+      }
+    }
+  }
+  if(before < CONFIG.memoryUnlock && p.points >= CONFIG.memoryUnlock && !p.memSeen){
+    p.memSeen = true;
+    G.pending.push({title:'Bonus frei! 🔓', body:'Memory: zusammen 100.',
+      buttons:[{label:'Später'}, {label:'Spielen', primary:true, next:'memory'}]});
+  }
+  save();
+  G.phase = 'done';
+  setMsg('');
+  renderGame();
+}
+
+function runPending(){
+  let next = 'task';
+  const queue = G.pending.slice();
+  G.pending = [];
+  (function step(){
+    if(!queue.length){
+      if(next === 'switch') startLevel(G.L + 1);
+      else if(next === 'memory') openMemory();
+      else newTask();
+      return;
+    }
+    const m = queue.shift();
+    showModal(m.title, m.body, m.buttons.map(b => ({label:b.label, primary:b.primary, fn:() => { if(b.next) next = b.next; step(); }})));
+  })();
+}
+
+/* ===== Tour (animierte Vorführung) ===== */
+let tourRun = 0, tourReturn = null;
+const finger = $('#finger');
+function alive(id){ if(id !== tourRun) throw new Error('stop'); }
+let tourL = 0;
+const TOURS = [
+  {nums:[27, 48, 13],               swaps:[[1,2]],             joins:[[0,1]]},
+  {nums:[64, 275, 36, 125],         swaps:[[1,2]],             joins:[[0,1],[1,2]]},
+  {nums:[45, 163, 38, 17, 36, 37],  swaps:[[1,2],[2,3],[4,5]], joins:[[0,1],[0,1],[1,2]]}
+];
+function startTour(ret, L){
+  tourReturn = ret;
+  tourL = L || 0;
+  showScreen('scrTour');
+  const id = ++tourRun;
+  playTour(id).catch(() => {});
+}
+function endTour(){
+  tourRun++;
+  finger.style.left = '-200px'; finger.style.top = '-200px';
+  store.tourSeen = true; save();
+  const r = tourReturn; tourReturn = null;
+  r && r();
+}
+function tourRender(row){
+  const ctx = {tip:[], curGroup:null};
+  $('#tourBoard').classList.remove('calc');
+  $('#tourBoard').style.fontSize = '';
+  $('#tourBoard').innerHTML = row.map((n, i) =>
+    `${i ? '<span class="op">+</span>' : ''}<span class="item" data-t="${i}">${nodeHTML(n, ctx)}</span>`).join('');
+}
+const tEl = i => document.querySelector(`#tourBoard [data-t="${i}"]`);
+async function fingerTo(el, id){
+  const r = el.getBoundingClientRect();
+  finger.classList.remove('off');
+  finger.style.left = (r.left + r.width / 2 - 16 + window.scrollX) + 'px';
+  finger.style.top = (r.top + r.height * 0.55 + window.scrollY) + 'px';
+  await sleep(750); alive(id);
+}
+async function tap(el, id){
+  finger.classList.add('press'); el.classList.add('tsel');
+  await sleep(220); alive(id);
+  finger.classList.remove('press');
+  await sleep(300); alive(id);
+}
+function cap(t){ $('#tourCap').textContent = t; }
+function tourLines(lines){
+  const bd = $('#tourBoard');
+  bd.classList.add('calc');
+  bd.innerHTML = lines.map((l, i) => lineDiv(i ? '=' : '', l, false)).join('');
+  fitLines(bd);
+}
+async function typeInto(show, answer, id){
+  show(''); await sleep(800); alive(id);
+  let t = '';
+  for(const ch of String(answer)){ t += ch; show(t); await sleep(400); alive(id); }
+  await sleep(400); alive(id);
+}
+async function playTour(id){
+  const T = TOURS[tourL], r = LEVELS[tourL].r;
+  $('#tourEnd').hidden = true;
+  $('#tourWho').textContent = 'So geht’s – ' + LEVELS[tourL].name;
+  finger.classList.add('off');
+  cap(' ');
+  let nid = 1;
+  let row = T.nums.map(v => ({id:nid++, t:'n', v}));
+  tourRender(row);
+  await sleep(900); alive(id);
+
+  // Tauschen
+  cap('Tauschen');
+  await sleep(600); alive(id);
+  for(const [i, j] of T.swaps){
+    await fingerTo(tEl(i), id); await tap(tEl(i), id);
+    await fingerTo(tEl(j), id); await tap(tEl(j), id);
+    const a = tEl(i), b = tEl(j);
+    const ra = a.getBoundingClientRect(), rb = b.getBoundingClientRect();
+    const dx = rb.left - ra.left, dy = rb.top - ra.top;
+    a.style.transition = b.style.transition = 'transform .5s ease';
+    a.style.transform = `translate(${dx}px,${dy}px)`; b.style.transform = `translate(${-dx}px,${-dy}px)`;
+    await sleep(600); alive(id);
+    [row[i], row[j]] = [row[j], row[i]];
+    tourRender(row);
+    await sleep(500); alive(id);
+  }
+  await sleep(400); alive(id);
+
+  // Verbinden
+  cap('Verbinden');
+  await sleep(600); alive(id);
+  for(const [i, j] of T.joins){
+    await fingerTo(tEl(i), id); await tap(tEl(i), id);
+    await fingerTo(tEl(j), id); await tap(tEl(j), id);
+    row.splice(i, 2, {id:nid++, t:'g', a:row[i], b:row[j], val:null, green:false});
+    tourRender(row);
+    await sleep(700); alive(id);
+  }
+  await sleep(400); alive(id);
+
+  // Rechnen
+  cap('Rechnen');
+  finger.classList.add('off');
+  const rowStr = gapFn => row.map(n => exprHTML(n, gapFn)).join(' + ');
+  const lines = [rowStr(null)];
+  tourLines(lines);
+  await sleep(1000); alive(id);
+  while(true){
+    const inner = []; row.forEach(n => collectInner(n, inner));
+    if(inner.length){
+      for(let k = 0; k < inner.length; k++){
+        const g = inner[k], ans = val(g.a) + val(g.b);
+        await typeInto(t => tourLines(lines.concat([rowStr(x => {
+          const q = inner.indexOf(x);
+          if(q < 0 || q < k) return null;
+          if(q === k) return `<span class="gap active">${t || '&nbsp;'}</span>`;
+          return '<span class="gap">&nbsp;</span>';
+        })])), ans, id);
+        g.val = ans;
+        g.green = ans % r === 0 && (val(g.a) % r !== 0 || val(g.b) % r !== 0);
+        if(g.green){
+          tourLines(lines.concat([rowStr(x => { const q = inner.indexOf(x); return (q > k) ? '<span class="gap">&nbsp;</span>' : null; })]));
+          cap('Glatt!');
+          await sleep(1200); alive(id);
+          cap('Rechnen');
+        }
+      }
+      lines.push(rowStr(null));
+      tourLines(lines);
+      await sleep(600); alive(id);
+    } else if(row.length > 1){
+      const tot = row.map(val).reduce((a, b) => a + b, 0);
+      await typeInto(t => tourLines(lines.concat([`<span class="gap active">${t || '&nbsp;'}</span>`])), tot, id);
+      lines.push(String(tot));
+      tourLines(lines);
+      break;
+    } else break;
+  }
+  cap('Fertig!');
+  $('#tourEnd').hidden = false;
+}
+
+/* ===== Memory ===== */
+let M = null;
+function genMemory(){
+  for(let t = 0; t < 500; t++){
+    const vals = new Set(), cards = [];
+    let ok = true;
+    for(let i = 0; i < 7; i++){
+      let a, k = 0;
+      do { a = rnd(11, 89); k++; } while((a % 10 === 0 || a === 50 || vals.has(a) || vals.has(100 - a)) && k < 200);
+      if(k >= 200){ ok = false; break; }
+      vals.add(a); vals.add(100 - a);
+      cards.push(a, 100 - a);
+    }
+    if(!ok) continue;
+    const traps = [];
+    for(let i = 0; i < 2; i++){
+      let x, k = 0;
+      do { x = rnd(11, 89); k++; } while((x % 10 === 0 || x === 50 || vals.has(x) || vals.has(100 - x) || traps.includes(100 - x)) && k < 200);
+      if(k >= 200){ ok = false; break; }
+      traps.push(x); vals.add(x);
+    }
+    if(!ok) continue;
+    return {cards:shuffle(cards.concat(traps).map(v => ({v, s:'down'}))), open:[], moves:0, pairs:0, lock:false};
+  }
+}
+function openMemory(){ M = genMemory(); renderMemory(); showScreen('scrMemory'); }
+function renderMemory(){
+  $('#memGrid').innerHTML = M.cards.map((c, i) =>
+    `<button class="mcard ${c.s}" data-mc="${i}" aria-label="${c.s === 'down' ? 'verdeckte Karte' : c.v}">${c.s === 'down' ? '?' : c.v}</button>`).join('');
+  $('#memMoves').textContent = M.moves + ' Züge';
+  $('#memPairs').textContent = 'Paare: ' + M.pairs + ' / 7';
+  const b = P().memBest;
+  $('#memBest').textContent = b ? 'Rekord: ' + b : '';
+}
+function memClick(i){
+  const c = M.cards[i];
+  if(M.lock || c.s !== 'down') return;
+  c.s = 'up'; M.open.push(i);
+  if(M.open.length === 2){
+    M.moves++;
+    const [a, b] = M.open.map(j => M.cards[j]);
+    if(a.v + b.v === 100){
+      a.s = b.s = 'done'; M.open = []; M.pairs++;
+      if(M.pairs === 7){
+        M.cards.forEach(x => { if(x.s === 'down') x.s = 'trap'; });
+        const p = P(), rec = !p.memBest || M.moves < p.memBest;
+        if(rec) p.memBest = M.moves;
+        save();
+        renderMemory();
+        setTimeout(() => showModal('Geschafft! 🎉',
+          `${M.moves} Züge${rec ? ' – neuer Rekord!' : ''}<br><span class="muted">Rot = Fallen</span>`,
+          [{label:'Menü', fn:openMenu}, {label:'Nochmal', primary:true, fn:openMemory}]), 500);
+        return;
+      }
+    } else {
+      M.lock = true;
+      setTimeout(() => { a.s = 'down'; b.s = 'down'; M.open = []; M.lock = false; renderMemory(); }, 1000);
+    }
+  }
+  renderMemory();
+}
+
+/* ===== Events ===== */
+$('#btnNew').addEventListener('click', () => {
+  store.s = newProfile(); save();
+  if(!store.tourSeen) startTour(openMenu); else openMenu();
+});
+$('#btnCodeIn1').addEventListener('click', codeInModal);
+$('#btnDemoEnd').addEventListener('click', () => endDemo(false));
+$('#btnCodeIn2').addEventListener('click', codeInModal);
+$('#btnCodeOut').addEventListener('click', codeOutModal);
+$('#btnTour1').addEventListener('click', () => startTour(openMenu));
+$('#btnReset').addEventListener('click', () => showModal('Neu anfangen?',
+  `Punkte und Stufen auf diesem Gerät werden gelöscht. Mit einem Code kommst du zurück.`,
+  [{label:'Abbrechen'}, {label:'Neu anfangen', primary:true, fn:() => { store.s = newProfile(); save(); openMenu(); }}]));
+$('#tourSkip').addEventListener('click', endTour);
+$('#tourGo').addEventListener('click', endTour);
+$('#tourAgain').addEventListener('click', () => { const id = ++tourRun; finger.classList.add('off'); playTour(id).catch(() => {}); });
+$('#levels').addEventListener('click', e => {
+  const b = e.target.closest('.lvl'); if(!b) return;
+  if(b.dataset.mem){
+    if(P().points >= CONFIG.memoryUnlock || P().memFree) openMemory();
+    else showModal('🔒', `Noch ${CONFIG.memoryUnlock - P().points} Punkte.`, [{label:'Okay', primary:true}]);
+    return;
+  }
+  const L = +b.dataset.l;
+  if(L <= P().maxLevel) startLevel(L);
+  else showModal('🔒', `${CONFIG.masteryNeed} von ${CONFIG.masteryWindow} geschickt in ${LEVELS[L-1].name}.`, [{label:'Okay', primary:true}]);
+});
+$('#gBoard').addEventListener('click', e => { const b = e.target.closest('[data-idx]'); if(b) onItem(+b.dataset.idx); });
+$('#scrGame').addEventListener('click', e => {
+  const a = e.target.closest('[data-act]'); if(a){ act(a.dataset.act); return; }
+  const k = e.target.closest('[data-key]'); if(k) key(k.dataset.key);
+});
+$('#memGrid').addEventListener('click', e => { const b = e.target.closest('[data-mc]'); if(b) memClick(+b.dataset.mc); });
+$('#memBack').addEventListener('click', openMenu);
+document.addEventListener('keydown', e => {
+  if(!$('#veil').hidden || !G || !$('#scrGame').classList.contains('on')) return;
+  if(G.phase === 'calc'){
+    if(/^[0-9]$/.test(e.key)) key(e.key);
+    else if(e.key === 'Backspace') key('back');
+    else if(e.key === 'Enter') key('ok');
+  }
+});
+window.addEventListener('resize', () => { if($('#scrTour').classList.contains('on')) finger.classList.add('off'); });
+
+/* ===== Start ===== */
+load();
+if(store.s) openMenu(); else showScreen('scrStart');
+})();
+</script>
+</body>
+</html>
