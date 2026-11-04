@@ -42,7 +42,8 @@ async function load() {
 
 function render() {
   const q = $("q").value.trim().toLowerCase();
-  const list = (tools || []).filter(t => !q || (t.title + " " + t.desc).toLowerCase().includes(q));
+  const pinned = new Set(PIN.map(a => a.getAttribute("href")));
+  const list = (tools || []).filter(t => !pinned.has(t.href) && (!q || (t.title + " " + t.desc).toLowerCase().includes(q)));
   const pins = PIN.filter(a => !q || (a.textContent + " " + a.title).toLowerCase().includes(q));
   $("grid").innerHTML = pins.map(a => a.outerHTML).join("") + list.map(t => {
     const h = (A.hue + (hash(t.title) % 70) - 35 + 360) % 360;
