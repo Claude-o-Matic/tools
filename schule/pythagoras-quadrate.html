@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quadrate am Dreieck</title>
+<script src="https://www.geogebra.org/apps/deployggb.js"></script>
+<style>
+  :root {
+    --bg: #f6f5f1; --ink: #1b1b1b; --muted: #6b6b6b;
+    --blau: #4f86c6; --orange: #e8730c; --lila: #5b4a8b; --gruen: #2e9d4f;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-user-select: none; user-select: none; }
+  body { display: flex; }
+  #panel { width: 340px; flex: none; padding: 14px 16px; display: flex; flex-direction: column; gap: 12px; overflow-y: auto; }
+  .modi { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .modi button { height: 44px; border-radius: 10px; border: 2px solid var(--ink); background: #fff; color: var(--ink);
+    font-size: 17px; font-weight: 700; cursor: pointer; touch-action: manipulation; }
+  .modi button.an { background: var(--ink); color: #fff; }
+  .zeile { background: #fff; border: 2px solid var(--ink); border-radius: 14px; padding: 8px 12px; }
+  .kopf { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 6px; }
+  .name { font-size: 24px; font-weight: 800; }
+  .wert { font-size: 28px; font-weight: 800; font-variant-numeric: tabular-nums; }
+  .wert small { font-size: 18px; font-weight: 700; }
+  .steuer { display: flex; align-items: center; gap: 10px; }
+  .steuer button { width: 44px; height: 44px; flex: none; border-radius: 10px; border: 2px solid var(--ink);
+    background: #fff; font-size: 26px; font-weight: 700; color: var(--ink); cursor: pointer; touch-action: manipulation; }
+  .steuer button:active { background: #e8e8e8; }
+  input[type=range] { -webkit-appearance: none; appearance: none; width: 100%; height: 10px; border-radius: 5px; background: #ddd; outline: none; }
+  input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 32px; height: 32px; border-radius: 50%;
+    background: var(--farbe); border: 3px solid #fff; box-shadow: 0 0 0 2px var(--ink); cursor: pointer; }
+  input[type=range]::-moz-range-thumb { width: 28px; height: 28px; border-radius: 50%; background: var(--farbe);
+    border: 3px solid #fff; box-shadow: 0 0 0 2px var(--ink); cursor: pointer; }
+  .flaechen { background: #fff; border: 2px solid var(--ink); border-radius: 14px; padding: 10px 12px;
+    font-size: 21px; font-weight: 700; line-height: 1.5; font-variant-numeric: tabular-nums; }
+  .flaechen .r { display: flex; justify-content: space-between; align-items: flex-end; gap: 10px; }
+  .flaechen .begriff { display: block; font-size: 13px; font-weight: 600; line-height: 1.1; }
+  .merksatz { background: #eef7f0; border: 3px solid var(--gruen); border-radius: 14px; padding: 10px 12px; font-size: 17px; font-weight: 700; line-height: 1.4; }
+  .merksatz .formel { font-size: 24px; text-align: center; margin-top: 6px; }
+  .merksatz .zahlen { font-size: 17px; text-align: center; color: var(--muted); font-variant-numeric: tabular-nums; }
+  #ggb-wrap { position: relative; flex: 1; min-width: 0; }
+  #ggb { position: absolute; inset: 0; }
+  @media (max-width: 820px), (max-aspect-ratio: 1/1) {
+    body { flex-direction: column; }
+    #panel { width: 100%; flex-direction: row; flex-wrap: wrap; gap: 8px; padding: 10px 12px; max-height: 50%; }
+    .modi { grid-template-columns: repeat(4, 1fr); width: 100%; }
+    .zeile, .flaechen, .merksatz { flex: 1 1 220px; }
+  }
+</style>
+</head>
+<body>
+<div id="panel">
+  <div class="modi">
+    <button data-m="a1" class="an">Aufgabe 1</button>
+    <button data-m="a2">Aufgabe 2</button>
+    <button data-m="hacker">Hacker</button>
+    <button data-m="merksatz">Merksatz</button>
+  </div>
+  <div class="zeile" style="--farbe: var(--blau)">
+    <div class="kopf"><span class="name" style="color:var(--blau)">a</span><span class="wert"><span id="wa">3</span> <small>cm</small></span></div>
+    <div class="steuer"><button data-s="a" data-d="-1">−</button><input type="range" id="ra" min="0.5" max="12" step="0.1" value="3"><button data-s="a" data-d="1">+</button></div>
+  </div>
+  <div class="zeile" style="--farbe: var(--orange)">
+    <div class="kopf"><span class="name" style="color:var(--orange)">b</span><span class="wert"><span id="wb">4</span> <small>cm</small></span></div>
+    <div class="steuer"><button data-s="b" data-d="-1">−</button><input type="range" id="rb" min="0.5" max="12" step="0.1" value="4"><button data-s="b" data-d="1">+</button></div>
+  </div>
+  <div class="flaechen">
+    <div class="r"><span style="color:var(--blau)"><span class="begriff b-an" hidden>Kathetenquadrat</span>a²</span><span id="fa">9 cm²</span></div>
+    <div class="r"><span style="color:var(--orange)"><span class="begriff b-an" hidden>Kathetenquadrat</span>b²</span><span id="fb">16 cm²</span></div>
+    <div class="r"><span style="color:var(--lila)"><span class="begriff b-an" hidden>Hypotenusenquadrat</span>c²</span><span id="fc">25 cm²</span></div>
+  </div>
+  <div class="merksatz" id="merksatz" hidden>
+    Kathetenquadrat + Kathetenquadrat = Hypotenusenquadrat
+    <div class="formel">a² + b² = c²</div>
+    <div class="zahlen" id="mzahlen">9 cm² + 16 cm² = 25 cm²</div>
+  </div>
+</div>
+<div id="ggb-wrap"><div id="ggb"></div></div>
+
+<script>
+const $ = id => document.getElementById(id);
+const komma = x => (Math.round(x * 100) / 100).toString().replace('.', ',');
+const RGB = { a: [79, 134, 198], b: [232, 115, 12], c: [91, 74, 139] };
+const MODI = {
+  a1:       { schritt: 0.1, begriffe: false, merksatz: false },
+  a2:       { schritt: 0.1, begriffe: true,  merksatz: false },
+  hacker:   { schritt: 1,   begriffe: false, merksatz: false },
+  merksatz: { schritt: 0.1, begriffe: true,  merksatz: true  },
+};
+let modus = 'a1';
+let api = null, sperre = false;
+
+const schritt = () => MODI[modus].schritt;
+function runden(v) {
+  const s = schritt(), min = s < 1 ? 0.5 : 1;
+  v = Math.round(v / s) * s;
+  return Math.round(Math.max(min, Math.min(12, v)) * 10) / 10;
+}
+function werte() { return { a: +$('ra').value, b: +$('rb').value }; }
+function cqWert() {
+  if (api) return Math.round(api.getValue('cq') * 100) / 100;
+  const { a, b } = werte(); return Math.round((a * a + b * b) * 100) / 100;
+}
+
+function anzeigen() {
+  const { a, b } = werte();
+  const cc = cqWert();
+  $('wa').textContent = komma(a); $('wb').textContent = komma(b);
+  $('fa').textContent = komma(a * a) + ' cm²'; $('fb').textContent = komma(b * b) + ' cm²';
+  $('fc').textContent = komma(cc) + ' cm²';
+  $('mzahlen').textContent = komma(a * a) + ' cm² + ' + komma(b * b) + ' cm² = ' + komma(cc) + ' cm²';
+}
+
+function setzen(a, b) {
+  a = runden(a); b = runden(b);
+  $('ra').value = a; $('rb').value = b;
+  if (api) {
+    sperre = true; api.setCoords('B', 0, a); api.setCoords('A', b, 0); sperre = false;
+    ansicht(); texteSetzen();
+  }
+  anzeigen();
+}
+
+function modusSetzen(m) {
+  const { a, b } = werte();
+  modus = m;
+  document.querySelectorAll('.modi button').forEach(bt => bt.classList.toggle('an', bt.dataset.m === m));
+  const s = schritt();
+  ['ra', 'rb'].forEach(id => { $(id).step = s; $(id).min = s < 1 ? 0.5 : 1; });
+  document.querySelectorAll('.b-an').forEach(e => { e.hidden = !MODI[m].begriffe; });
+  $('merksatz').hidden = !MODI[m].merksatz;
+  if (api) {
+    ['kA', 'kB', 'kC'].forEach(n => api.setVisible(n, MODI[m].begriffe));
+    const lang = MODI[m].begriffe;
+    api.setTextValue('lA', lang ? 'Kathete a' : 'a');
+    api.setTextValue('lB', lang ? 'Kathete b' : 'b');
+    api.setTextValue('lC', lang ? 'Hypotenuse c' : 'c');
+  }
+  setzen(a, b);
+}
+
+document.querySelectorAll('.modi button').forEach(bt => bt.addEventListener('click', () => modusSetzen(bt.dataset.m)));
+document.querySelectorAll('.steuer button').forEach(bt => bt.addEventListener('click', () => {
+  const { a, b } = werte(); const d = +bt.dataset.d * schritt();
+  bt.dataset.s === 'a' ? setzen(a + d, b) : setzen(a, b + d);
+}));
+$('ra').addEventListener('input', () => setzen(werte().a, werte().b));
+$('rb').addEventListener('input', () => setzen(werte().a, werte().b));
+
+// Sichtbereich so wählen, dass alle drei Quadrate hineinpassen (gleiche Einheit in x und y)
+function ansicht() {
+  const { a, b } = werte();
+  const el = $('ggb'); const W = el.clientWidth, H = el.clientHeight;
+  const r = 0.12 * (a + b) + 0.6;
+  let xmin = -a - r, xmax = b + a + r, ymin = -b - r, ymax = a + b + r;
+  const sx = xmax - xmin, sy = ymax - ymin;
+  if (sx / sy < W / H) { const n = sy * W / H; xmin -= (n - sx) / 2; xmax += (n - sx) / 2; }
+  else { const n = sx * H / W; ymin -= (n - sy) / 2; ymax += (n - sy) / 2; }
+  api.setCoordSystem(xmin, xmax, ymin, ymax);
+  ansicht.ppu = W / (xmax - xmin);
+}
+
+// Texte in den Quadraten zentrieren (Breite grob aus der Zeichenzahl geschätzt)
+function texteSetzen() {
+  const ppu = ansicht.ppu || 40;
+  const { a, b } = werte();
+  const lang = MODI[modus].begriffe;
+  [['a', a * a, 'Kathetenquadrat'], ['b', b * b, 'Kathetenquadrat'], ['c', cqWert(), 'Hypotenusenquadrat']].forEach(([n, f, wort]) => {
+    const z = (n + '² = ' + komma(f) + ' cm²').length;
+    api.setValue('dx' + n, -z * 11.5 / 2 / ppu);
+    api.setValue('dy' + n, (lang ? -28 : -9) / ppu);
+    api.setValue('ex' + n, -wort.length * 8.4 / 2 / ppu);
+    api.setValue('ey' + n, 14 / ppu);
+  });
+  // Seitenbeschriftungen innen am Dreieck
+  api.setValue('sax', 8 / ppu);  api.setValue('say', -6 / ppu);
+  api.setValue('sbx', -(lang ? 40 : 6) / ppu); api.setValue('sby', 10 / ppu);
+  api.setValue('scd', 16 / ppu);
+}
+
+function aufbauen(g) {
+  api = g;
+  const { a, b } = werte();
+  const cmd = [
+    'dxa = 0', 'dya = 0', 'dxb = 0', 'dyb = 0', 'dxc = 0', 'dyc = 0',
+    'exa = 0', 'eya = 0', 'exb = 0', 'eyb = 0', 'exc = 0', 'eyc = 0',
+    'sax = 0', 'say = 0', 'sbx = 0', 'sby = 0', 'scd = 0',
+    'lA = "a"', 'lB = "b"', 'lC = "c"',
+    'C = (0, 0)', 'A = Point(xAxis)', 'B = Point(yAxis)',
+    'ka = y(B)', 'kb = x(A)',
+    'sqa = Polygon(C, B, 4)', 'sqb = Polygon(A, C, 4)', 'sqc = Polygon(B, A, 4)',
+    'cq = Distance(A, B)^2',
+    'sega = Segment(C, B)', 'segb = Segment(C, A)', 'segc = Segment(A, B)',
+    'w = Angle(A, C, B)',
+    'tA = Text(ReplaceAll("a² = " + ka^2 + " cm²", ".", ","), Centroid(sqa) + (dxa, dya))',
+    'tB = Text(ReplaceAll("b² = " + kb^2 + " cm²", ".", ","), Centroid(sqb) + (dxb, dyb))',
+    'tC = Text(ReplaceAll("c² = " + cq + " cm²", ".", ","), Centroid(sqc) + (dxc, dyc))',
+    'kA = Text("Kathetenquadrat", Centroid(sqa) + (exa, eya))',
+    'kB = Text("Kathetenquadrat", Centroid(sqb) + (exb, eyb))',
+    'kC = Text("Hypotenusenquadrat", Centroid(sqc) + (exc, eyc))',
+    'sA = Text(lA, Midpoint(C, B) + (sax, say))',
+    'sB = Text(lB, Midpoint(C, A) + (sbx, sby))',
+    'sC = Text(lC, Midpoint(A, B) + scd * UnitVector(Vector(Midpoint(A, B), C)))',
+  ];
+  window.FEHLER = cmd.filter(c => !api.evalCommand(c));
+  api.setCoords('B', 0, a); api.setCoords('A', b, 0);
+
+  // alles erst ausblenden/entbeschriften, dann gezielt gestalten
+  api.getAllObjectNames().forEach(n => api.setLabelVisible(n, false));
+  api.getAllObjectNames('point').forEach(n => { if (!['A', 'B', 'C'].includes(n)) api.setVisible(n, false); });
+  ['ka', 'kb', 'cq', 'dxa', 'dya', 'dxb', 'dyb', 'dxc', 'dyc', 'exa', 'eya', 'exb', 'eyb', 'exc', 'eyc',
+   'sax', 'say', 'sbx', 'sby', 'scd', 'lA', 'lB', 'lC'].forEach(n => api.setVisible(n, false));
+
+  const stil = (n, rgb, fill, dicke) => { api.setColor(n, ...rgb); if (fill !== null) api.setFilling(n, fill); if (dicke) api.setLineThickness(n, dicke); };
+  stil('sqa', RGB.a, 0.3, 5); stil('sqb', RGB.b, 0.3, 5); stil('sqc', RGB.c, 0.3, 5);
+  api.getAllObjectNames('segment').forEach(n => { if (!n.startsWith('seg')) api.setLineThickness(n, 4); });
+  stil('sega', RGB.a, null, 10); stil('segb', RGB.b, null, 10); stil('segc', RGB.c, null, 10);
+  stil('w', [46, 157, 79], 0.4, 4);
+  ['A', 'B'].forEach(n => { api.setColor(n, 27, 27, 27); api.setPointSize(n, 7); });
+  api.setColor('C', 27, 27, 27); api.setPointSize('C', 5); api.setFixed('C', true, false);
+
+  // Schrift: Flächen groß, Begriffe und Seiten mittel
+  const schrift = (n, faktor) => {
+    const x = api.getXML(n);
+    api.evalXML(x.replace(/<font[^>]*\/>/, '').replace('</element>', '<font serif="false" sizeM="' + faktor + '" size="0" style="1"/></element>'));
+  };
+  [['tA', 2, RGB.a], ['tB', 2, RGB.b], ['tC', 2, RGB.c], ['kA', 1.4, RGB.a], ['kB', 1.4, RGB.b], ['kC', 1.4, RGB.c],
+   ['sA', 1.4, RGB.a], ['sB', 1.4, RGB.b], ['sC', 1.4, RGB.c]].forEach(([n, f, rgb]) => {
+    api.setColor(n, ...rgb); schrift(n, f); api.setFixed(n, true, false);
+  });
+  ['sqa', 'sqb', 'sqc', 'w', 'sega', 'segb', 'segc'].forEach(n => api.setFixed(n, true, false));
+
+  api.setAxesVisible(false, false);
+  api.setGridVisible(true);
+
+  // Ziehen an A oder B: auf das Raster des Modus einrasten
+  const nachZiehen = () => {
+    if (sperre) return;
+    const na = api.getYcoord('B'), nb = api.getXcoord('A');
+    const ra = runden(na), rb = runden(nb);
+    $('ra').value = ra; $('rb').value = rb;
+    if (Math.abs(ra - na) > 1e-9 || Math.abs(rb - nb) > 1e-9) {
+      sperre = true; api.setCoords('B', 0, ra); api.setCoords('A', rb, 0); sperre = false;
+    }
+    texteSetzen(); anzeigen();
+  };
+  window.nachZiehen = nachZiehen;
+  api.registerObjectUpdateListener('A', nachZiehen);
+  api.registerObjectUpdateListener('B', nachZiehen);
+  api.registerClientListener(e => {
+    const typ = e && (e.type || e[0]);
+    if (typ === 'dragEnd') { nachZiehen(); ansicht(); texteSetzen(); }
+  });
+
+  modusSetzen(modus);
+}
+
+function starten() {
+  const el = $('ggb');
+  const params = {
+    appName: 'classic', perspective: 'G', language: 'de',
+    width: el.clientWidth, height: el.clientHeight,
+    showToolBar: false, showAlgebraInput: false, showMenuBar: false, showResetIcon: false,
+    enableRightClick: false, enableLabelDrags: false, enableShiftDragZoom: true, showZoomButtons: true,
+    showFullscreenButton: true, borderColor: '#f6f5f1', preventFocus: true,
+    appletOnLoad: aufbauen
+  };
+  new GGBApplet(params, true).inject('ggb');
+}
+
+let rt = null;
+window.addEventListener('resize', () => {
+  clearTimeout(rt);
+  rt = setTimeout(() => { if (api && api.setSize) { api.setSize($('ggb').clientWidth, $('ggb').clientHeight); ansicht(); texteSetzen(); } }, 200);
+});
+
+window.addEventListener('load', starten);
+anzeigen();
+</script>
+</body>
+</html>
