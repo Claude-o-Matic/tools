@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Schriftlich addieren</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --papier:#fdfcf6; --karo:#d9e6f2; --karo-stark:#b9d0e6;
+  --tinte:#1b4a85; --tinte-hell:#5e8cbb;
+  --rot:#d23b2f; --gruen:#2f8f5b; --gelb:#ffe49c; --gelb-tief:#4a3a00;
+  --grau:#6c7580; --rand:#dcd8cc;
+  --sw0:#e8862a; --sw1:#2f8f5b; --sw2:#7b3fa0; --sw3:#2f6f9f; --sw4:#d9257e; --sw5:#8a6a20;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --papier:#191c21; --karo:#283039; --karo-stark:#3d4954;
+    --tinte:#8ec0f5; --tinte-hell:#5e8cbb;
+    --rot:#ff7a6e; --gruen:#6ddc9c; --gelb:#5d4f20; --gelb-tief:#ffe9b0;
+    --grau:#9aa3ae; --rand:#333a42;
+    --sw0:#f0a45c; --sw1:#6ddc9c; --sw2:#c08ae0; --sw3:#7fb6e8; --sw4:#f287b8; --sw5:#d9b26a;
+    color-scheme: dark;
+  }
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+  background:var(--papier);
+  background-image:linear-gradient(var(--karo) 1px,transparent 1px),linear-gradient(90deg,var(--karo) 1px,transparent 1px);
+  background-size:26px 26px;font-family:Nunito,system-ui,sans-serif;color:var(--tinte);
+  display:flex;flex-direction:column;align-items:center}
+.wrap{width:100%;max-width:560px;padding:10px 14px 20px;display:flex;flex-direction:column;gap:12px}
+.verstecken{display:none !important}
+
+.kopf{display:flex;align-items:center;gap:8px}
+.punkte{display:flex;gap:5px;flex:1}
+.punkt{width:13px;height:13px;border-radius:50%;border:2px solid var(--karo-stark);transition:.25s}
+.punkt.voll{background:var(--gruen);border-color:var(--gruen)}
+.punkt.hilfe{background:var(--gelb);border-color:var(--gelb)}
+.punkt.jetzt{border-color:var(--tinte);transform:scale(1.25)}
+.chip{border:2px solid var(--rand);background:var(--papier);color:var(--tinte);border-radius:10px;
+  height:34px;padding:0 12px;font-family:inherit;font-size:15px;font-weight:800;cursor:pointer}
+.chip.rund{width:34px;padding:0;font-size:18px}
+.chip.hoch{background:var(--gelb);border-color:var(--gelb);color:var(--gelb-tief);animation:wink 1.6s infinite}
+@keyframes wink{0%,100%{transform:none}50%{transform:translateY(-3px)}}
+
+.karte{background:var(--papier);border:2px solid var(--rand);border-radius:16px;padding:14px 12px;box-shadow:0 2px 0 var(--rand)}
+
+.stufen-wahl{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stufe-karte{border:2px solid var(--rand);background:var(--papier);border-radius:16px;padding:12px 8px;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;gap:7px;box-shadow:0 3px 0 var(--rand);font-family:inherit;color:var(--tinte)}
+.stufe-karte:active{transform:translateY(2px);box-shadow:0 1px 0 var(--rand)}
+.stufe-karte .titel{font-size:17px;font-weight:800}
+.stufe-karte .form{font-size:13px;color:var(--grau);font-weight:700}
+.mini-bild{display:flex;flex-direction:column;gap:3px;align-items:flex-end}
+.mini-zeile{display:flex;gap:3px}
+.mini-kasten{width:14px;height:16px;border:1.5px solid var(--karo-stark);border-radius:2px;background:rgba(27,74,133,.07)}
+.mini-zeile.summe .mini-kasten{border-top:3px solid var(--tinte)}
+
+.gitter{display:flex;justify-content:center;overflow-x:auto}
+table.rg{border-collapse:collapse}
+table.rg td{width:44px;height:44px;text-align:center;font-size:29px;font-weight:800}
+td.kopfz{height:24px;font-size:13px;font-weight:800;color:var(--grau);border-bottom:2px solid var(--karo-stark);transition:.25s}
+td.kopfz.an{color:var(--tinte);transform:scale(1.35)}
+td.zahl{border:1.5px solid var(--karo-stark);color:var(--tinte);background:rgba(27,74,133,.05)}
+.sw0{color:var(--sw0)!important}.sw1{color:var(--sw1)!important}.sw2{color:var(--sw2)!important}
+.sw3{color:var(--sw3)!important}.sw4{color:var(--sw4)!important}.sw5{color:var(--sw5)!important}
+.ziffern{display:flex;gap:6px}
+.zbox{width:34px;height:46px;border:2.5px solid currentColor;border-radius:8px;display:flex;align-items:center;
+  justify-content:center;font-size:27px;font-weight:800;animation:rein .25s ease}
+@keyframes rein{from{transform:translateY(-8px);opacity:0}to{transform:none;opacity:1}}
+td.op{width:28px;font-size:25px;color:var(--grau);border:none;background:none}
+td.leer{border-color:transparent;background:none}
+td.ue{height:24px;font-size:16px;color:var(--rot);border:none}
+td.ue.box{border:1.5px dashed var(--karo-stark);border-radius:4px}
+tr.erg td.zahl{border:1.5px dashed var(--karo-stark);border-top:3px solid var(--tinte);color:var(--gruen);background:none}
+tr.erg.gezeigt td.zahl{border-style:solid}
+td.hell{background:var(--gelb)}
+td.luecke{background:var(--gelb);color:var(--gelb-tief);animation:puls 1.8s infinite}
+td.tipp{cursor:pointer}
+td.treffer{background:var(--gruen);color:#fff !important}
+td.daneben{animation:wackel .4s}
+.hupf{animation:hupf .55s ease}
+@keyframes hupf{0%,100%{transform:none}35%{transform:translateY(-8px) scale(1.18)}}
+.flug{position:fixed;z-index:50;font-size:20px;font-weight:800;color:var(--rot);
+  transition:transform .95s cubic-bezier(.4,0,.2,1),opacity .95s;pointer-events:none}
+
+.blase{margin:10px auto 0;max-width:340px;text-align:center;background:var(--gelb);color:var(--gelb-tief);
+  border-radius:12px;padding:8px 12px;font-size:21px;font-weight:800;opacity:0;transform:scale(.92);transition:.22s}
+.blase.da{opacity:1;transform:none}
+
+.eingabe{display:flex;align-items:center;justify-content:center;gap:12px}
+.heft{width:46px;height:46px;flex:none}
+.heft .stift{transform-origin:70% 70%}
+.heft.schreibt .stift{animation:schreiben 1.5s ease}
+@keyframes schreiben{0%{transform:translate(-9px,3px) rotate(-6deg)}50%{transform:translate(4px,-2px) rotate(2deg)}100%{transform:translate(-9px,3px) rotate(-6deg)}}
+.heft.schreibt .linie{stroke-dasharray:26;stroke-dashoffset:26;animation:ziehen 1.5s ease forwards}
+@keyframes ziehen{to{stroke-dashoffset:0}}
+.gleich{display:flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:50%;
+  background:var(--tinte);color:var(--papier);font-size:25px;font-weight:800;flex:none}
+.gleich.such{background:var(--gelb);color:var(--gelb-tief)}
+.feld{min-width:120px;height:56px;padding:0 10px;border:3px solid var(--tinte);border-radius:12px;
+  display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:800;animation:puls 1.7s infinite}
+.feld.gut{border-color:var(--gruen);color:var(--gruen);animation:none}
+.feld.schlecht{border-color:var(--rot);color:var(--rot);animation:wackel .4s}
+.marke{text-align:center;font-size:14px;font-weight:800;color:var(--grau);margin-top:8px}
+@keyframes puls{0%,100%{box-shadow:0 0 0 0 rgba(27,74,133,.22)}50%{box-shadow:0 0 0 7px rgba(27,74,133,0)}}
+@keyframes wackel{0%,100%{transform:none}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+
+.block{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.taste{border:2px solid var(--rand);background:var(--papier);color:var(--tinte);border-radius:12px;height:54px;
+  font-family:inherit;font-size:25px;font-weight:800;cursor:pointer;box-shadow:0 2px 0 var(--rand)}
+.taste:active{transform:translateY(2px);box-shadow:none}
+.taste:focus-visible{outline:3px solid var(--tinte);outline-offset:2px}
+.taste.weg{color:var(--rot);font-size:20px}
+.taste.ok{grid-column:span 2;background:var(--tinte);color:var(--papier);border-color:var(--tinte)}
+.hilfe{width:100%;border:2px solid var(--gelb);background:var(--gelb);color:var(--gelb-tief);border-radius:12px;height:48px;
+  font-family:inherit;font-size:18px;font-weight:800;cursor:pointer;box-shadow:0 2px 0 rgba(0,0,0,.12)}
+.hilfe:disabled{opacity:.35;cursor:default}
+.stufen-punkte{display:flex;gap:4px;justify-content:center}
+.sp{width:9px;height:9px;border-radius:50%;background:var(--karo-stark)}
+.sp.an{background:var(--rot)}
+.ende{text-align:center;display:flex;flex-direction:column;gap:12px;align-items:center}
+.gross{font-size:44px}
+.over{position:fixed;inset:0;background:rgba(10,20,35,.35);display:flex;align-items:center;justify-content:center;z-index:30;padding:16px}
+.spot{position:fixed;border-radius:12px;box-shadow:0 0 0 9999px rgba(8,16,28,.74);
+  transition:all .5s cubic-bezier(.4,0,.2,1);z-index:55;pointer-events:none}
+#tour-blase{position:relative;z-index:57}
+#tour-weiter,#tour-zu,#tour-zurueck,#tour-nochmal,#tour-neu{position:relative;z-index:57}
+.spot-wort{position:fixed;z-index:56;background:var(--tinte);color:var(--papier);border-radius:9px;
+  padding:3px 10px;font-size:14px;font-weight:800;white-space:nowrap;transition:all .5s cubic-bezier(.4,0,.2,1);pointer-events:none}
+.over-karte{background:var(--papier);border:2px solid var(--rand);border-radius:18px;padding:16px;max-width:400px;width:100%;text-align:center}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div id="start">
+    <div class="stufen-wahl" id="stufen-wahl"></div>
+    <button class="hilfe" id="btn-beispiel" style="margin-top:12px">Beispiel</button>
+  </div>
+
+  <div id="zwischen" class="verstecken">
+    <div class="karte" style="text-align:center">
+      <div style="font-size:22px;font-weight:800" id="z-titel"></div>
+      <div style="margin-top:10px" id="z-bild"></div>
+    </div>
+    <button class="hilfe" id="z-wie" style="margin-top:12px">? wie geht das</button>
+    <button class="taste ok" id="z-los" style="width:100%;margin-top:10px">los</button>
+    <button class="chip" id="z-zurueck" style="margin-top:10px">zurück</button>
+  </div>
+
+  <div id="spiel" class="verstecken" style="display:flex;flex-direction:column;gap:12px">
+    <div class="kopf">
+      <div class="punkte" id="punkte"></div>
+      <button class="chip verstecken" id="chip-hoch">schwerer?</button>
+      <button class="chip" id="chip-stufe"></button>
+      <button class="chip rund" id="chip-tour">?</button>
+    </div>
+
+    <div class="karte">
+      <div class="gitter" id="gitter"></div>
+      <div class="blase" id="blase"></div>
+      <div class="marke" id="marke"></div>
+    </div>
+
+    <div class="karte" id="karte-eingabe">
+      <div class="eingabe">
+        <svg class="heft" id="heft" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+          <rect x="7" y="6" width="28" height="36" rx="3" fill="none" stroke="currentColor" stroke-width="2.5"/>
+          <path class="linie" d="M13 20 H29" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <path class="linie" d="M13 27 H26" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <g class="stift"><path d="M31 33 L41 23 L44 26 L34 36 L30 37 Z" fill="var(--gelb)" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></g>
+        </svg>
+        <div class="gleich" id="gleich">=</div>
+        <div class="feld" id="feld"></div>
+      </div>
+    </div>
+
+    <div class="block verstecken" id="wahl" style="grid-template-columns:1fr 1fr">
+      <button class="taste" id="wahl-nochmal" style="font-size:18px">nochmal</button>
+      <button class="hilfe" id="wahl-hilfe" style="height:54px">Hilfe</button>
+    </div>
+    <button class="hilfe" id="btn-hilfe">Hilfe</button>
+    <div class="stufen-punkte" id="stufen-punkte"></div>
+    <div class="block" id="block"></div>
+
+    <div class="karte verstecken" id="karte-ende">
+      <div class="ende">
+        <div class="gross" id="e-icon">★</div>
+        <div id="e-text" style="font-size:18px;font-weight:800"></div>
+        <button class="taste ok" id="e-weiter" style="width:170px">weiter</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="over verstecken" id="tour">
+  <div class="spot verstecken" id="spot"></div>
+  <div class="spot-wort verstecken" id="spot-wort"></div>
+  <div class="over-karte">
+    <div id="tour-mini"></div>
+    <div class="blase" id="tour-blase" style="margin-top:12px"></div>
+    <div style="display:flex;gap:8px;margin-top:14px">
+      <button class="chip" id="tour-zurueck" style="flex:1">zurück</button>
+      <button class="taste ok" id="tour-weiter" style="flex:2;grid-column:auto">weiter</button>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:8px">
+      <button class="chip" id="tour-nochmal" style="flex:1">nochmal</button>
+      <button class="chip" id="tour-neu" style="flex:1">neues Beispiel</button>
+      <button class="chip" id="tour-zu" style="flex:1">schließen</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+const $=id=>document.getElementById(id);
+const NAMEN=["E","Z","H","T","ZT","HT"];
+const PRO_RUNDE=6;
+const TEMPO=1.3, t=ms=>Math.round(ms*TEMPO);
+const SCHNELL_MS=9000, SCHNELL_NOETIG=3;
+
+const STUFEN=[
+  {titel:"Einsteiger",   stellen:[3,2]},
+  {titel:"Standard",     stellen:[3,3]},
+  {titel:"Große Zahlen", stellen:[4,3]},
+  {titel:"Profi",        stellen:[4,4]},
+  {titel:"Dreierpack",   stellen:[3,3,3]},
+  {titel:"Endgegner",    stellen:[4,4,4]}
+];
+const ARTEN=["rechnen","rechnen","luecke","rechnen","fehler","rechnen"];
+
+let stufe=0, nr=0, verlauf=[], aufgabe=null;
+let eingabe="", hilfeStufe=0, hilfeBenutzt=false, laeuft=false;
+let startZeit=0, schnellSerie=0;
+
+const zufall=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const ziffer=(z,k)=>Math.floor(z/Math.pow(10,k))%10;
+
+function spaltenRechnung(zahlen){
+  const summe=zahlen.reduce((a,b)=>a+b,0);
+  const n=Math.max(Math.max(...zahlen.map(z=>String(z).length)),String(summe).length);
+  const out=[]; let c=0;
+  for(let k=0;k<n;k++){
+    const teile=[]; if(c) teile.push(c);
+    zahlen.forEach(z=>{ if(String(z).length>k) teile.push(ziffer(z,k)); });
+    const s=c+zahlen.reduce((a,z)=>a+ziffer(z,k),0);
+    out.push({k,teile,summe:s,ziffer:s%10,carry:Math.floor(s/10),carryIn:c});
+    c=Math.floor(s/10);
+  }
+  return {n,out,summe};
+}
+
+function roheAufgabe(){
+  const st=STUFEN[stufe].stellen;
+  for(let v=0;v<400;v++){
+    const zahlen=st.map(s=>zufall(Math.pow(10,s-1),Math.pow(10,s)-1));
+    const r=spaltenRechnung(zahlen);
+    if(r.out.some(o=>o.carry>0)) return {zahlen,...r};
+  }
+  const zahlen=[358,276]; return {zahlen,...spaltenRechnung(zahlen)};
+}
+
+function baueAufgabe(art){
+  const a=roheAufgabe();
+  a.art=art||"rechnen";
+  if(a.art==="luecke"){
+    const i=zufall(0,a.zahlen.length-1);
+    const len=String(a.zahlen[i]).length;
+    a.lueckeZeile=i;
+    a.lueckeSp=zufall(0,len-1);
+    a.lueckeZiffer=ziffer(a.zahlen[i],a.lueckeSp);
+  }
+  if(a.art==="fehler"){
+    const kandidaten=[];
+    a.out.forEach(o=>{ if(o.carry>0 && o.k+1<a.n) kandidaten.push({typ:"uebertrag",k:o.k+1}); });
+    a.out.forEach(o=>{ if(o.k<String(a.summe).length) kandidaten.push({typ:"rechnen",k:o.k}); });
+    const f=kandidaten[zufall(0,kandidaten.length-1)];
+    a.fehlerSp=f.k; a.fehlerTyp=f.typ;
+    a.falschZiffer = f.typ==="uebertrag"
+      ? (a.out[f.k].ziffer+9)%10
+      : (a.out[f.k].ziffer+(Math.random()<0.5?1:9))%10;
+  }
+  return a;
+}
+
+/* ---------- Startbildschirm ---------- */
+function miniBild(stellen){
+  let h='<div class="mini-bild">';
+  stellen.forEach(s=>{ h+='<div class="mini-zeile">'+'<div class="mini-kasten"></div>'.repeat(s)+'</div>'; });
+  h+='<div class="mini-zeile summe">'+'<div class="mini-kasten"></div>'.repeat(Math.max(...stellen)+1)+'</div>';
+  return h+'</div>';
+}
+function zeichneStart(){
+  $("stufen-wahl").innerHTML=STUFEN.map((s,i)=>
+    `<button class="stufe-karte" data-i="${i}">${miniBild(s.stellen)}<div class="titel">${s.titel}</div><div class="form">${s.stellen.join(" + ")}</div></button>`).join("");
+  $("stufen-wahl").querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>{
+    stufe=+b.dataset.i; nr=0; verlauf=[]; schnellSerie=0;
+    $("start").classList.add("verstecken");
+    $("zwischen").classList.remove("verstecken");
+    $("z-titel").textContent=STUFEN[stufe].titel;
+    $("z-bild").innerHTML=miniBild(STUFEN[stufe].stellen);
+  }));
+}
+
+/* ---------- Gitter ---------- */
+function zeichneGitter(){
+  const sp=[]; for(let k=aufgabe.n-1;k>=0;k--) sp.push(k);
+  let h='<table class="rg"><tr><td class="op"></td>';
+  sp.forEach(k=>h+=`<td class="kopfz sw${k}" id="k${k}">${NAMEN[k]||""}</td>`);
+  h+='</tr>';
+  aufgabe.zahlen.forEach((z,i)=>{
+    h+='<tr><td class="op">'+(i===0?"":"+")+'</td>';
+    sp.forEach(k=>{
+      const leer=String(z).length<=k;
+      let inhalt=leer?"":ziffer(z,k), klasse="";
+      if(aufgabe.art==="luecke" && i===aufgabe.lueckeZeile && k===aufgabe.lueckeSp){ inhalt="?"; klasse="luecke"; }
+      h+=`<td class="zahl sw${k} ${leer?'leer':''} ${klasse}" data-sp="${k}" data-r="s" id="s${i}_${k}">${inhalt}</td>`;
+    });
+    h+='</tr>';
+  });
+  h+='<tr><td class="op"></td>';
+  sp.forEach(k=>h+=`<td class="ue" data-sp="${k}" id="c${k}"></td>`);
+  h+='</tr><tr class="erg '+((aufgabe.art!=="rechnen")?"gezeigt":"")+'"><td class="op"></td>';
+  sp.forEach(k=>h+=`<td class="zahl sw${k}" data-sp="${k}" data-r="e" id="r${k}"></td>`);
+  h+='</tr></table>';
+  $("gitter").innerHTML=h;
+
+  aufgabe.out.forEach(o=>{ if(o.carry>0&&o.k+1<aufgabe.n){const e=$("c"+(o.k+1)); if(e) e.classList.add("box");} });
+
+  if(aufgabe.art!=="rechnen"){
+    const erg=String(aufgabe.summe);
+    aufgabe.out.forEach(o=>{ if(o.k<erg.length){ const r=$("r"+o.k); if(r) r.textContent=o.ziffer; } });
+  }
+  if(aufgabe.art==="fehler"){
+    const r=$("r"+aufgabe.fehlerSp); if(r) r.textContent=aufgabe.falschZiffer;
+    aufgabe.out.forEach(o=>{ if(o.carry>0&&o.k+1<aufgabe.n){
+      const c=$("c"+(o.k+1));
+      if(c && !(aufgabe.fehlerTyp==="uebertrag" && o.k+1===aufgabe.fehlerSp)) c.textContent=o.carry;
+    }});
+    document.querySelectorAll('#gitter tr.erg td.zahl').forEach(td=>{
+      td.classList.add("tipp");
+      td.addEventListener("click",()=>tippeZelle(td));
+    });
+  }
+}
+function hellSpalte(k,an){
+  document.querySelectorAll(`#gitter td[data-sp="${k}"]`).forEach(td=>td.classList.toggle("hell",an));
+}
+function blase(txt,el){ const b=el||$("blase"); b.textContent=txt||""; b.classList.toggle("da",!!txt); }
+
+let tourSofort=false;
+function flug(von,zu,text,fertig){
+  if(!von||!zu||tourSofort){ if(zu) zu.textContent=text; if(fertig) fertig(); return; }
+  const a=von.getBoundingClientRect(), b=zu.getBoundingClientRect();
+  const e=document.createElement("div");
+  e.className="flug"; e.textContent=text;
+  e.style.left=(a.left+a.width/2-8)+"px"; e.style.top=(a.top+a.height/2-12)+"px";
+  document.body.appendChild(e);
+  requestAnimationFrame(()=>{ e.style.transform=`translate(${b.left-a.left}px, ${b.top-a.top-4}px) scale(1.1)`; });
+  setTimeout(()=>{ e.remove(); zu.textContent=text; if(fertig) fertig(); },1000);
+}
+
+/* ---------- Hilfe ---------- */
+function hilfeSchritt(auto){
+  if(laeuft||!aufgabe) return;
+  if(aufgabe.art==="luecke") return hilfeLuecke();
+  if(aufgabe.art==="fehler") return hilfeFehler();
+  const k=hilfeStufe;
+  if(k>=aufgabe.n) return;
+  hilfeBenutzt=true; laeuft=true;
+  for(let i=0;i<aufgabe.n;i++) hellSpalte(i,false);
+  hellSpalte(k,true);
+  const kf=$("k"+k); if(kf){kf.classList.add("an"); setTimeout(()=>kf.classList.remove("an"),t(1100));}
+  const o=aufgabe.out[k];
+  const zellen=[];
+  if(o.carryIn){const c=$("c"+k); if(c&&c.textContent) zellen.push(c);}
+  document.querySelectorAll(`#gitter td[data-sp="${k}"][data-r="s"]`).forEach(td=>{ if(td.textContent) zellen.push(td); });
+  zellen.forEach((td,i)=>setTimeout(()=>{td.classList.add("hupf");setTimeout(()=>td.classList.remove("hupf"),560);},t(i*280)));
+  setTimeout(()=>{
+    blase(o.teile.join(" + ")+" = "+o.summe);
+    setTimeout(()=>{
+      const r=$("r"+k); if(r) r.textContent=o.ziffer;
+      document.querySelector("#gitter tr.erg").classList.add("gezeigt");
+      const weiter=()=>{
+        hilfeStufe++; zeichneStufenPunkte(); laeuft=false;
+        if(hilfeStufe>=aufgabe.n){
+          $("btn-hilfe").disabled=true;
+          setTimeout(()=>{for(let i=0;i<aufgabe.n;i++) hellSpalte(i,false); blase("");},t(1400));
+        }
+        if(auto&&hilfeStufe<aufgabe.n) setTimeout(()=>hilfeSchritt(true),t(900));
+      };
+      if(o.carry>0&&k+1<aufgabe.n) flug($("r"+k),$("c"+(k+1)),String(o.carry),weiter);
+      else setTimeout(weiter,t(700));
+    },t(700));
+  }, t(zellen.length*280+350));
+}
+
+function hilfeLuecke(){
+  hilfeBenutzt=true;
+  const k=aufgabe.lueckeSp, o=aufgabe.out[k];
+  if(hilfeStufe===0){
+    hellSpalte(k,true);
+    const kf=$("k"+k); if(kf){kf.classList.add("an"); setTimeout(()=>kf.classList.remove("an"),t(1100));}
+    blase(platzhalterGleichung(k));
+    hilfeStufe=1; zeichneStufenPunkte();
+  }else{
+    const z=$("s"+aufgabe.lueckeZeile+"_"+aufgabe.lueckeSp);
+    if(z){ z.textContent=aufgabe.lueckeZiffer; z.classList.remove("luecke"); }
+    blase("");
+    $("btn-hilfe").disabled=true;
+    hilfeStufe=2; zeichneStufenPunkte();
+  }
+}
+function platzhalterGleichung(k){
+  const o=aufgabe.out[k], teile=[];
+  if(o.carryIn) teile.push(o.carryIn);
+  aufgabe.zahlen.forEach((z,i)=>{
+    if(String(z).length<=k) return;
+    teile.push( (i===aufgabe.lueckeZeile && k===aufgabe.lueckeSp) ? "?" : ziffer(z,k) );
+  });
+  return teile.join(" + ")+" = "+o.summe;
+}
+
+function hilfeFehler(){
+  hilfeBenutzt=true;
+  const k=aufgabe.fehlerSp, o=aufgabe.out[k];
+  if(hilfeStufe===0){
+    hellSpalte(k,true);
+    const kf=$("k"+k); if(kf){kf.classList.add("an"); setTimeout(()=>kf.classList.remove("an"),t(1100));}
+    hilfeStufe=1; zeichneStufenPunkte();
+  }else{
+    blase(o.teile.join(" + ")+" = "+o.summe);
+    $("btn-hilfe").disabled=true;
+    hilfeStufe=2; zeichneStufenPunkte();
+  }
+}
+
+function zeichneStufenPunkte(){
+  const max = aufgabe.art==="rechnen" ? aufgabe.n : 2;
+  let h=""; for(let i=0;i<max;i++) h+=`<div class="sp ${i<hilfeStufe?'an':''}"></div>`;
+  $("stufen-punkte").innerHTML=h;
+}
+
+/* ---------- Ablauf ---------- */
+function neueAufgabe(){
+  aufgabe=baueAufgabe(ARTEN[nr%ARTEN.length]);
+  eingabe=""; hilfeStufe=0; hilfeBenutzt=false; laeuft=false;
+  zeichneGitter(); zeichneStufenPunkte(); blase("");
+  $("karte-ende").classList.add("verstecken");
+  $("wahl").classList.add("verstecken");
+  $("btn-hilfe").classList.remove("verstecken"); $("btn-hilfe").disabled=false;
+  $("feld").className="feld"; $("feld").innerHTML="";
+
+  const istFehler = aufgabe.art==="fehler";
+  $("karte-eingabe").classList.toggle("verstecken", istFehler);
+  $("block").classList.toggle("verstecken", istFehler);
+  $("gleich").className = "gleich" + (istFehler?" such":"");
+  $("marke").textContent = istFehler ? "Fehler finden" : (aufgabe.art==="luecke" ? "welche Ziffer fehlt?" : "");
+
+  if(!istFehler){
+    const heft=$("heft"); heft.classList.remove("schreibt"); void heft.offsetWidth; heft.classList.add("schreibt");
+    tasten();
+  }
+  startZeit=Date.now();
+  punkte();
+}
+
+function punkte(){
+  let h="";
+  for(let i=0;i<PRO_RUNDE;i++){
+    const v=verlauf[i];
+    h+=`<div class="punkt ${v==='ok'?'voll':''} ${v==='hilfe'?'hilfe':''} ${i===nr?'jetzt':''}"></div>`;
+  }
+  $("punkte").innerHTML=h;
+  $("chip-stufe").textContent=STUFEN[stufe].titel;
+  $("chip-hoch").classList.toggle("verstecken", !(schnellSerie>=SCHNELL_NOETIG && stufe<STUFEN.length-1));
+  $("chip-hoch").classList.add("hoch");
+}
+
+function geschafft(){
+  const dauer=Date.now()-startZeit;
+  if(!hilfeBenutzt && dauer<SCHNELL_MS) schnellSerie++; else schnellSerie=0;
+  verlauf[nr]=hilfeBenutzt?"hilfe":"ok";
+  setTimeout(ende,900);
+}
+
+function pruefen(){
+  const w=parseInt(eingabe,10);
+  if(isNaN(w)) return;
+  const f=$("feld");
+  const soll = aufgabe.art==="luecke" ? aufgabe.lueckeZiffer : aufgabe.summe;
+  if(w===soll){
+    f.className="feld gut";
+    if(aufgabe.art==="luecke"){
+      const z=$("s"+aufgabe.lueckeZeile+"_"+aufgabe.lueckeSp);
+      if(z){ z.textContent=aufgabe.lueckeZiffer; z.classList.remove("luecke"); }
+    }else{
+      aufgabe.out.forEach(o=>{const r=$("r"+o.k); if(r&&!r.textContent) r.textContent=o.ziffer;});
+      document.querySelector("#gitter tr.erg").classList.add("gezeigt");
+    }
+    geschafft();
+  }else{
+    f.className="feld schlecht";
+    setTimeout(()=>{
+      eingabe=""; f.innerHTML=""; f.className="feld";
+      zeigeWahl(true);
+    },800);
+  }
+}
+
+function zeigeWahl(an){
+  $("wahl").classList.toggle("verstecken",!an);
+  $("block").classList.toggle("verstecken",an);
+  $("btn-hilfe").classList.toggle("verstecken",an);
+}
+$("wahl-nochmal").addEventListener("click",()=>{
+  zeigeWahl(false);
+  eingabe=""; $("feld").innerHTML=""; $("feld").className="feld";
+});
+$("wahl-hilfe").addEventListener("click",()=>{
+  zeigeWahl(false);
+  $("btn-hilfe").disabled=false;
+  hilfeSchritt(false);
+});
+
+function tippeZelle(td){
+  if(aufgabe.art!=="fehler") return;
+  const k=+td.dataset.sp;
+  if(k===aufgabe.fehlerSp){
+    td.classList.add("treffer");
+    setTimeout(()=>{
+      td.textContent=aufgabe.out[k].ziffer;
+      if(aufgabe.fehlerTyp==="uebertrag"){
+        const c=$("c"+k); if(c) c.textContent=aufgabe.out[k-1].carry;
+      }
+      geschafft();
+    },600);
+  }else{
+    td.classList.add("daneben");
+    setTimeout(()=>td.classList.remove("daneben"),420);
+  }
+}
+
+function ende(){
+  nr++; punkte();
+  $("karte-eingabe").classList.add("verstecken");
+  $("block").classList.add("verstecken");
+  $("btn-hilfe").classList.add("verstecken");
+  $("wahl").classList.add("verstecken");
+  $("karte-ende").classList.remove("verstecken");
+  $("e-icon").textContent=hilfeBenutzt?"✓":"★";
+  $("e-text").textContent = nr>=PRO_RUNDE ? verlauf.filter(v=>v==="ok").length+" von "+PRO_RUNDE+" ohne Hilfe" : "";
+}
+
+$("e-weiter").addEventListener("click",()=>{ if(nr>=PRO_RUNDE){ nr=0; verlauf=[]; } neueAufgabe(); });
+$("btn-hilfe").addEventListener("click",()=>hilfeSchritt(false));
+$("chip-stufe").addEventListener("click",()=>{ $("spiel").classList.add("verstecken"); $("start").classList.remove("verstecken"); });
+$("chip-hoch").addEventListener("click",()=>{
+  if(stufe<STUFEN.length-1) stufe++;
+  schnellSerie=0; nr=0; verlauf=[];
+  neueAufgabe();
+});
+$("z-los").addEventListener("click",()=>{ $("zwischen").classList.add("verstecken"); $("spiel").classList.remove("verstecken"); neueAufgabe(); });
+$("z-zurueck").addEventListener("click",()=>{ $("zwischen").classList.add("verstecken"); $("start").classList.remove("verstecken"); });
+
+/* ---------- Ziffernblock ---------- */
+function tasten(){
+  let h="";
+  for(let i=1;i<=9;i++) h+=`<button class="taste" data-z="${i}">${i}</button>`;
+  h+=`<button class="taste" data-z="0">0</button><button class="taste weg" data-a="weg">⌫</button>`;
+  h+=`<button class="taste ok" data-a="ok">fertig</button>`;
+  const b=$("block"); b.innerHTML=h;
+  b.querySelectorAll("button").forEach(btn=>btn.addEventListener("click",()=>{
+    if(btn.dataset.z!==undefined) tippe(btn.dataset.z);
+    else if(btn.dataset.a==="weg"){ eingabe=eingabe.slice(1); zeigeEingabe(); }
+    else pruefen();
+  }));
+}
+function zeigeEingabe(){
+  const f=$("feld");
+  if(!eingabe){ f.innerHTML=""; return; }
+  const n=eingabe.length;
+  let h='<div class="ziffern">';
+  for(let i=0;i<n;i++){
+    const stelle = aufgabe && aufgabe.art==="luecke" ? aufgabe.lueckeSp : (n-1-i);
+    h+=`<div class="zbox sw${Math.min(stelle,5)}">${eingabe[i]}</div>`;
+  }
+  f.innerHTML=h+'</div>';
+}
+function tippe(z){
+  const max = aufgabe && aufgabe.art==="luecke" ? 1 : 7;
+  if(eingabe.length>=max) eingabe="";
+  eingabe = z + eingabe;            // Einer zuerst: wächst nach links
+  $("feld").className="feld";
+  zeigeEingabe();
+}
+document.addEventListener("keydown",e=>{
+  if($("spiel").classList.contains("verstecken")) return;
+  if(e.key>="0"&&e.key<="9") tippe(e.key);
+  else if(e.key==="Backspace"){ eingabe=eingabe.slice(1); zeigeEingabe(); }
+  else if(e.key==="Enter") pruefen();
+});
+
+/* ---------- Tour: Schritt für Schritt ---------- */
+let tourZahlen=[347,86], tourSchritte=[], tourNr=0, tourRech=null;
+
+function tourGitter(){
+  const r=spaltenRechnung(tourZahlen);
+  const sp=[]; for(let k=r.n-1;k>=0;k--) sp.push(k);
+  let h='<table class="rg" style="margin:0 auto"><tr><td class="op"></td>';
+  sp.forEach(k=>h+=`<td class="kopfz sw${k}" id="tk${k}">${NAMEN[k]}</td>`);
+  h+='</tr>';
+  tourZahlen.forEach((z,i)=>{
+    h+='<tr><td class="op">'+(i===0?"":"+")+'</td>';
+    sp.forEach(k=>{ const leer=String(z).length<=k;
+      h+=`<td class="zahl sw${k} ${leer?'leer':''}" id="t${i}_${k}">${leer?"":ziffer(z,k)}</td>`; });
+    h+='</tr>';
+  });
+  h+='<tr><td class="op"></td>';
+  sp.forEach(k=>h+=`<td class="ue ${r.out[k-1]&&r.out[k-1].carry?'box':''}" id="tc${k}"></td>`);
+  h+='</tr><tr class="erg"><td class="op"></td>';
+  sp.forEach(k=>h+=`<td class="zahl sw${k}" id="tr${k}"></td>`);
+  h+='</tr></table><div id="tour-eingabe" style="margin-top:14px;display:flex;justify-content:center"></div>';
+  $("tour-mini").innerHTML=h;
+  return r;
+}
+
+function spot(el,wort){
+  const S=$("spot"), W=$("spot-wort");
+  if(!el){ S.classList.add("verstecken"); W.classList.add("verstecken"); return; }
+  const r=el.getBoundingClientRect(), p=8;
+  S.classList.remove("verstecken");
+  S.style.left=(r.left-p)+"px"; S.style.top=(r.top-p)+"px";
+  S.style.width=(r.width+2*p)+"px"; S.style.height=(r.height+2*p)+"px";
+  if(wort){
+    W.classList.remove("verstecken"); W.textContent=wort;
+    W.style.left=(r.left+r.width/2-40)+"px";
+    W.style.top=(r.top-38)+"px";
+  } else W.classList.add("verstecken");
+}
+function spotReihe(von,bis,wort){
+  const a=von.getBoundingClientRect(), b=bis.getBoundingClientRect();
+  const kasten={getBoundingClientRect:()=>({
+    left:Math.min(a.left,b.left), top:Math.min(a.top,b.top),
+    width:Math.max(a.right,b.right)-Math.min(a.left,b.left),
+    height:Math.max(a.bottom,b.bottom)-Math.min(a.top,b.top)})};
+  spot(kasten,wort);
+}
+function hupfen(zellen){
+  zellen.forEach((e,i)=>setTimeout(()=>{e.classList.add("hupf");setTimeout(()=>e.classList.remove("hupf"),560);},i*260));
+}
+
+function tourBauen(){
+  const r=tourGitter(); tourRech=r;
+  blase("",$("tour-blase"));
+  const sp=[]; for(let k=r.n-1;k>=0;k--) sp.push(k);
+  const schritte=[];
+
+  schritte.push(()=>{ spotReihe($("tk"+sp[0]),$("tk0"),"Stellenwerte"); });
+  schritte.push(()=>{
+    const letzte=tourZahlen.length-1;
+    spotReihe($("t0_"+sp[0]),$("t"+letzte+"_0"),"Summanden");
+  });
+  schritte.push(()=>{
+    const ops=document.querySelectorAll("#tour-mini td.op");
+    spot(ops[tourZahlen.length],"addieren");
+  });
+
+  for(let k=0;k<r.n;k++){
+    const o=r.out[k];
+    schritte.push(()=>{
+      const zellen=[];
+      if(o.carryIn){const c=$("tc"+k); if(c&&c.textContent) zellen.push(c);}
+      tourZahlen.forEach((z,i)=>{ const e=$("t"+i+"_"+k); if(e&&e.textContent) zellen.push(e); });
+      if(zellen.length) spotReihe(zellen[0],zellen[zellen.length-1],NAMEN[k]);
+      hupfen(zellen);
+      setTimeout(()=>blase(o.teile.join(" + ")+" = "+o.summe,$("tour-blase")),zellen.length*260+200);
+    });
+    schritte.push(()=>{
+      const rz=$("tr"+k); if(rz) rz.textContent=o.ziffer;
+      spot($("tr"+k),"hinschreiben");
+    });
+    if(o.carry>0 && k+1<r.n){
+      schritte.push(()=>{
+        flug($("tr"+k),$("tc"+(k+1)),String(o.carry),()=>spot($("tc"+(k+1)),"Übertrag"));
+      });
+    }
+  }
+
+  schritte.push(()=>{
+    blase("",$("tour-blase"));
+    spotReihe($("tr"+sp[0]),$("tr0"),"Ergebnis");
+  });
+
+  // Eingabe-Demo: Einer zuerst
+  const zif=String(r.summe).split("");
+  for(let i=zif.length-1;i>=0;i--){
+    schritte.push(()=>{
+      const teil=zif.slice(i).join("");
+      let h='<div class="feld" style="min-width:auto"><div class="ziffern">';
+      teil.split("").forEach((d,j)=>{ const stelle=teil.length-1-j;
+        h+=`<div class="zbox sw${Math.min(stelle,5)}">${d}</div>`; });
+      h+='</div></div>';
+      $("tour-eingabe").innerHTML=h;
+      spot($("tour-eingabe"), i===zif.length-1 ? "Einer zuerst" : "dann nach links");
+    });
+  }
+  return schritte;
+}
+
+function tourWeiter(){
+  if(tourNr>=tourSchritte.length){ spot(null); return; }
+  tourSchritte[tourNr++]();
+  $("tour-weiter").textContent = tourNr>=tourSchritte.length ? "fertig" : "weiter";
+}
+
+function tourSpulen(ziel){
+  tourSchritte=tourBauen(); tourNr=0;
+  tourSofort=true;
+  for(let i=0;i<ziel;i++){ tourSchritte[i](); tourNr=i+1; }
+  tourSofort=false;
+  $("tour-weiter").textContent = tourNr>=tourSchritte.length ? "fertig" : "weiter";
+}
+function tourAuf(zahlen){
+  tourZahlen = zahlen || tourZahlen;
+  $("tour").classList.remove("verstecken");
+  tourSchritte=tourBauen(); tourNr=0;
+  $("tour-weiter").textContent="weiter";
+  spot(null);
+}
+
+$("btn-beispiel").addEventListener("click",()=>tourAuf([347,86]));
+$("z-wie").addEventListener("click",()=>{ const a=roheAufgabe(); tourAuf(a.zahlen); });
+$("chip-tour").addEventListener("click",()=>{ const a=roheAufgabe(); tourAuf(a.zahlen); });
+$("tour-weiter").addEventListener("click",tourWeiter);
+$("tour-zurueck").addEventListener("click",()=>{ if(tourNr>0) tourSpulen(tourNr-1); });
+$("tour-nochmal").addEventListener("click",()=>tourAuf(tourZahlen));
+$("tour-neu").addEventListener("click",()=>{ const a=roheAufgabe(); tourAuf(a.zahlen); });
+$("tour-zu").addEventListener("click",()=>{ $("tour").classList.add("verstecken"); spot(null); });
+
+zeichneStart();
+})();
+</script>
+</body>
+</html>
