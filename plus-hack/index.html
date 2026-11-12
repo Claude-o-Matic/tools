@@ -179,8 +179,36 @@ span.item{cursor:default}
 .gap.shake{animation:shake .4s}
 .board.calc.optb{min-height:0;margin:8px 0;padding:10px 12px}
 </style>
+<script>try{if(sessionStorage.getItem("ph-pw")!=="1")document.documentElement.classList.add("gesperrt")}catch(e){document.documentElement.classList.add("gesperrt")}</script>
+<style>
+html.gesperrt body>*:not(#pw){display:none!important}
+html:not(.gesperrt) #pw{display:none}
+#pw{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:16px;z-index:100}
+#pw-f{width:min(320px,100%);display:flex;flex-direction:column;gap:14px;align-items:center;padding:22px;border:1px solid var(--line);border-radius:14px;background:var(--panel)}
+#pw-f.nein{animation:shake .4s}
+#pw-i{width:100%;height:58px;border:2px solid var(--ph);border-radius:10px;background:var(--bg);color:var(--ph);font-family:var(--display);font-size:40px;text-align:center;letter-spacing:.12em}
+#pw-i:focus{outline:none;box-shadow:0 0 14px rgba(109,255,166,.45)}
+#pw-f button{width:100%;height:52px;border:0;border-radius:10px;background:var(--ph);color:var(--ink);font-family:var(--display);font-size:34px;cursor:pointer}
+</style>
 </head>
 <body>
+<div id="pw"><form id="pw-f" autocomplete="off"><div style="font-size:38px">🔒</div><input id="pw-i" type="text" autocapitalize="characters" autocorrect="off" spellcheck="false" aria-label="Passwort"><button>los</button></form></div>
+<script>
+(function(){
+const H=s=>{let h=7;for(let i=0;i<s.length;i++)h=(Math.imul(h,31)+s.charCodeAt(i))>>>0;return h};
+const f=document.getElementById("pw-f"),i=document.getElementById("pw-i");
+if(document.documentElement.classList.contains("gesperrt"))setTimeout(()=>i.focus(),60);
+f.addEventListener("submit",e=>{
+  e.preventDefault();
+  if(H(i.value.trim().toUpperCase())===8596675){
+    try{sessionStorage.setItem("ph-pw","1")}catch(x){}
+    document.documentElement.classList.remove("gesperrt");
+  }else{
+    i.value="";f.classList.remove("nein");void f.offsetWidth;f.classList.add("nein");
+  }
+});
+})();
+</script>
 
 <div id="demoBar" class="demobar" hidden>
   <span class="demotag">DEMO</span>
