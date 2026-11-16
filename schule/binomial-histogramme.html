@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Histogramme B(n; p)</title>
+<style>
+:root{
+  --bg:#f6f7f9; --card:#fff; --ink:#1d2433; --mute:#6b7280; --line:#d9dde4;
+  --bar:#9db7d8; --sel:#e8762b; --ok:#2f9e5b; --bad:#d64545; --acc:#2b5fb4; --soft:#eef3fb;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5;flex-wrap:wrap}
+header h1{font-size:18px;margin:0 12px 0 0}
+.tab{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 16px;font-size:15px;cursor:pointer}
+.tab.on{background:var(--acc);color:#fff;border-color:var(--acc)}
+#help{margin-left:auto;width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:#fff;font-size:18px;cursor:pointer}
+main{max-width:980px;margin:0 auto;padding:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:14px}
+.row{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+.ctl{display:flex;align-items:center;gap:8px;min-width:240px;flex:1}
+.ctl b{min-width:22px}
+.ctl input[type=range]{flex:1;accent-color:var(--acc)}
+.val{min-width:52px;font-variant-numeric:tabular-nums;font-weight:600;text-align:right}
+.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 12px;cursor:pointer;font-size:15px}
+.chip.on{background:var(--soft);border-color:var(--acc);color:var(--acc);font-weight:600}
+.group{display:flex;gap:6px;flex-wrap:wrap}
+svg{width:100%;height:auto;display:block;touch-action:manipulation}
+.res{display:flex;flex-wrap:wrap;gap:10px 24px;align-items:baseline;font-size:20px;min-height:32px}
+.res .p{font-weight:700}
+code{font:600 17px/1.3 ui-monospace,Menlo,Consolas,monospace;background:var(--soft);color:var(--acc);padding:3px 8px;border-radius:6px}
+.q{font-size:20px;font-weight:600;margin:4px 0 10px}
+.ans{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px}
+.ans input{font-size:18px;padding:8px 10px;width:140px;border:1px solid var(--line);border-radius:8px}
+.btn{border:0;background:var(--acc);color:#fff;border-radius:10px;padding:9px 16px;font-size:16px;cursor:pointer}
+.btn.alt{background:#fff;color:var(--acc);border:1px solid var(--acc)}
+.choice{border:2px solid var(--line);border-radius:12px;background:#fff;padding:6px;cursor:pointer;flex:1;min-width:200px}
+.choice:hover{border-color:var(--acc)}
+.choice .lab{font-weight:700;margin:2px 6px}
+.fb{margin-top:10px;font-size:18px;min-height:28px}
+.fb.ok{color:var(--ok)} .fb.bad{color:var(--bad)}
+.score{display:flex;gap:16px;align-items:center;color:var(--mute);font-size:15px}
+.big{font-size:40px;font-weight:800}
+table.rev{width:100%;border-collapse:collapse;font-size:15px}
+table.rev td{border-top:1px solid var(--line);padding:6px 4px;vertical-align:top}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px}
+.hidden{display:none!important}
+.mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.mcard{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;cursor:pointer;display:flex;flex-direction:column;gap:6px}
+.mcard:hover{border-color:var(--acc)}
+.mcard .nr{font-size:28px;font-weight:800;color:var(--acc)}
+.mcard .tt{font-weight:700;font-size:17px}
+.mcard .st{color:var(--mute);font-size:14px}
+.mcard.done{border-color:var(--ok);background:#f2fbf5}
+.mcard.done .nr{color:var(--ok)}
+#mbar{border-color:var(--sel);border-width:2px}
+#mbar .mt{font-size:14px;color:var(--mute);font-weight:600}
+sub{font-size:.7em}
+/* Tour */
+#tour{position:fixed;inset:0;z-index:50;pointer-events:none}
+#tour .cap{position:fixed;background:var(--ink);color:#fff;padding:8px 14px;border-radius:10px;font-size:18px;font-weight:600;box-shadow:0 6px 20px rgba(0,0,0,.25);transition:all .35s;pointer-events:none;white-space:nowrap}
+#tour .ring{position:fixed;border:3px solid var(--sel);border-radius:12px;box-shadow:0 0 0 9999px rgba(20,25,35,.35);transition:all .35s;pointer-events:none}
+#tour .skip{position:fixed;right:16px;bottom:16px;pointer-events:auto}
+</style>
+<script>try{if(sessionStorage.getItem("bn-pw")!=="1")document.documentElement.classList.add("gesperrt")}catch(e){document.documentElement.classList.add("gesperrt")}</script>
+<style>
+html.gesperrt body>*:not(#pw){display:none!important}
+html:not(.gesperrt) #pw{display:none}
+#pw{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:16px;z-index:100}
+#pw-f{width:min(320px,100%);display:flex;flex-direction:column;gap:12px;align-items:center;padding:22px;background:var(--card);border:1px solid var(--line);border-radius:14px}
+#pw-f.nein{animation:pwwackel .4s}
+@keyframes pwwackel{0%,100%{transform:none}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+#pw-i{width:100%;height:52px;border:2px solid var(--acc);border-radius:10px;background:#fff;color:var(--ink);font:inherit;font-size:24px;font-weight:600;text-align:center;letter-spacing:.12em}
+#pw-i:focus{outline:none;box-shadow:0 0 0 3px var(--soft)}
+#pw-f .btn{width:100%;font-size:18px}
+</style>
+</head>
+<body>
+<div id="pw"><form id="pw-f" autocomplete="off"><div style="font-size:36px">🔒</div><input id="pw-i" type="text" autocapitalize="characters" autocorrect="off" spellcheck="false" aria-label="Passwort"><button class="btn">los</button></form></div>
+<script>
+(function(){
+const H=s=>{let h=7;for(let i=0;i<s.length;i++)h=(Math.imul(h,31)+s.charCodeAt(i))>>>0;return h};
+const D=document.documentElement,f=document.getElementById("pw-f"),i=document.getElementById("pw-i"),warte=[];
+window.__nachPw=fn=>{D.classList.contains("gesperrt")?warte.push(fn):fn()};
+if(D.classList.contains("gesperrt"))setTimeout(()=>i.focus(),60);
+f.addEventListener("submit",e=>{
+  e.preventDefault();
+  if(H(i.value.trim().toUpperCase())===8596675){
+    try{sessionStorage.setItem("bn-pw","1")}catch(x){}
+    D.classList.remove("gesperrt");warte.splice(0).forEach(fn=>fn());
+  }else{
+    i.value="";f.classList.remove("nein");void f.offsetWidth;f.classList.add("nein");
+  }
+});
+})();
+</script>
+<header>
+  <h1>B(n; p)</h1>
+  <button class="tab on" data-tab="erk">Erkunden</button>
+  <button class="tab" data-tab="ueb">Üben</button>
+  <button class="tab" data-tab="pru">Prüfung</button>
+  <button class="tab" data-tab="auf">Auftrag</button>
+  <button id="help" title="Tour">?</button>
+</header>
+
+<main>
+<!-- ============ ERKUNDEN ============ -->
+<section id="erk">
+  <div class="card hidden" id="mbar"></div>
+  <div class="card">
+    <div class="row">
+      <div class="ctl" id="c-n"><b>n</b><input id="n" type="range" min="1" max="50" value="10"><span class="val" id="nv">10</span></div>
+      <div class="ctl" id="c-p"><b>p</b><input id="p" type="range" min="1" max="99" value="17"><span class="val" id="pv">1/6</span></div>
+      <div class="group" id="c-pp"><button class="chip on" data-p="1/6">1/6</button><button class="chip" data-p="1/2">0,5</button></div>
+    </div>
+    <div class="row" style="margin-top:10px">
+      <div class="group" id="c-rel"><button class="chip on" data-rel="0">k</button><button class="chip" data-rel="1">k / n</button></div>
+      <div class="group" id="c-kind"><button class="chip on" data-kind="pdf">P(X = k)</button><button class="chip" data-kind="cdf">P(X ≤ k)</button></div>
+      <div class="group" id="c-mode" style="margin-left:auto">
+        <button class="chip on" data-mode="eq">genau</button>
+        <button class="chip" data-mode="le">höchstens</button>
+        <button class="chip" data-mode="ge">mindestens</button>
+        <button class="chip" data-mode="bw">zwischen</button>
+      </div>
+    </div>
+  </div>
+  <div class="card"><svg id="hist" viewBox="0 0 900 380"></svg></div>
+  <div class="card res" id="res"><span class="p" id="rp">Säule antippen</span><code id="rc" class="hidden"></code></div>
+</section>
+
+<!-- ============ AUFTRAG ============ -->
+<section id="auf" class="hidden">
+  <div class="mgrid" id="mgrid"></div>
+</section>
+
+<!-- ============ ÜBEN ============ -->
+<section id="ueb" class="hidden">
+  <div class="card">
+    <div class="score"><span>✓ <b id="sOk">0</b></span><span>✗ <b id="sBad">0</b></span><button class="btn alt" id="nextU" style="margin-left:auto">Nächste Aufgabe</button></div>
+  </div>
+  <div class="card" id="uTask"></div>
+</section>
+
+<!-- ============ PRÜFUNG ============ -->
+<section id="pru" class="hidden">
+  <div class="card" id="pStart">
+    <div class="q">8 Aufgaben · Auswertung am Ende</div>
+    <button class="btn" id="pGo">Start</button>
+  </div>
+  <div class="card hidden" id="pHead"><div class="score"><span>Aufgabe <b id="pNr">1</b> / 8</span></div></div>
+  <div class="card hidden" id="pTask"></div>
+  <div class="card hidden" id="pEnd"></div>
+</section>
+</main>
+
+<div id="tour" class="hidden"><div class="ring"></div><div class="cap"></div><button class="btn skip">Überspringen</button></div>
+
+<script>
+// ---------- Sichtbare Reiter ----------
+// Nur "Erkunden" sichtbar. Alle Reiter wieder einblenden: Datei mit #alle am Ende öffnen
+// oder hier ergänzen: ["erk","ueb","pru","auf"]
+const TABS = location.hash==="#alle" ? ["erk","ueb","pru","auf"] : ["erk"];
+document.querySelectorAll(".tab").forEach(b=>{ if(!TABS.includes(b.dataset.tab)) b.classList.add("hidden"); });
+if(TABS.length===1) document.querySelectorAll(".tab").forEach(b=>b.classList.add("hidden"));
+
+// ---------- Mathe ----------
+function comb(n,k){ if(k<0||k>n) return 0; k=Math.min(k,n-k); let r=1; for(let i=1;i<=k;i++){ r=r*(n-k+i)/i; } return r; }
+function pdf(n,p,k){ return comb(n,k)*Math.pow(p,k)*Math.pow(1-p,n-k); }
+function dist(n,p){ const a=[]; for(let k=0;k<=n;k++) a.push(pdf(n,p,k)); return a; }
+function cum(a){ const c=[]; let s=0; for(const v of a){ s+=v; c.push(Math.min(s,1)); } return c; }
+const fmt=(x,d=4)=>{ if(x>0&&x<Math.pow(10,-d)) return "< 0,"+"0".repeat(d-1)+"1"; return x.toFixed(d).replace(".",","); };
+function gcd(a,b){ return b?gcd(b,a%b):a; }
+function pText(p,label){ if(label) return label; const h=Math.round(p*100), g=gcd(h,100); return (h/g)+"/"+(100/g); }
+function pShow(p,label){ if(label) return label==="1/2"?"0,5":label; return String(+p.toFixed(2)).replace(".",","); }
+const Pn=(n,p,pl)=>`P<sub>${n};&thinsp;${pShow(p,pl)}</sub>`;
+const rnd=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+
+// ---------- Histogramm zeichnen ----------
+function drawHist(svg, vals, opt={}){
+  const W=+svg.getAttribute("viewBox").split(" ")[2], H=+svg.getAttribute("viewBox").split(" ")[3];
+  const L=58, R=14, T=16, B=40, w=W-L-R, h=H-T-B;
+  const n=vals.length-1;
+  let ymax = opt.ymax || Math.max(...vals.filter((v,i)=>i!==opt.hide))*1.15 || 1;
+  if(opt.cdf && !opt.ymax) ymax=1.05;
+  const step = ymax>0.6?0.2: ymax>0.3?0.1: ymax>0.12?0.05: ymax>0.06?0.02:0.01;
+  let s=`<rect x="0" y="0" width="${W}" height="${H}" fill="#fff"/>`;
+  for(let y=0;y<=ymax+1e-9;y+=step){ const yy=T+h-(y/ymax)*h;
+    s+=`<line x1="${L}" x2="${W-R}" y1="${yy}" y2="${yy}" stroke="#e8ebf0"/>`;
+    s+=`<text x="${L-8}" y="${yy+5}" font-size="${opt.small?20:15}" text-anchor="end" fill="#6b7280">${y.toFixed(2).replace(".",",")}</text>`; }
+  const bw=w/(n+1);
+  const every = n<=20?1: n<=40?5:10;
+  vals.forEach((v,k)=>{
+    const x=L+k*bw, bh=(v/ymax)*h;
+    if(k===opt.hide){
+      s+=`<rect x="${x+bw*0.08}" y="${T+h-h*0.25}" width="${bw*0.84}" height="${h*0.25}" fill="none" stroke="#e8762b" stroke-dasharray="6 5" stroke-width="2"/>`;
+      s+=`<text x="${x+bw/2}" y="${T+h-h*0.25-8}" font-size="${opt.small?26:22}" text-anchor="middle" fill="#e8762b" font-weight="700">?</text>`;
+    } else {
+      if(opt.ghost && opt.ghostA>0.01 && k<opt.ghost.length){ const gh=(opt.ghost[k]/ymax)*h;
+        s+=`<rect x="${x+bw*0.08}" y="${T+h-gh}" width="${bw*0.84}" height="${Math.max(gh,0.5)}" fill="#6b7280" fill-opacity="${0.10*opt.ghostA}" stroke="#4b5563" stroke-opacity="${0.75*opt.ghostA}" stroke-dasharray="5 4" stroke-width="1.5" rx="2"/>`; }
+      const sel = opt.sel && opt.sel(k);
+      s+=`<rect data-k="${k}" x="${x+bw*0.08}" y="${T+h-bh}" width="${bw*0.84}" height="${Math.max(bh,0.5)}" fill="${sel?'#e8762b':(opt.color||'#9db7d8')}" fill-opacity="${opt.ghost&&opt.ghostA>0.01?0.85:1}" rx="2"/>`;
+      if(opt.labels) s+=`<text x="${x+bw/2}" y="${T+h-bh-6}" font-size="${opt.small?19:Math.min(15,bw*0.38)}" text-anchor="middle" fill="#1d2433">${v.toFixed(3).replace(".",",")}</text>`;
+    }
+    if(!opt.rel && k%every===0) s+=`<text x="${x+bw/2}" y="${H-B+22}" font-size="${opt.small?20:15}" text-anchor="middle" fill="#1d2433">${k}</text>`;
+    if(opt.click) s+=`<rect data-k="${k}" x="${x}" y="${T}" width="${bw}" height="${h}" fill="transparent" style="cursor:pointer"/>`;
+  });
+  if(opt.rel){ for(let f=0;f<=1.0001;f+=0.1){ const xx=L+bw/2+f*n*bw; s+=`<line x1="${xx}" x2="${xx}" y1="${T+h}" y2="${T+h+6}" stroke="#1d2433"/><text x="${xx}" y="${H-B+22}" font-size="15" text-anchor="middle" fill="#1d2433">${f.toFixed(1).replace(".",",")}</text>`; }
+    const xp=L+bw/2+opt.p*n*bw; s+=`<line x1="${xp}" x2="${xp}" y1="${T}" y2="${T+h}" stroke="#2b5fb4" stroke-dasharray="6 5" stroke-width="2"/><text x="${xp+6}" y="${T+14}" font-size="15" fill="#2b5fb4" font-weight="700">p</text>`; }
+  s+=`<line x1="${L}" x2="${W-R}" y1="${T+h}" y2="${T+h}" stroke="#1d2433"/>`;
+  s+=`<text x="${W-R}" y="${H-4}" font-size="${opt.small?20:15}" text-anchor="end" fill="#6b7280">${opt.rel?"k / n":"k"}</text>`;
+  svg.innerHTML=s;
+}
+
+// ---------- Erkunden ----------
+const st={n:10,p:1/6,pl:"1/6",kind:"pdf",mode:"eq",a:null,b:null,wait:false,rel:false};
+const $=id=>document.getElementById(id);
+function setChip(groupId,attr,val){ document.querySelectorAll(`#${groupId} .chip`).forEach(c=>c.classList.toggle("on",c.dataset[attr]===val)); }
+function inSel(k){ const {mode,a,b}=st; if(a===null) return false;
+  if(mode==="eq") return k===a; if(mode==="le") return k<=a; if(mode==="ge") return k>=a;
+  if(mode==="bw") return b===null? k===a : (k>=Math.min(a,b)&&k<=Math.max(a,b)); }
+// ---- Animation: Werte gleiten zum Ziel, alter Zustand bleibt als Geist stehen ----
+const anim={cur:null,tgt:null,ym:null,ymT:null,ghost:null,gA:0,drag:false,rel:0,raf:0};
+function snapGhost(){ if(anim.tgt){ anim.ghost=anim.cur?anim.cur.slice():anim.tgt.slice(); anim.gA=1; } }
+function startDrag(){ if(!anim.drag){ snapGhost(); anim.drag=true; } }
+function endDrag(){ anim.drag=false; anim.rel=performance.now(); kick(); }
+function kick(){ if(!anim.raf) anim.raf=requestAnimationFrame(tick); }
+function tick(){ anim.raf=0; const a=anim; let moving=false; const n=a.tgt.length-1;
+  if(!a.cur){ a.cur=a.tgt.slice(); a.ym=a.ymT; }
+  if(a.cur.length!==a.tgt.length){ const c=[]; for(let k=0;k<=n;k++) c.push(k<a.cur.length?a.cur[k]:0); a.cur=c; }
+  const f=0.085;
+  for(let k=0;k<=n;k++){ const d=a.tgt[k]-a.cur[k]; if(Math.abs(d)>0.0004){ a.cur[k]+=d*f; moving=true; } else a.cur[k]=a.tgt[k]; }
+  const dy=a.ymT-a.ym; if(Math.abs(dy)>0.001){ a.ym+=dy*f; moving=true; } else a.ym=a.ymT;
+  if(!a.drag && a.gA>0){ const t=performance.now()-a.rel; if(t>900){ a.gA=Math.max(0,1-(t-900)/1400); } moving=true; }
+  drawHist($("hist"),a.cur,{cdf:st.kind==="cdf",click:true,sel:inSel,labels:!moving&&st.n<=12&&!st.rel,rel:st.rel,p:st.p,ymax:a.ym,ghost:a.ghost,ghostA:a.gA});
+  if(moving) kick(); }
+function renderErk(){
+  $("nv").textContent=st.n; $("pv").textContent=pShow(st.p,st.pl);
+  if(st.a!==null&&st.a>st.n) st.a=null; if(st.b!==null&&st.b>st.n) st.b=null;
+  const d=dist(st.n,st.p); const vals= st.kind==="pdf"?d:cum(d);
+  anim.tgt=vals.slice();
+  const gmax = anim.ghost && anim.gA>0.01 ? Math.max(...anim.ghost) : 0;
+  anim.ymT = st.kind==="cdf" ? 1.05 : Math.max(Math.max(...vals), gmax)*1.15 || 1;
+  kick();
+  const rp=$("rp"), rc=$("rc");
+  if(st.a===null){ rp.textContent="Säule antippen"; rc.classList.add("hidden"); return; }
+  const n=st.n,p=st.p,pt=pText(p,st.pl); let lo,hi,txt;
+  if(st.mode==="eq"){ lo=hi=st.a; txt=`${Pn(n,p,st.pl)}(X = ${st.a})`; rc.textContent=`binomPdf(${n}, ${pt}, ${st.a})`; }
+  if(st.mode==="le"){ lo=0;hi=st.a; txt=`${Pn(n,p,st.pl)}(X ≤ ${st.a})`; rc.textContent=`binomCdf(${n}, ${pt}, 0, ${st.a})`; }
+  if(st.mode==="ge"){ lo=st.a;hi=n; txt=`${Pn(n,p,st.pl)}(X ≥ ${st.a})`; rc.textContent=`binomCdf(${n}, ${pt}, ${st.a}, ${n})`; }
+  if(st.mode==="bw"){ if(st.b===null){ rp.textContent=`a = ${st.a} · zweite Säule antippen`; rc.classList.add("hidden"); return; }
+    lo=Math.min(st.a,st.b); hi=Math.max(st.a,st.b); txt=`${Pn(n,p,st.pl)}(${lo} ≤ X ≤ ${hi})`; rc.textContent=`binomCdf(${n}, ${pt}, ${lo}, ${hi})`; }
+  let s=0; for(let k=lo;k<=hi;k++) s+=d[k];
+  rp.innerHTML=`${txt} ≈ ${fmt(s)}`; rc.classList.remove("hidden");
+}
+$("n").oninput=e=>{ startDrag(); st.n=+e.target.value; renderErk(); };
+$("p").oninput=e=>{ startDrag(); st.p=+e.target.value/100; st.pl=null; setChip("c-pp","p","x"); renderErk(); };
+["n","p"].forEach(id=>{ $(id).addEventListener("change",endDrag); $(id).addEventListener("pointerup",endDrag); $(id).addEventListener("touchend",endDrag); });
+function jump(){ snapGhost(); anim.drag=false; anim.rel=performance.now(); }
+document.querySelectorAll("#c-pp .chip").forEach(c=>c.onclick=()=>{ jump(); st.pl=c.dataset.p; st.p=c.dataset.p==="1/6"?1/6:0.5; $("p").value=Math.round(st.p*100); setChip("c-pp","p",c.dataset.p); renderErk(); });
+document.querySelectorAll("#c-rel .chip").forEach(c=>c.onclick=()=>{ st.rel=c.dataset.rel==="1"; setChip("c-rel","rel",c.dataset.rel); renderErk(); });
+document.querySelectorAll("#c-kind .chip").forEach(c=>c.onclick=()=>{ jump(); st.kind=c.dataset.kind; setChip("c-kind","kind",st.kind); renderErk(); });
+document.querySelectorAll("#c-mode .chip").forEach(c=>c.onclick=()=>{ st.mode=c.dataset.mode; st.a=null; st.b=null; setChip("c-mode","mode",st.mode); renderErk(); });
+$("hist").addEventListener("click",e=>{ const k=e.target.dataset.k; if(k===undefined) return; clickBar(+k); });
+function clickBar(k){ if(st.mode==="bw"){ if(st.a===null||st.b!==null){ st.a=k; st.b=null; } else st.b=k; } else st.a=k; renderErk(); }
+
+// ---------- Aufgaben-Generator ----------
+const P_LIST=[[1/6,"1/6"],[0.5,"1/2"],[0.3,null],[0.25,null],[0.4,null],[0.7,null]];
+function mkSvg(small){ const s=document.createElementNS("http://www.w3.org/2000/svg","svg"); s.setAttribute("viewBox",small?"0 0 600 360":"0 0 900 360"); return s; }
+function gen(){
+  const type=pick(["fehlt","art","passt","ablesen","ablesenCdf","befehl"]);
+  const [p,pl]=pick(P_LIST);
+  if(type==="fehlt"){ const n=rnd(4,7), d=dist(n,p), ks=d.map((v,i)=>i).filter(i=>d[i]>=0.03), k=pick(ks);
+    return {type, q:`fehlende Säule: ${Pn(n,p,pl)}(X = ${k}) = ?`, num:d[k], why:"1 − Summe der anderen Säulen",
+      draw:el=>{ const s=mkSvg(); drawHist(s,d,{hide:k,labels:true}); el.appendChild(s); } }; }
+  if(type==="art"){ const n=rnd(5,15), d=dist(n,p), c=Math.random()<0.5;
+    return {type, q:"P(X = k) oder P(X ≤ k)?", opts:["P(X = k)","P(X ≤ k)"], correct:c?1:0, why:c?"steigt bis 1":"Summe der Säulen = 1",
+      draw:el=>{ const s=mkSvg(); drawHist(s,c?cum(d):d,{cdf:c}); el.appendChild(s); } }; }
+  if(type==="passt"){ const n=rnd(6,14), d=dist(n,p);
+    const wrongP = Math.abs(p-0.5)<1e-9 ? (Math.random()<0.5?0.3:0.7) : 1-p;
+    const cands=[{v:d,ok:true},{v:dist(n,wrongP),why:"Maximum nicht bei n·p"},{v:d.map(x=>x*1.35),why:"Summe > 1"}];
+    if(Math.random()<0.5) cands[2]={v:dist(Math.max(2,n-5),p),why:"falsches n"};
+    const order=[0,1,2].sort(()=>Math.random()-0.5); const ymax=Math.max(...cands.flatMap(c=>c.v))*1.12;
+    return {type, q:`Welches Histogramm gehört zu n = ${n}, p = ${pShow(p,pl)}?`, opts:["A","B","C"], correct:order.indexOf(0),
+      why:"richtig: Maximum bei n·p ≈ "+fmt(n*p,1)+", Summe = 1",
+      draw:(el,choose)=>{ const box=document.createElement("div"); box.className="row";
+        order.forEach((ci,i)=>{ const b=document.createElement("div"); b.className="choice"; b.innerHTML=`<div class="lab">${"ABC"[i]}</div>`;
+          const s=mkSvg(true); drawHist(s,cands[ci].v,{ymax,small:true}); b.appendChild(s); b.onclick=()=>choose(i); box.appendChild(b); });
+        el.appendChild(box); } }; }
+  if(type==="ablesen"){ const n=rnd(4,6), d=dist(n,p), sub=pick(["le","ge","bw"]);
+    let a=rnd(1,n-1), b=rnd(a,n), lo,hi,q;
+    if(sub==="le"){ lo=0;hi=a;q=`(X ≤ ${a})`; } if(sub==="ge"){ lo=a;hi=n;q=`(X ≥ ${a})`; } if(sub==="bw"){ if(b===a) b=Math.min(n,a+1); lo=a;hi=b;q=`(${a} ≤ X ≤ ${b})`; }
+    let v=0; for(let k=lo;k<=hi;k++) v+=d[k];
+    return {type, q:`${Pn(n,p,pl)}${q} = ?`, num:v, why:"Säulen addieren",
+      draw:el=>{ const s=mkSvg(); drawHist(s,d,{labels:true,sel:k=>false}); el.appendChild(s); } }; }
+  if(type==="ablesenCdf"){ const n=rnd(4,6), d=dist(n,p), c=cum(d), k=rnd(1,n), sub=Math.random()<0.5;
+    return {type, q: sub?`kumuliert · ${Pn(n,p,pl)}(X = ${k}) = ?`:`kumuliert · ${Pn(n,p,pl)}(X ≥ ${k}) = ?`, num: sub? c[k]-c[k-1] : 1-c[k-1],
+      why: sub?`P(X ≤ ${k}) − P(X ≤ ${k-1})`:`1 − P(X ≤ ${k-1})`,
+      draw:el=>{ const s=mkSvg(); drawHist(s,c,{cdf:true,labels:true}); el.appendChild(s); } }; }
+  // befehl
+  const n=rnd(8,20), m=Math.round(n*p), k=Math.max(2,Math.min(n-2,m+rnd(-2,2))), pt=pText(p,pl), sub=pick(["eq","le","lt","ge","gt"]);
+  const C={eq:`binomPdf(${n}, ${pt}, ${k})`, le:`binomCdf(${n}, ${pt}, 0, ${k})`, lt:`binomCdf(${n}, ${pt}, 0, ${k-1})`, ge:`binomCdf(${n}, ${pt}, ${k}, ${n})`, gt:`binomCdf(${n}, ${pt}, ${k+1}, ${n})`};
+  const W={eq:"genau",le:"höchstens",lt:"weniger als",ge:"mindestens",gt:"mehr als"};
+  const wrong=Object.keys(C).filter(x=>x!==sub).sort(()=>Math.random()-0.5).slice(0,2);
+  const opts=[sub,...wrong].sort(()=>Math.random()-0.5);
+  return {type, q:`n = ${n}, p = ${pShow(p,pl)} · ${W[sub]} ${k} Treffer?`, opts:opts.map(o=>C[o]), correct:opts.indexOf(sub), code:true, why:C[sub], draw:()=>{} };
+}
+function showTask(el,t,onAnswer){
+  el.innerHTML=`<div class="q">${t.q}</div><div class="fig"></div><div class="ansbox"></div><div class="fb"></div>`;
+  const fig=el.querySelector(".fig"), ab=el.querySelector(".ansbox");
+  let done=false; const finish=(ok,given)=>{ if(done) return; done=true; onAnswer(ok,given,el); };
+  if(t.type==="passt"){ t.draw(fig,i=>finish(i===t.correct,"ABC"[i])); return; }
+  t.draw(fig);
+  if(t.num!==undefined){ ab.innerHTML=`<div class="ans"><input inputmode="decimal" placeholder="0,…"><button class="btn">OK</button></div>`;
+    const inp=ab.querySelector("input"); const go=()=>{ const v=parseFloat(inp.value.replace(",",".")); if(isNaN(v)) return; finish(Math.abs(v-t.num)<=0.006, inp.value); };
+    ab.querySelector("button").onclick=go; inp.onkeydown=e=>{ if(e.key==="Enter") go(); }; inp.focus(); }
+  else { const box=document.createElement("div"); box.className="ans";
+    t.opts.forEach((o,i)=>{ const b=document.createElement("button"); b.className="btn alt"; b.innerHTML=t.code?`<code>${o}</code>`:o; b.onclick=()=>finish(i===t.correct,o); box.appendChild(b); });
+    ab.appendChild(box); }
+}
+function solText(t){ if(t.num!==undefined) return `≈ ${fmt(t.num,3)} · ${t.why}`; if(t.type==="passt") return `${"ABC"[t.correct]} · ${t.why}`; return t.code? t.why : `${t.opts[t.correct]} · ${t.why}`; }
+
+// ---------- Üben ----------
+let sOk=0,sBad=0;
+function nextU(){ const t=gen(); showTask($("uTask"),t,(ok,given,el)=>{ ok?sOk++:sBad++; $("sOk").textContent=sOk; $("sBad").textContent=sBad;
+  const fb=el.querySelector(".fb"); fb.className="fb "+(ok?"ok":"bad"); fb.textContent=(ok?"✓ ":"✗ ")+solText(t);
+  el.querySelectorAll("input,button").forEach(b=>{ if(!b.closest(".ans")) return; b.disabled=true; }); }); }
+$("nextU").onclick=nextU;
+
+// ---------- Prüfung ----------
+let pList=[],pRes=[],pI=0;
+$("pGo").onclick=()=>{ pList=Array.from({length:8},gen); pRes=[]; pI=0; $("pStart").classList.add("hidden"); $("pEnd").classList.add("hidden"); $("pHead").classList.remove("hidden"); $("pTask").classList.remove("hidden"); showP(); };
+function showP(){ $("pNr").textContent=pI+1; const t=pList[pI];
+  showTask($("pTask"),t,(ok,given)=>{ pRes.push({ok,given}); pI++; if(pI<8) setTimeout(showP,150); else endP(); }); }
+function endP(){ $("pHead").classList.add("hidden"); $("pTask").classList.add("hidden"); const e=$("pEnd"); e.classList.remove("hidden");
+  const n=pRes.filter(r=>r.ok).length;
+  e.innerHTML=`<div class="row"><span class="big">${n} / 8</span><button class="btn" id="pAgain" style="margin-left:auto">Neue Prüfung</button></div>
+  <table class="rev">${pList.map((t,i)=>`<tr><td><span class="dot" style="background:${pRes[i].ok?'var(--ok)':'var(--bad)'}"></span>${i+1}</td><td>${t.q}</td><td>${pRes[i].given}</td><td>${solText(t)}</td></tr>`).join("")}</table>`;
+  $("pAgain").onclick=$("pGo").onclick; }
+
+// ---------- Aufträge ----------
+const MISS=[
+ {t:"Symmetrie", s:"n = 10 · p = 0,5", set:{n:10,p:0.5,pl:"1/2"}, q:"p = 0,5 → Form?", o:["symmetrisch","schief"], c:0, tip:"p und 1 − p: Spiegelbilder (0,3 ↔ 0,7)"},
+ {t:"Höchste Säule", s:"n = 10 · p = 0,3", set:{n:10,p:0.3,pl:null}, q:"Höchste Säule bei …", o:["n · p (oder daneben)","n/2","k = 0"], c:0, tip:"n = 5, p = 0,5: zwei gleich hohe Säulen"},
+ {t:"p größer", s:"n = 20 · p ↑", set:{n:20,p:0.1,pl:null}, q:"p größer → Histogramm wandert …", o:["nach links","nach rechts","bleibt"], c:1, tip:"Hauptmasse bei n · p"},
+ {t:"n größer", s:"p = 1/6 · n ↑", set:{n:10,p:1/6,pl:"1/6"}, q:"n größer → Säulen …", o:["höher","niedriger"], c:1, tip:"breiter, flacher · Summe bleibt 1"},
+ {t:"Schief", s:"n = 20 · p = 0,2", set:{n:20,p:0.2,pl:null}, q:"p = 0,2 → läuft lang aus nach …", o:["links","rechts"], c:1, tip:"p = 0,8: nach links"},
+ {t:"Summe", s:"beliebig", set:{n:10,p:0.5,pl:"1/2"}, q:"Alle Säulen zusammen …", o:["immer 1","hängt von n ab","hängt von p ab"], c:0, tip:"P(X = 0) = (1 − p)^n → n groß: winzig"},
+ {t:"Kumuliert", s:"n = 10 · p = 1/6 · P(X ≤ k)", set:{n:10,p:1/6,pl:"1/6",kind:"cdf"}, q:"k größer → P(X ≤ k) …", o:["steigt","fällt","erst steigt, dann fällt"], c:0, tip:"endet bei 1 · am steilsten um n · p"},
+ {t:"Viele Versuche", s:"p = 1/6 · n = 3 → 50 · höchstens 2", set:{n:3,p:1/6,pl:"1/6",mode:"le",a:2}, q:"n ↑ → P(X ≤ 2) …", o:["steigt","fällt","bleibt gleich"], c:1, tip:"(5/6)^n → 0 · Treffer meist nahe n · p"},
+ {t:"Gummisterne", s:"n = 10 · p = 1/6 · mindestens", set:{n:10,p:1/6,pl:"1/6",mode:"ge"}, q:"P(X ≥ 5) ≈ ?", o:["0,015","0,15","0,5"], c:0, tip:"5 oder mehr Treffer: verdächtig!"},
+];
+const mDone=new Set(); let mCur=-1;
+try{ (JSON.parse(localStorage.getItem("binomMiss")||"[]")).forEach(i=>mDone.add(i)); }catch(e){}
+function saveM(){ try{ localStorage.setItem("binomMiss",JSON.stringify([...mDone])); }catch(e){} }
+function renderGrid(){ $("mgrid").innerHTML=MISS.map((m,i)=>`<div class="mcard ${mDone.has(i)?'done':''}" data-i="${i}"><span class="nr">${mDone.has(i)?'✓':i+1}</span><span class="tt">${m.t}</span><span class="st">${m.s}</span></div>`).join("");
+  $("mgrid").querySelectorAll(".mcard").forEach(c=>c.onclick=()=>startM(+c.dataset.i)); }
+function startM(i){ mCur=i; const m=MISS[i], z=m.set;
+  st.n=z.n; st.p=z.p; st.pl=z.pl; st.kind=z.kind||"pdf"; st.mode=z.mode||"eq"; st.a=(z.a!==undefined?z.a:null); st.b=null;
+  $("n").value=st.n; $("p").value=Math.round(st.p*100); setChip("c-pp","p",st.pl||"x"); setChip("c-kind","kind",st.kind); setChip("c-mode","mode",st.mode);
+  anim.ghost=null; anim.gA=0; showTab("erk"); renderErk(); renderBar(); }
+function renderBar(){ const b=$("mbar"); if(mCur<0){ b.classList.add("hidden"); return; } const m=MISS[mCur]; b.classList.remove("hidden");
+  b.innerHTML=`<div class="row"><span class="mt">Auftrag ${mCur+1} / ${MISS.length} · ${m.t}</span><button class="chip" id="mBack" style="margin-left:auto">◀ Aufträge</button></div>
+  <div class="q" style="margin-top:6px">${m.q}</div><div class="ans">${m.o.map((o,j)=>`<button class="btn alt" data-j="${j}">${o}</button>`).join("")}</div><div class="fb"></div>`;
+  $("mBack").onclick=()=>{ mCur=-1; renderBar(); showTab("auf"); };
+  b.querySelectorAll(".ans .btn").forEach(x=>x.onclick=()=>{ const ok=+x.dataset.j===m.c, fb=b.querySelector(".fb");
+    if(ok){ mDone.add(mCur); saveM(); fb.className="fb ok"; fb.innerHTML=`✓ ${m.tip}` + (mCur<MISS.length-1?` <button class="btn" id="mNext" style="margin-left:10px">Weiter ▶</button>`:"");
+      const nx=$("mNext"); if(nx) nx.onclick=()=>startM(mCur+1); }
+    else { fb.className="fb bad"; fb.textContent="✗ nochmal beobachten"; } }); }
+renderGrid();
+
+// ---------- Tabs ----------
+function showTab(id){ document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("on",x.dataset.tab===id));
+  ["erk","ueb","pru","auf"].forEach(s=>$(s).classList.toggle("hidden",s!==id));
+  if(id==="ueb"&&!$("uTask").innerHTML) nextU(); if(id==="auf") renderGrid(); }
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{ if(b.dataset.tab!=="erk"){ mCur=-1; renderBar(); } showTab(b.dataset.tab); });
+
+// ---------- Tour ----------
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+let touring=false;
+async function tour(){
+  if(touring) return; touring=true; const T=$("tour"), ring=T.querySelector(".ring"), cap=T.querySelector(".cap"); let stop=false;
+  T.querySelector(".skip").onclick=()=>{ stop=true; };
+  document.querySelector('.tab[data-tab="erk"]').click(); T.classList.remove("hidden");
+  const focus=(el,text)=>{ const r=el.getBoundingClientRect(); Object.assign(ring.style,{left:r.left-6+"px",top:r.top-6+"px",width:r.width+12+"px",height:r.height+12+"px"});
+    cap.textContent=text; const cy=r.bottom+14+40<innerHeight? r.bottom+14 : r.top-54; Object.assign(cap.style,{left:Math.max(10,Math.min(r.left,innerWidth-260))+"px",top:cy+"px"}); };
+  const setN=v=>{ $("n").value=v; st.n=v; renderErk(); };
+  const tourDrag=async(fn)=>{ startDrag(); await fn(); endDrag(); };
+  // Ausgangslage
+  st.mode="eq"; setChip("c-mode","mode","eq"); st.a=null; st.b=null; st.kind="pdf"; setChip("c-kind","kind","pdf");
+  document.querySelector('#c-pp .chip[data-p="1/6"]').click(); setN(3);
+  const steps=[
+    async()=>{ focus($("c-n"),"n ändern"); await sleep(400); await tourDrag(async()=>{ for(let v=3;v<=12&&!stop;v++){ setN(v); await sleep(170); } }); await sleep(2200); },
+    async()=>{ focus($("c-pp"),"p wählen"); await sleep(600); document.querySelector('#c-pp .chip[data-p="1/2"]').click(); await sleep(900); document.querySelector('#c-pp .chip[data-p="1/6"]').click(); await sleep(900); },
+    async()=>{ focus($("c-kind"),"einzeln oder kumuliert"); await sleep(700); document.querySelector('#c-kind .chip[data-kind="cdf"]').click(); await sleep(1300); document.querySelector('#c-kind .chip[data-kind="pdf"]').click(); await sleep(800); },
+    async()=>{ focus($("c-mode"),"Bereich wählen"); await sleep(700); document.querySelector('#c-mode .chip[data-mode="ge"]').click(); await sleep(900); },
+    async()=>{ focus($("hist"),"Säule antippen"); await sleep(800); clickBar(3); await sleep(1300); },
+    async()=>{ focus($("res"),"Wahrscheinlichkeit + TI-Befehl"); await sleep(2200); },
+    async()=>{ if(!TABS.includes("ueb")) return; focus(document.querySelector('.tab[data-tab="ueb"]'),"üben"); await sleep(1300); focus(document.querySelector('.tab[data-tab="pru"]'),"Prüfung"); await sleep(1300); focus(document.querySelector('.tab[data-tab="auf"]'),"Aufträge"); await sleep(1500); },
+  ];
+  for(const s of steps){ if(stop) break; await s(); }
+  T.classList.add("hidden"); touring=false;
+  try{ localStorage.setItem("binomTourSeen","1"); }catch(e){}
+}
+$("help").onclick=tour;
+
+renderErk();
+let seen=false; try{ seen=localStorage.getItem("binomTourSeen")==="1"; }catch(e){}
+if(!seen) (window.__nachPw||(f=>f()))(()=>setTimeout(tour,500));
+</script>
+</body>
+</html>
