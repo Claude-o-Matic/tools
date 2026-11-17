@@ -345,7 +345,7 @@ input[readonly]{background:var(--fl2,#f9fafb);color:var(--tx2,#555)}
   <button class="hd-btn" id="sb-burger" type="button" onclick="sbMobile()" title="Men&#252; anzeigen" aria-label="Men&#252; anzeigen">&#9776;</button>
   <a class="hd-logo" href="#" id="hd-logo" onclick="showTab('re');return false" title="Zur&#252;ck zu &#8222;Meine Reisen&#8220;"><svg viewBox="0 0 64 64" width="36" height="36" role="img" aria-label="Reisekostenverwaltung"><defs><linearGradient id="lgT" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3566b4"/><stop offset="1" stop-color="#15305c"/></linearGradient><linearGradient id="lgR" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#DC2626"/><stop offset=".5" stop-color="#F59E0B"/><stop offset="1" stop-color="#16A34A"/></linearGradient></defs><rect width="64" height="64" rx="15" fill="url(#lgT)"/><path d="M14 53 C20 50 25.5 45.6 32 45 C39 44.4 44.5 37 50 31" fill="none" stroke="url(#lgR)" stroke-width="4.4" stroke-linecap="round"/><path d="M14 53 C14 53 7.2 44.4 7.2 39.2 A6.8 6.8 0 1 1 20.8 39.2 C20.8 44.4 14 53 14 53 Z" fill="#DC2626"/><circle cx="14" cy="39.2" r="2.6" fill="#1e3c72"/><path d="M32 45 C32 45 25.2 36.4 25.2 31.2 A6.8 6.8 0 1 1 38.8 31.2 C38.8 36.4 32 45 32 45 Z" fill="#F59E0B"/><circle cx="32" cy="31.2" r="2.6" fill="#1e3c72"/><path d="M50 31 C50 31 43.2 22.4 43.2 17.2 A6.8 6.8 0 1 1 56.8 17.2 C56.8 22.4 50 31 50 31 Z" fill="#16A34A"/><circle cx="50" cy="17.2" r="2.6" fill="#1e3c72"/></svg></a>
   <div style="min-width:0">
-    <h1>Reisekostenerfassung <span style="font-size:11px;font-weight:600;opacity:.75;background:rgba(255,255,255,.15);padding:2px 8px;border-radius:20px;vertical-align:middle;letter-spacing:.3px" id="app-ver">v4.3</span></h1>
+    <h1>Reisekostenerfassung <span style="font-size:11px;font-weight:600;opacity:.75;background:rgba(255,255,255,.15);padding:2px 8px;border-radius:20px;vertical-align:middle;letter-spacing:.3px" id="app-ver">v4.4</span></h1>
     <sub>ZfsL Solingen &mdash; Empfohlener Browser: Microsoft&#160;Edge</sub>
   </div>
   <div style="flex:1"></div>
@@ -1328,7 +1328,7 @@ input[readonly]{background:var(--fl2,#f9fafb);color:var(--tx2,#555)}
     <div style="padding:24px">
 
       <div style="background:var(--okBg,#dcfce7);border:1.5px solid var(--okLin,#86efac);border-radius:8px;padding:12px 16px;margin-bottom:20px">
-        <p style="font-size:13px;color:var(--okTx,#166534)"><strong>Komplett kostenlos.</strong> Keine Kreditkarte, kein Billing-Account, keine versteckten Kosten. OpenRouteService basiert auf OpenStreetMap und wird von der Universit&#228;t Heidelberg betrieben.</p>
+        <p style="font-size:13px;color:var(--okTx,#166534)"><strong>Komplett kostenlos.</strong> Keine Kreditkarte, kein Billing-Account, keine versteckten Kosten. OpenRouteService basiert auf OpenStreetMap und wird von HeiGIT an der Universit&#228;t Heidelberg betrieben.</p>
       </div>
 
       <!-- Schritt 1 -->
@@ -1338,9 +1338,10 @@ input[readonly]{background:var(--fl2,#f9fafb);color:var(--tx2,#555)}
           <p style="font-weight:700;font-size:14px;margin-bottom:4px">Website aufrufen</p>
           <p style="font-size:13px;color:var(--tx3,#6b7280);margin-bottom:6px">Browser &#246;ffnen und diese Adresse eingeben:</p>
           <div style="background:var(--fl2,#f1f5f9);border-radius:6px;padding:8px 12px;font-family:monospace;font-size:13px;color:var(--okTx,#059669);font-weight:700;display:flex;align-items:center;justify-content:space-between">
-            openrouteservice.org
-            <button onclick="copyText('https://openrouteservice.org/dev/#/signup')" style="background:var(--ok,#059669);color:#fff;border:none;border-radius:4px;padding:3px 8px;font-size:11px;cursor:pointer">Kopieren</button>
+            account.heigit.org/signup
+            <button onclick="copyText('https://account.heigit.org/signup')" style="background:var(--ok,#059669);color:#fff;border:none;border-radius:4px;padding:3px 8px;font-size:11px;cursor:pointer">Kopieren</button>
           </div>
+          <p style="font-size:12px;color:var(--tx4,#9ca3af);margin-top:6px">Die fr&#252;here Adresse <em>openrouteservice.org</em> leitet auf diese Seite weiter.</p>
         </div>
       </div>
 
@@ -1349,8 +1350,8 @@ input[readonly]{background:var(--fl2,#f9fafb);color:var(--tx2,#555)}
         <div style="min-width:32px;height:32px;background:var(--ok,#059669);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;flex-shrink:0">2</div>
         <div>
           <p style="font-weight:700;font-size:14px;margin-bottom:4px">Kostenlosen Account anlegen</p>
-          <p style="font-size:13px;color:var(--tx3,#6b7280)">Auf <strong>&#8222;Sign Up&#8220;</strong> klicken &rarr; E-Mail-Adresse und Passwort eingeben &rarr; <strong>&#8222;Register&#8220;</strong> klicken.</p>
-          <p style="font-size:13px;color:var(--tx3,#6b7280);margin-top:4px">Dann die Best&#228;tigungs-E-Mail &#246;ffnen und den Link anklicken.</p>
+          <p style="font-size:13px;color:var(--tx3,#6b7280)">Name, E-Mail-Adresse und Passwort eingeben und das Formular abschicken.</p>
+          <p style="font-size:13px;color:var(--tx3,#6b7280);margin-top:4px">Dann die Best&#228;tigungs-E-Mail &#246;ffnen und den Link anklicken. Der kostenlose Tarif <strong>Standard</strong> ist dabei automatisch dabei &#8211; es muss nichts ausgew&#228;hlt oder gebucht werden.</p>
         </div>
       </div>
 
@@ -1358,14 +1359,12 @@ input[readonly]{background:var(--fl2,#f9fafb);color:var(--tx2,#555)}
       <div style="display:flex;gap:14px;margin-bottom:20px">
         <div style="min-width:32px;height:32px;background:var(--ok,#059669);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;flex-shrink:0">3</div>
         <div>
-          <p style="font-weight:700;font-size:14px;margin-bottom:4px">API-Token erstellen</p>
-          <p style="font-size:13px;color:var(--tx3,#6b7280);margin-bottom:6px">Nach dem Anmelden im Dashboard:</p>
+          <p style="font-weight:700;font-size:14px;margin-bottom:4px">API-Key abholen</p>
+          <p style="font-size:13px;color:var(--tx3,#6b7280);margin-bottom:6px">Auf <strong>account.heigit.org</strong> anmelden. Der Key liegt im Bereich <strong>&#8222;Tokens&#8220;</strong> bzw. <strong>&#8222;API Keys&#8220;</strong>:</p>
           <div style="background:var(--fl2,#f1f5f9);border-radius:6px;padding:10px 14px;font-size:13px;color:var(--tx,#374151);line-height:1.8">
-            1. Oben auf <strong>&#8222;Dashboard&#8220;</strong> klicken<br>
-            2. Links auf <strong>&#8222;Tokens&#8220;</strong> (oder &#8222;API Keys&#8220;) klicken<br>
-            3. <strong>&#8222;+ Add Token&#8220;</strong> klicken<br>
-            4. Einen Namen eingeben, z.B. <em>Reisekosten ZfsL</em><br>
-            5. <strong>&#8222;Add&#8220;</strong> klicken
+            1. Der kostenlose Standard-Key ist nach der Registrierung meist schon angelegt<br>
+            2. Beim Eintrag auf <strong>Kopieren</strong> klicken (oder den Key einblenden)<br>
+            3. Ist noch keiner da: neuen Token anlegen, Name z.B. <em>Reisekosten ZfsL</em>
           </div>
         </div>
       </div>
@@ -1381,7 +1380,7 @@ input[readonly]{background:var(--fl2,#f9fafb);color:var(--tx2,#555)}
       </div>
 
       <div style="background:var(--akW,#eff6ff);border:1.5px solid var(--akLin2,#bfdbfe);border-radius:8px;padding:12px 16px">
-        <p style="font-size:13px;color:var(--akTx,#1e40af)"><strong>Freikontingent:</strong> 2.000 Anfragen pro Tag &ndash; bei typischer Nutzung (einige Dutzend pro Monat) v&#246;llig ausreichend. Der Key wird verschl&#252;sselt nur in Ihrem Browser gespeichert und ist nicht in der HTML-Datei enthalten.</p>
+        <p style="font-size:13px;color:var(--akTx,#1e40af)"><strong>Freikontingent:</strong> 2.000 Streckenberechnungen pro Tag &ndash; bei typischer Nutzung (einige Dutzend pro Monat) v&#246;llig ausreichend. Pro Person ist ein Zugang mit einem kostenlosen Key vorgesehen. Der Key wird verschl&#252;sselt nur in Ihrem Browser gespeichert und ist nicht in der HTML-Datei enthalten.</p>
       </div>
 
     </div>
@@ -1522,7 +1521,7 @@ var FERIEN_VON='2024-07-08', FERIEN_BIS='2030-04-27';
 // nachgeladenes JavaScript schon.
 // Eigene Programmversion. Steht nur hier - die Anzeige in der Kopfzeile wird
 // daraus gesetzt, damit beides nicht auseinanderlaufen kann.
-var APP_VERSION='4.3';
+var APP_VERSION='4.4';
 var UPD_URL_DEF='https://raw.githubusercontent.com/Claude-o-Matic/tools/main/daten/reisekosten.json';
 var KUPD='rk_daten_v1', KUPDCHK='rk_updchk_v1', KUPDOK='rk_updok_v1', KUPDURL='rk_updurl_v1';
 var UPD_INTERVAL=7*24*60*60*1000;   // hoechstens einmal pro Woche
