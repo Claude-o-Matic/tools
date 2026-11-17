@@ -1,10 +1,10 @@
 {
  "format": "rk-daten",
- "version": 16,
+ "version": 17,
  "stand": "2026-11-17",
  "hinweis": "Nur Daten, kein Programmcode. Beim Aendern IMMER \"version\" hochzaehlen.",
  "programm": {
-  "version": "4.3",
+  "version": "4.4",
   "datum": "2026-11-17",
   "hinweis": "Muss zur hochgeladenen reisekosten.html passen (dort var APP_VERSION)."
  },
