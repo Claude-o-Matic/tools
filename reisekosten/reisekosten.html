@@ -345,7 +345,7 @@ input[readonly]{background:var(--fl2,#f9fafb);color:var(--tx2,#555)}
   <button class="hd-btn" id="sb-burger" type="button" onclick="sbMobile()" title="Men&#252; anzeigen" aria-label="Men&#252; anzeigen">&#9776;</button>
   <a class="hd-logo" href="#" id="hd-logo" onclick="showTab('re');return false" title="Zur&#252;ck zu &#8222;Meine Reisen&#8220;"><svg viewBox="0 0 64 64" width="36" height="36" role="img" aria-label="Reisekostenverwaltung"><defs><linearGradient id="lgT" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3566b4"/><stop offset="1" stop-color="#15305c"/></linearGradient><linearGradient id="lgR" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#DC2626"/><stop offset=".5" stop-color="#F59E0B"/><stop offset="1" stop-color="#16A34A"/></linearGradient></defs><rect width="64" height="64" rx="15" fill="url(#lgT)"/><path d="M14 53 C20 50 25.5 45.6 32 45 C39 44.4 44.5 37 50 31" fill="none" stroke="url(#lgR)" stroke-width="4.4" stroke-linecap="round"/><path d="M14 53 C14 53 7.2 44.4 7.2 39.2 A6.8 6.8 0 1 1 20.8 39.2 C20.8 44.4 14 53 14 53 Z" fill="#DC2626"/><circle cx="14" cy="39.2" r="2.6" fill="#1e3c72"/><path d="M32 45 C32 45 25.2 36.4 25.2 31.2 A6.8 6.8 0 1 1 38.8 31.2 C38.8 36.4 32 45 32 45 Z" fill="#F59E0B"/><circle cx="32" cy="31.2" r="2.6" fill="#1e3c72"/><path d="M50 31 C50 31 43.2 22.4 43.2 17.2 A6.8 6.8 0 1 1 56.8 17.2 C56.8 22.4 50 31 50 31 Z" fill="#16A34A"/><circle cx="50" cy="17.2" r="2.6" fill="#1e3c72"/></svg></a>
   <div style="min-width:0">
-    <h1>Reisekostenerfassung <span style="font-size:11px;font-weight:600;opacity:.75;background:rgba(255,255,255,.15);padding:2px 8px;border-radius:20px;vertical-align:middle;letter-spacing:.3px" id="app-ver">v4.2</span></h1>
+    <h1>Reisekostenerfassung <span style="font-size:11px;font-weight:600;opacity:.75;background:rgba(255,255,255,.15);padding:2px 8px;border-radius:20px;vertical-align:middle;letter-spacing:.3px" id="app-ver">v4.3</span></h1>
     <sub>ZfsL Solingen &mdash; Empfohlener Browser: Microsoft&#160;Edge</sub>
   </div>
   <div style="flex:1"></div>
@@ -1522,7 +1522,7 @@ var FERIEN_VON='2024-07-08', FERIEN_BIS='2030-04-27';
 // nachgeladenes JavaScript schon.
 // Eigene Programmversion. Steht nur hier - die Anzeige in der Kopfzeile wird
 // daraus gesetzt, damit beides nicht auseinanderlaufen kann.
-var APP_VERSION='4.2';
+var APP_VERSION='4.3';
 var UPD_URL_DEF='https://raw.githubusercontent.com/Claude-o-Matic/tools/main/daten/reisekosten.json';
 var KUPD='rk_daten_v1', KUPDCHK='rk_updchk_v1', KUPDOK='rk_updok_v1', KUPDURL='rk_updurl_v1';
 var UPD_INTERVAL=7*24*60*60*1000;   // hoechstens einmal pro Woche
@@ -3629,6 +3629,16 @@ function buildExportHtml(ent,s,e,doPrint,inclP1,opts){
   var ort=opts.ort||wohnortStadt()||sd.dstOrt||'';
   var sigDat=opts.dat||heute();
 
+  // Lange Werte einzeilig halten: Die Zelle ist rund 80 mm breit. Was bei
+  // 9 pt nicht mehr hineinpasst, bekommt 8 pt, danach 7 pt. Erst wenn auch
+  // das nicht reicht, bricht der Text um (siehe CSS).
+  function vz(t){
+    t=String(t==null?'':t);
+    var n=t.length;
+    var k=(n>58?' v7':(n>44?' v8':''));
+    return '<td class="v'+k+'">'+t+'</td>';
+  }
+
   // Verkehrsmittel-Kreuze auf Seite 1: Sie folgen den Spalten auf Seite 2.
   // Steht im Zeitraum mindestens eine Fahrt in der PKW-Spalte, wird PKW
   // angekreuzt; steht eine in der Fahrrad-Spalte, auch Fahrrad - bei
@@ -3659,10 +3669,12 @@ function buildExportHtml(ent,s,e,doPrint,inclP1,opts){
     '.p1 h1{font-size:13pt;font-weight:bold;margin:9.5mm 0 11.7mm;padding:0;border:none}'+
     '.p1 table{width:100%;border-collapse:collapse;border:none;margin:0;font-size:9pt}'+
     '.p1 td{border:none;padding:0;vertical-align:bottom}'+
-    '.fz{margin-bottom:0.5mm}'+
+    '.fz{margin-bottom:0.5mm;table-layout:fixed}'+
     '.fz+.fz{margin-top:6.6mm}'+
     '.fz td.v{font-weight:bold;border-bottom:0.75pt solid #000;padding-bottom:0.7mm;'+
-      'width:49%;white-space:nowrap;overflow:hidden}'+
+      'width:49%;white-space:normal;overflow-wrap:break-word}'+
+    '.fz td.v.v8{font-size:8pt}'+
+    '.fz td.v.v7{font-size:7pt}'+
     '.fz td.sp{width:2%}'+
     '.fz td.lb{font-size:8pt;font-weight:normal;padding-top:0.5mm;line-height:1.2;vertical-align:top}'+
     '.p1 .lb{font-size:8pt;font-weight:normal;line-height:1.2}'+
@@ -3725,14 +3737,14 @@ function buildExportHtml(ent,s,e,doPrint,inclP1,opts){
     +'<h1>Antrag auf Fahrtkostenerstattung f&#252;r Dienstfahrten / Dienstg&#228;nge</h1>'
 
     +'<table class="fz"><tr>'
-      +'<td class="v">'+esc((sd.name||'')+', '+(sd.vname||''))+'</td><td class="sp"></td>'
-      +'<td class="v">'+esc(sd.amt||'')+'</td></tr><tr>'
+      +vz(esc((sd.name||'')+', '+(sd.vname||'')))+'<td class="sp"></td>'
+      +vz(esc(sd.amt||''))+'</tr><tr>'
       +'<td class="lb">Name, Vorname</td><td></td>'
       +'<td class="lb">Amtsbezeichnung</td></tr></table>'
 
     +'<table class="fz"><tr>'
-      +'<td class="v">'+esc(sd.dstName||'')+'</td><td class="sp"></td>'
-      +'<td class="v">'+esc(sd.dstAdr||'')+'</td></tr><tr>'
+      +vz(esc(sd.dstName||''))+'<td class="sp"></td>'
+      +vz(esc(sd.dstAdr||''))+'</tr><tr>'
       +'<td class="lb">Dienststelle (Schule oder Seminar. Bitte ausschreiben.)</td><td></td>'
       +'<td class="lb">Dienstort (bitte exakte Anschrift angeben).</td></tr></table>'
 
@@ -3740,8 +3752,8 @@ function buildExportHtml(ent,s,e,doPrint,inclP1,opts){
       +'ist das ZfsL die Dienststelle im reisekostenrechtlichen Sinne.</p>'
 
     +'<table class="fz"><tr>'
-      +'<td class="v">'+esc(sd.wo||'')+'</td><td class="sp"></td>'
-      +'<td class="v">'+(sd.entf?fmtKm(sd.entf)+' km von '+esc(sd.dstName||'Dienststelle'):'&nbsp;')+'</td></tr><tr>'
+      +vz(esc(sd.wo||''))+'<td class="sp"></td>'
+      +vz(sd.entf?fmtKm(sd.entf)+' km von '+esc(sd.dstName||'Dienststelle'):'&nbsp;')+'</tr><tr>'
       +'<td class="lb">Wohnort (bitte exakte Anschrift angeben)</td><td></td>'
       +'<td class="lb">Entfernung (Stra&#223;enkilometer, einfache Strecke) zwischen Wohnort und o.g. Dienststelle)</td>'
       +'</tr></table>'
